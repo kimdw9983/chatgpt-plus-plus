@@ -1,18 +1,24 @@
 {
-  "name": "Hello Extensions",
-  "description": "Base Level Extension",
-  "version": "1.0",
+  "name": "ChatGPT++",
+  "description": "A chrome extension to enhance functionality of ChatGPT",
+  "version": "0.0.0",
   "manifest_version": 3,
-  "content_security_policy": {
-    "script-src": "'self' 'unsafe-eval'",
-    "style-src": "'self' 'unsafe-inline'"
-  },
   "action": {
     "default_popup": "index.html",
-    "default_title": "Open the popup"
+    "default_title": "ChatGPT++"
   },
-  "permissions": ["activeTab"],
-  "optional_permissions": ["<all_users>"],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.openai.com/chat*"
+      ],
+      "js": [
+        "scripts/main.js"
+      ]
+    }
+  ],
+  "permissions": [ "activeTab" ],
+  "optional_permissions": [ "cookies" ],
   "icons": {
     "16": "logo192.png",
     "48": "logo192.png",
