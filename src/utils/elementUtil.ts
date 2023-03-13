@@ -1,11 +1,15 @@
-export function getElement(query: string) : HTMLElement | null {
-  return document.querySelector(query)
+export function getElement(query: string) : HTMLElement {
+  return document.querySelector(query) as HTMLElement
 }
 
-export function getInput() : HTMLTextAreaElement | null {
-  return document.querySelector('cpp-textarea')
+export function getRootElement(): HTMLDivElement {
+  return document.querySelector('div[id="__next"]') as HTMLDivElement
 }
 
-export function getSubmit() : HTMLButtonElement | null {
-  return document.querySelector('cpp-submit')
+export function getInput() : HTMLTextAreaElement {
+  return document.querySelector('cpp-textarea') as HTMLTextAreaElement
+}
+
+export function getSubmit() : HTMLButtonElement {
+  return document.querySelector('cpp-submit') as HTMLButtonElement
 }

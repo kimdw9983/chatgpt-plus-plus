@@ -9,12 +9,8 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://chat.openai.com/chat*"
-      ],
-      "js": [
-        "scripts/main.js"
-      ]
+      "matches": [ "https://chat.openai.com/chat*" ],
+      "js": [ "scripts/main.js" ]
     }
   ],
   "permissions": [ "activeTab" ],
