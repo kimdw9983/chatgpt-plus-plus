@@ -1,22 +1,19 @@
-import { getElement, getRootElement } from '../utils/elementUtil'
-
-let textarea: HTMLElement
+import { getElement, getChatgptRoot } from '../utils/elementUtil'
 
 async function patch() {
-  textarea = getElement('textarea')
+  const textarea = getElement('div#__next textarea')
+  if (!textarea) return
 
-  const textareaParentParent = textarea?.parentElement?.parentElement
-  if (!textareaParentParent) throw new Error('textareaParentParent is not found')
-
-  console.log(textareaParentParent)
+  textarea.classList.add("chatgpt-textarea")
+  
 }
 
-const rootEl = getRootElement()
-window.onload = function () {
+const root = getChatgptRoot()
+window.onload = function() {
   patch()
 
   try {
-    new MutationObserver(() => { patch() }).observe(rootEl, { childList: true }) 
+    new MutationObserver(() => { patch() }).observe(root, { childList: true }) 
   } catch(e: any) {
     console.info("error occured during patch", e)
   }
