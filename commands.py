@@ -66,7 +66,7 @@ if "build" == sys.argv[1] :
 
     output, error = run_command(f"yarn version --{versioning}", "package.json versioning")
     version = find_regex(r"New version:\s+(\d+\.\d+\.\d+)", output)
-    output, error = run_command(f"jq \".version |= \\\"0.0.6\\\"\" public/manifest.json > public/manifest.json.tmp", "manifest.json versioning")
+    output, error = run_command(f"jq \".version |= \\\"{version}\\\"\" public/manifest.json > public/manifest.json.tmp", "manifest.json versioning")
 
     print(f"{blue}INFO{reset}\tUpdated version to {yellow}{version}")
   else :
