@@ -32,7 +32,7 @@ def run_command(command: str, desc: str, supress_error: bool = False) -> tuple[s
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     output, errors = process.communicate()
     if process.returncode != 0 :
-      raise Exception("Process return code was not 0")
+      raise Exception("Process return code was not 0", errors)
     if errors :
       raise Exception(errors)
 
