@@ -6,7 +6,7 @@ async function patch() {
   textarea = getElement('textarea')
 
   const textareaParentParent = textarea?.parentElement?.parentElement
-  if (!textareaParentParent) throw new Error('textareaParentParent is not found')
+  // if (!textareaParentParent) throw new Error('textareaParentParent is not found')
 
   console.log(textareaParentParent)
 }
