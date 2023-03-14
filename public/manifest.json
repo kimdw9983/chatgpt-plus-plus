@@ -10,7 +10,7 @@
   "content_scripts": [
     {
       "matches": [ "https://chat.openai.com/chat*" ],
-      "js": [ "scripts/main.js" ]
+      "js": [ "./static/scripts/main.js" ]
     }
   ],
   "permissions": [ "activeTab" ],
