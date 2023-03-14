@@ -1,0 +1,31 @@
+{
+  "name": "ChatGPT++",
+  "description": "A chrome extension to enhance functionality of ChatGPT",
+  "version": "0.0.27",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "ChatGPT++"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.openai.com/chat*"
+      ],
+      "js": [
+        "./static/scripts/content.js"
+      ]
+    }
+  ],
+  "permissions": [
+    "activeTab"
+  ],
+  "optional_permissions": [
+    "cookies"
+  ],
+  "icons": {
+    "16": "logo192.png",
+    "48": "logo192.png",
+    "128": "logo192.png"
+  }
+}
