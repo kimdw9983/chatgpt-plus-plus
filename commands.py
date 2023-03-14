@@ -31,9 +31,7 @@ def run_command(command: str, desc: str, supress_error: bool = False) -> tuple[s
     print(f"{magenta}TASK{reset}\t{desc}{reset}...", end=" ")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     output, errors = process.communicate()
-    if process.returncode != 0 :
-      raise Exception("Process return code was not 0", errors)
-    if errors :
+    if process.returncode != 0 or errors:
       raise Exception(errors)
 
     print(f"{green}SUCCESS")
@@ -68,9 +66,10 @@ if "build" == sys.argv[1] :
 
     output, error = run_command(f"yarn version --{versioning}", "package.json versioning")
     version = find_regex(r"New version:\s+(\d+\.\d+\.\d+)", output)
-    output, error = run_command(f"jq \".version |= \\\"{version}\\\"\" ./public/manifest.json > ./public/manifest.json.tmp", "manifest.json versioning[1/3]")
-    output, error = run_command(f"rm ./public/manifest.json", "manifest.json versioning[2/3]")
-    output, error = run_command(f"{MV} public/manifest.json.tmp public/manifest.json", "manifest.json versioning[3/3]")
+
+    run_command(f"jq \".version |= \\\"{version}\\\"\" public/manifest.json > public/manifest.json.tmp", "manifest.json versioning[1/3]")
+    run_command(f"rm public/manifest.json", "manifest.json versioning[2/3]")
+    run_command(f"{MV} public/manifest.json.tmp public/manifest.json", "manifest.json versioning[3/3]")
 
     print(f"{blue}INFO{reset}\tUpdated version to {yellow}{version}")
   else :
