@@ -63,20 +63,22 @@ if "build" == sys.argv[1] :
       print(f"{blue}INFO\tplease check your changes or enter commit title below, press {yellow}ctrl + c{blue} to escape")
       
       title = input(f"{yellow}INPUT\t{reset}")
-      run_command(f'git commit -am "{title}\n"', f'{blue}git commit -am "{title}"')
+      run_command(f'git commit -am "{title}"', f'{blue}git commit -am "{title}"')
 
-    output, error = run_command(f"yarn version --{versioning}", "package.json versioning")
+    output, error = run_command(f"yarn version --{versioning} --no-commit-hooks", "package.json versioning")
     version = find_regex(r"New version:\s+(\d+\.\d+\.\d+)", output)
 
     run_command(f"jq \".version |= \\\"{version}\\\"\" public/manifest.json > public/manifest.json.tmp", "manifest.json versioning[1/3]")
-    run_command(f"{RM} \"public\manifest.json\"", "manifest.json versioning[2/3]")
+    #WINDOWS
+    run_command(f"{RM} \"public\manifest.json\"", "manifest.json versioning[2/3]") 
     run_command(f"{MV} \"public\manifest.json.tmp\" \"public\manifest.json\"", "manifest.json versioning[3/3]")
+
+    run_command(f'git commit -am "{version}\n"', f'{blue}git commit -am "{version}"')
 
     print(f"{blue}INFO{reset}\tUpdated version to {yellow}{version}")
   else :
     print(f"{blue}INFO{reset}\tVersioning is disabled, ignoring.")
 
-  run_command("yarn build", "generating dist builds, this may take some time")
   run_command("yarn build", "generating dist builds, this may take some time")
   run_command("rmdir build /s /q", "purging local build")
 
