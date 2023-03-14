@@ -65,7 +65,7 @@ if "build" == sys.argv[1] :
       title = input(f"{yellow}INPUT\t{reset}")
       run_command(f'git commit -am "{title}"', f'{blue}git commit -am "{title}"')
 
-    output, error = run_command(f"yarn version --{versioning} --no-commit-hooks", "package.json versioning")
+    output, error = run_command(f"yarn version --{versioning} --no-commit-hooks --no-git-tag-version", "package.json versioning")
     version = find_regex(r"New version:\s+(\d+\.\d+\.\d+)", output)
 
     run_command(f"jq \".version |= \\\"{version}\\\"\" public/manifest.json > public/manifest.json.tmp", "manifest.json versioning[1/3]")
@@ -73,8 +73,8 @@ if "build" == sys.argv[1] :
     run_command(f"{RM} \"public\manifest.json\"", "manifest.json versioning[2/3]") 
     run_command(f"{MV} \"public\manifest.json.tmp\" \"public\manifest.json\"", "manifest.json versioning[3/3]")
 
-    run_command(f"git tag v{version}", f'git version tag')
     run_command(f'git commit -am "v{version}"', f'{blue}git commit -am "v{version}"')
+    run_command(f"git tag v{version}", f'git version tag')
 
     print(f"{blue}INFO{reset}\tUpdated version to {yellow}{version}")
   else :
