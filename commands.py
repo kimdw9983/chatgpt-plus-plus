@@ -3,6 +3,7 @@ import subprocess, sys, re, signal, os
 IS_WINDOWS = os.name == 'nt'
 
 MV = "move" if IS_WINDOWS else "mv"
+RM = "rd" if IS_WINDOWS else "rm"
 
 magenta = "\x1b[35;20m"
 green = "\x1b[32;20m"
@@ -68,7 +69,7 @@ if "build" == sys.argv[1] :
     version = find_regex(r"New version:\s+(\d+\.\d+\.\d+)", output)
 
     run_command(f"jq \".version |= \\\"{version}\\\"\" public/manifest.json > public/manifest.json.tmp", "manifest.json versioning[1/3]")
-    run_command(f"rm public/manifest.json", "manifest.json versioning[2/3]")
+    run_command(f"{RM} public/manifest.json", "manifest.json versioning[2/3]")
     run_command(f"{MV} public/manifest.json.tmp public/manifest.json", "manifest.json versioning[3/3]")
 
     print(f"{blue}INFO{reset}\tUpdated version to {yellow}{version}")
