@@ -2,6 +2,8 @@ import subprocess, sys, re, signal, os
 
 IS_WINDOWS = os.name == 'nt'
 
+MV = "move" if IS_WINDOWS else "mv"
+
 magenta = "\x1b[35;20m"
 green = "\x1b[32;20m"
 blue = "\x1b[34m"
@@ -66,7 +68,9 @@ if "build" == sys.argv[1] :
 
     output, error = run_command(f"yarn version --{versioning}", "package.json versioning")
     version = find_regex(r"New version:\s+(\d+\.\d+\.\d+)", output)
-    output, error = run_command(f"jq \".version |= \\\"{version}\\\"\" public/manifest.json > public/manifest.json.tmp", "manifest.json versioning")
+    output, error = run_command(f"jq \".version |= \\\"{version}\\\"\" public/manifest.json > public/manifest.json.tmp", "manifest.json versioning[1/3]")
+    output, error = run_command(f"rm public/manifest.json", "manifest.json versioning[2/3]")
+    output, error = run_command(f"{MV} public/manifest.json.tmp public/manifest.json", "manifest.json versioning[3/3]")
 
     print(f"{blue}INFO{reset}\tUpdated version to {yellow}{version}")
   else :
