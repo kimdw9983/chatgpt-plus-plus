@@ -70,7 +70,7 @@ if "build" == sys.argv[1] :
 
     run_command(f"jq \".version |= \\\"{version}\\\"\" public/manifest.json > public/manifest.json.tmp", "manifest.json versioning[1/3]")
     run_command(f"{RM} \"public\manifest.json\"", "manifest.json versioning[2/3]")
-    run_command(f"{MV} \"public/manifest.json.tmp\" \"public/manifest.json\"", "manifest.json versioning[3/3]")
+    run_command(f"{MV} \"public\manifest.json.tmp\" \"public\manifest.json\"", "manifest.json versioning[3/3]")
 
     print(f"{blue}INFO{reset}\tUpdated version to {yellow}{version}")
   else :
