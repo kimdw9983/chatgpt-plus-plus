@@ -23,3 +23,6 @@ build
 *.njsproj
 *.sln
 *.sw?
+
+# Version update script
+commands.py
