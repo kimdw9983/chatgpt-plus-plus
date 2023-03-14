@@ -73,8 +73,8 @@ if "build" == sys.argv[1] :
     run_command(f"{RM} \"public\manifest.json\"", "manifest.json versioning[2/3]") 
     run_command(f"{MV} \"public\manifest.json.tmp\" \"public\manifest.json\"", "manifest.json versioning[3/3]")
 
-    run_command(f'git commit -am "v{version}"', f'{blue}git commit -am "v{version}"')
     run_command(f"git tag v{version}", f'git version tag')
+    run_command(f'git commit -am "v{version}"', f'{blue}git commit -am "v{version}"')
 
     print(f"{blue}INFO{reset}\tUpdated version to {yellow}{version}")
   else :
