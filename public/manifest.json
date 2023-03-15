@@ -13,7 +13,7 @@
         "https://chat.openai.com/chat*"
       ],
       "js": [
-        "./static/scripts/content.js"
+        "./scripts/main.js"
       ]
     }
   ],
