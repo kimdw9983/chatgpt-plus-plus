@@ -28,7 +28,6 @@ async function patch() {
   const element = document.createElement('div')
   element.innerHTML = "Hello World!"
   cppToolbar.appendChild(element)
-  // ReactDOM.createRoot(cppToolbar)
 }
 
 const root = getChatgptRoot()

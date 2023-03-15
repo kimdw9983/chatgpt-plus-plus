@@ -5,9 +5,6 @@ import './App.css'
 function App(): JSX.Element {
   return (
     <div className="App">
-      <header className="App-header">
-        <img className="App-logo" alt="logo"/>
-      </header>
       Hello World!
     </div>
   )
