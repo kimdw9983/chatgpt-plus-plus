@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react'
-import ReactDOM from 'react-dom/client'
 import { getElement, getChatgptRoot } from '../utils/elementUtil'
 
 function isPatched() {

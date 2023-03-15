@@ -1,16 +1,12 @@
-import { useState, useEffect } from 'react'
-import reactLogo from '../assets/react.svg'
+import { h, JSX } from 'preact'
+import { useEffect, useState } from 'preact/hooks'
 import './App.css'
 
-function App() {
-  useEffect(() => {
-
-  }, [])
-
+function App(): JSX.Element {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={reactLogo} className="App-logo" alt="logo"/>
+        <img className="App-logo" alt="logo"/>
       </header>
     </div>
   )

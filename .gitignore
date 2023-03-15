@@ -26,3 +26,4 @@ build
 
 # Version update script
 commands.py
+.env
