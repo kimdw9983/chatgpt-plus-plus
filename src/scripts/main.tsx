@@ -2,10 +2,13 @@ import { getElement, getChatgptRoot } from '../utils/elementUtil'
 
 async function patch() {
   const textarea = getElement('div#__next textarea')
-  if (!textarea) return
+  const submit = textarea?.parentNode?.querySelector('button')
+  const cppToolbar = textarea?.parentElement?.parentNode?.querySelector(".btn-neutral")?.parentElement
 
+  if (!textarea || !submit || !cppToolbar) return
+  cppToolbar.classList.add('chatgpt-cpp-toolbar')
   textarea.classList.add("chatgpt-textarea")
-  
+  submit.classList.add('chatgpt-submit')
 }
 
 const root = getChatgptRoot()
