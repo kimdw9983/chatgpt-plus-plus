@@ -8,6 +8,7 @@ function App(): JSX.Element {
       <header className="App-header">
         <img className="App-logo" alt="logo"/>
       </header>
+      Hello World!
     </div>
   )
 }
