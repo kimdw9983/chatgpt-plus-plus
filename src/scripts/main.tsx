@@ -1,4 +1,4 @@
-import { getElement, getChatgptRoot } from '../utils/elementUtil'
+import { getElement, getChatgptRoot } from '../utils/element'
 
 async function patch() {
   const textarea = getElement('div#__next textarea')
@@ -14,13 +14,7 @@ async function patch() {
   inputHolder.appendChild(toolbarButton)
 }
 
-const root = getChatgptRoot()
 window.onload = function() {
   patch()
-
-  try {
-    new MutationObserver(() => { patch() }).observe(root, { childList: true }) 
-  } catch(e: any) {
-    console.info("error occured during patch", e)
-  }
+  new MutationObserver(() => { patch() }).observe(getChatgptRoot(), { childList: true }) 
 }

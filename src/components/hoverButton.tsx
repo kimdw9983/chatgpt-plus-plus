@@ -1,8 +1,8 @@
-import { h, Component } from "preact"
+import { Component } from "preact"
 import { shallowCompare } from "../utils/common"
 
 interface Props {
-
+  render: (hover: boolean) => any;
 }
 
 interface State {
@@ -12,7 +12,6 @@ interface State {
 
 class HoverBox extends Component<Props, State> {
   elementRef: HTMLElement | null = null
-
   constructor() {
     super()
     this.state = { 
@@ -24,11 +23,7 @@ class HoverBox extends Component<Props, State> {
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     return !shallowCompare(nextProps, this.props) || !shallowCompare(nextState, this.state)
   }
-
-  isHovered() {
-    return this.elementRef && this.elementRef.matches(':hover')
-  }
-
+  
   componentDidMount() {
     this.setState({ isMounted : true })
     setTimeout(() => {
@@ -37,12 +32,7 @@ class HoverBox extends Component<Props, State> {
       }
     }, 1)
   }
-
-  componentWillUnmount() {
-    this.elementRef = null
-    this.setState({ isMounted: false })
-  }
-
+  
   componentDidUpdate(prevProps: Props, prevState: State, snapshot: any) {
     setTimeout(() => {
       if (this.state.isMounted) {
@@ -50,7 +40,16 @@ class HoverBox extends Component<Props, State> {
       }
     }, 1)
   }
-
+  
+  componentWillUnmount() {
+    this.elementRef = null
+    this.setState({ isMounted: false })
+  }
+  
+  isHovered() {
+    return this.elementRef && this.elementRef.matches(':hover')
+  }
+  
   onMouseEnter() {
     if (this.state.hover === false) {
       this.setState({ hover: true })
