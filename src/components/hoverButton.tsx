@@ -7,14 +7,14 @@ interface Props {
 
 interface State {
   hover: boolean
-  // isMounted: boolean
+  isMounted: boolean
 }
 
 class HoverButton extends Component<Props, State> {
-  // ref = createRef()
+  ref = createRef()
   state = { 
     hover: false,
-    // isMounted: false
+    isMounted: false
   }
   
   // shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -38,27 +38,27 @@ class HoverButton extends Component<Props, State> {
   //   }, 1)
   // }
   
-  // componentWillUnmount() {
-  //   this.setState({ isMounted: false })
-  // }
+  componentWillUnmount = () => {
+    this.setState({ isMounted: false })
+  }
 
-  // isHovered() {
-  //   return this.ref.current && this.ref.current.matches(':hover')
-  // }
+  isHovered() {
+    return this.ref.current && this.ref.current.matches(':hover')
+  }
   
-  onMouseEnter() {
+  onMouseEnter = () => {
     if (this.state.hover === false) {
       this.setState({ hover: true })
     }
   }
 
-  onMouseOver() {
+  onMouseOver = () => {
     if (this.state.hover === false) {
       this.setState({ hover: true })
     }
   }
 
-  onMouseLeave() {
+  onMouseLeave = () => {
     if (this.state.hover === true) {
       this.setState({ hover: false })
     }
@@ -67,7 +67,7 @@ class HoverButton extends Component<Props, State> {
   render() {
     return (
       <div style={{ width: '80px', height: '80px'}} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onMouseOver={this.onMouseOver}>
-        { this.state.hover }
+        { this.state.hover ? "hovered" : "no" }
       </div>
     )
   }
