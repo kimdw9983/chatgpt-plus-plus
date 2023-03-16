@@ -10,7 +10,7 @@ interface State {
   isMounted: boolean
 }
 
-class HoverBox extends Component<Props, State> {
+class HoverButton extends Component<Props, State> {
   elementRef: HTMLElement | null = null
   constructor() {
     super()
@@ -77,4 +77,4 @@ class HoverBox extends Component<Props, State> {
   }
 }
 
-export default HoverBox
+export default HoverButton

@@ -1,9 +1,9 @@
-import { h, render } from 'preact'
-import App from './view/App'
+import { render } from 'preact'
+import Popup from './view/popup'
 import './index.css'
 
 const rootElement = document.createElement("div");
 rootElement.id = "root";
 document.body.appendChild(rootElement);
 
-render(<App />, rootElement)
+render(<Popup />, rootElement)
