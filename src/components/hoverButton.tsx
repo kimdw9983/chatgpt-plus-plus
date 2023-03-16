@@ -1,54 +1,50 @@
-import { Component } from "preact"
+import { Component, createRef } from "preact"
 import { shallowCompare } from "../utils/common"
 
 interface Props {
-  render: (hover: boolean) => any;
+  // render: (hover: boolean) => any;
 }
 
 interface State {
   hover: boolean
-  isMounted: boolean
+  // isMounted: boolean
 }
 
 class HoverButton extends Component<Props, State> {
-  elementRef: HTMLElement | null = null
-  constructor() {
-    super()
-    this.state = { 
-      hover: false, 
-      isMounted: false,
-    }
+  // ref = createRef()
+  state = { 
+    hover: false,
+    // isMounted: false
   }
+  
+  // shouldComponentUpdate(nextProps: Props, nextState: State) {
+  //   return !shallowCompare(nextProps, this.props) || !shallowCompare(nextState, this.state)
+  // }
+  
+  // componentDidMount() {
+  //   this.setState({ isMounted : true })
+  //   setTimeout(() => {
+  //     if (this.state.isMounted) {
+  //       this.setState({ hover: !!this.isHovered() })
+  //     }
+  //   }, 1)
+  // }
+  
+  // componentDidUpdate(prevProps: Props, prevState: State, snapshot: any) {
+  //   setTimeout(() => {
+  //     if (this.state.isMounted) {
+  //       this.setState({ hover: !!this.isHovered() })
+  //     }
+  //   }, 1)
+  // }
+  
+  // componentWillUnmount() {
+  //   this.setState({ isMounted: false })
+  // }
 
-  shouldComponentUpdate(nextProps: Props, nextState: State) {
-    return !shallowCompare(nextProps, this.props) || !shallowCompare(nextState, this.state)
-  }
-  
-  componentDidMount() {
-    this.setState({ isMounted : true })
-    setTimeout(() => {
-      if (this.state.isMounted) {
-        this.setState({ hover: !!this.isHovered() })
-      }
-    }, 1)
-  }
-  
-  componentDidUpdate(prevProps: Props, prevState: State, snapshot: any) {
-    setTimeout(() => {
-      if (this.state.isMounted) {
-        this.setState({ hover: !!this.isHovered() })
-      }
-    }, 1)
-  }
-  
-  componentWillUnmount() {
-    this.elementRef = null
-    this.setState({ isMounted: false })
-  }
-  
-  isHovered() {
-    return this.elementRef && this.elementRef.matches(':hover')
-  }
+  // isHovered() {
+  //   return this.ref.current && this.ref.current.matches(':hover')
+  // }
   
   onMouseEnter() {
     if (this.state.hover === false) {
@@ -70,8 +66,8 @@ class HoverButton extends Component<Props, State> {
 
   render() {
     return (
-      <div className={this.state.hover ? 'hover' : 'not-hover'} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onMouseOver={this.onMouseOver}>
-        { this.props.render(this.state.hover) }
+      <div style={{ width: '80px', height: '80px'}} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onMouseOver={this.onMouseOver}>
+        { this.state.hover }
       </div>
     )
   }

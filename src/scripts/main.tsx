@@ -1,6 +1,7 @@
 import { h, render } from 'preact'
 import { getElement, getChatgptRoot } from '../utils/element'
 import HoverButton from '../components/hoverButton' 
+import MyButton from '../components/myButton' 
 
 async function patch() {
   const textarea = getElement('div#__next textarea')
@@ -14,11 +15,12 @@ async function patch() {
   toolbarButton.innerHTML = 'test'
   
   inputHolder.appendChild(toolbarButton)
-  render(<HoverButton render = {hover => (
-    <div>
-        <div>{hover}</div>
-    </div>
-  )}/>, toolbarButton)
+  // render(<HoverButton render={hover => (
+  //   <div>{hover}</div>
+  // )}/>, inputHolder)
+  // render(<MyButton />, inputHolder)
+  render(<HoverButton />, inputHolder)
+  
 }
 
 window.onload = function() {
