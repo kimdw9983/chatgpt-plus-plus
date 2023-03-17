@@ -1,5 +1,5 @@
-import { Component, JSX, Context } from "preact"
-import { useState } from 'preact/hooks'
+import { JSX, Context } from "preact"
+import { useState, useMemo, useContext } from 'preact/hooks'
 
 interface Props {
   clickedContext: Context<number>
@@ -7,22 +7,23 @@ interface Props {
   class?: string
 }
 
-interface State {
-  clicked: number
-}
-
 const defaultClass = ""
 
-export default function ToggleButton(props: Props, state: State) {
-  const [clicked, setClicked] = useState(0)
+export default function ToggleButton(props: Props) {
+  const clickedContext = useContext(props.clickedContext)
+  const [clicked, setClicked] = useState<number>(0)
+
+  const memo = useMemo(() => {
+    return { clicked, setClicked }
+  }, [clicked])
 
   const handleClick = () => {
-    const flag = state.clicked ? 0 : 1
-    setClicked(flag)
+    const flag = clicked ? 0 : 1
+    setClicked(1)
   }
 
   return (
-    <props.clickedContext.Provider value={ state.clicked }>
+    <props.clickedContext.Provider value={ clickedContext }>
       <button onClick={ handleClick } style={ props?.style } className={ defaultClass + props?.class }>
         <span>⚙️</span>
       </button>
