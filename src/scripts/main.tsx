@@ -15,11 +15,9 @@ async function patch() {
   toolbarButton.innerHTML = 'test'
   
   inputHolder.appendChild(toolbarButton)
-  // render(<HoverButton render={hover => (
-  //   <div>{hover}</div>
-  // )}/>, inputHolder)
-  // render(<MyButton />, inputHolder)
-  render(<HoverButton />, inputHolder)
+  render(<HoverButton  style={{ width: '80px', height: '80px'}} popup={(
+    <div>Popup!</div>
+  )}/>, inputHolder)
   
 }
 

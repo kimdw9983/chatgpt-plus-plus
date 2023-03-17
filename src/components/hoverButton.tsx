@@ -1,8 +1,8 @@
-import { Component, createRef } from "preact"
+import { Component, createRef, JSX } from "preact"
 import { shallowCompare } from "../utils/common"
 
 interface Props {
-  // render: (hover: boolean) => any;
+  popup: JSX.Element
 }
 
 interface State {
@@ -17,33 +17,8 @@ class HoverButton extends Component<Props, State> {
     isMounted: false
   }
   
-  // shouldComponentUpdate(nextProps: Props, nextState: State) {
-  //   return !shallowCompare(nextProps, this.props) || !shallowCompare(nextState, this.state)
-  // }
-  
-  // componentDidMount() {
-  //   this.setState({ isMounted : true })
-  //   setTimeout(() => {
-  //     if (this.state.isMounted) {
-  //       this.setState({ hover: !!this.isHovered() })
-  //     }
-  //   }, 1)
-  // }
-  
-  // componentDidUpdate(prevProps: Props, prevState: State, snapshot: any) {
-  //   setTimeout(() => {
-  //     if (this.state.isMounted) {
-  //       this.setState({ hover: !!this.isHovered() })
-  //     }
-  //   }, 1)
-  // }
-  
   componentWillUnmount = () => {
     this.setState({ isMounted: false })
-  }
-
-  isHovered() {
-    return this.ref.current && this.ref.current.matches(':hover')
   }
   
   onMouseEnter = () => {
@@ -66,8 +41,8 @@ class HoverButton extends Component<Props, State> {
 
   render() {
     return (
-      <div style={{ width: '80px', height: '80px'}} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onMouseOver={this.onMouseOver}>
-        { this.state.hover ? "hovered" : "no" }
+      <div className={this.state.hover ? "hover" : "not-hover"} style={{ width: '80px', height: '80px'}} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onMouseOver={this.onMouseOver}>
+        { this.state.hover === true && this.props.popup }
       </div>
     )
   }
