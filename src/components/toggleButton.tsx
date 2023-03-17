@@ -18,10 +18,10 @@ class toggleButton extends Component<Props, State> {
     this.setState({ clicked: !this.state.clicked })
   }
 
-  render() {
+  render(props: Props, state: State) {
     return (
-      <button onClick={this.handleClick} style={this.props?.style}>
-        { this.state.clicked === true && this.props.popup }
+      <button onClick={this.handleClick} style={props?.style}>
+        { state.clicked === true && props.popup }
       </button>
     )
   }

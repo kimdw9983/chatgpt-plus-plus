@@ -32,10 +32,10 @@ class HoverButton extends Component<Props, State> {
     }
   }
 
-  render() {
+  render(props: Props, state: State) {
     return (
-      <div className={this.state.hover ? "hover" : "not-hover"} style={this.props?.style} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onMouseOver={this.onMouseOver}>
-        { this.state.hover === true && this.props.popup }
+      <div className={state.hover ? "hover" : "not-hover"} style={props?.style} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onMouseOver={this.onMouseOver}>
+        { state.hover === true && props.popup }
       </div>
     )
   }

@@ -1,4 +1,4 @@
-import { h, render } from 'preact'
+import { render } from 'preact'
 import { getElement, getChatgptRoot } from '../utils/element'
 import ToggleButton from '../components/toggleButton' 
 
@@ -10,8 +10,7 @@ async function patch() {
 
   render(<ToggleButton style={{width: "80px", height: "80px", position: "absolute", right: "50px"}} popup={(
     <div>Popup!</div>
-  )}/>, inputHolder)
-  
+  )}/>, inputHolder) 
 }
 
 window.onload = function() {
