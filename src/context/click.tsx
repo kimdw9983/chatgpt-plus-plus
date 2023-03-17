@@ -1,17 +1,17 @@
 import { createContext, JSX } from 'preact'
 import { useState, useContext } from 'preact/hooks'
 
-interface ClickContextType {
+interface ClickType {
   click: number
   setClick: (flag: number) => void
 }
 
-const defaultClickContext: ClickContextType = {
+const defaultClickContext: ClickType = {
   click: 0,
   setClick: () => null
 }
 
-export const ClickContext = createContext<ClickContextType>(defaultClickContext)
+export const ClickContext = createContext<ClickType>(defaultClickContext)
 
 export const ClickProvider = ({ children }: { children: JSX.Element }) => {
   const [click, setClick] = useState<number>(0)

@@ -1,6 +1,6 @@
-import { JSX, Context } from "preact"
-import { useState, useMemo, useContext } from 'preact/hooks'
-import { useClick } from "../context/click"
+import { JSX } from "preact"
+import { useContext } from "preact/hooks"
+import { ClickContext, useClick } from "../context/click"
 
 interface Props {
   style?: JSX.CSSProperties
@@ -8,13 +8,12 @@ interface Props {
 }
 
 const defaultClass = ""
+const { click, setClick } = useClick()
 
 export default function ToggleButton(props: Props) {
-  const { click, setClick } = useClick()
-
   const handleClick = () => {
     const flag = click ? 0 : 1
-    setClick(1)
+    setClick(flag)
   }
 
   return (
