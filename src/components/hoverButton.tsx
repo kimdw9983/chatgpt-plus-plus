@@ -1,8 +1,8 @@
-import { Component, createRef, JSX } from "preact"
-import { shallowCompare } from "../utils/common"
+import { Component, JSX } from "preact"
 
 interface Props {
   popup: JSX.Element
+  style?: JSX.CSSProperties
 }
 
 interface State {
@@ -11,7 +11,6 @@ interface State {
 }
 
 class HoverButton extends Component<Props, State> {
-  ref = createRef()
   state = { 
     hover: false,
     isMounted: false
@@ -41,7 +40,7 @@ class HoverButton extends Component<Props, State> {
 
   render() {
     return (
-      <div className={this.state.hover ? "hover" : "not-hover"} style={{ width: '80px', height: '80px'}} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onMouseOver={this.onMouseOver}>
+      <div className={this.state.hover ? "hover" : "not-hover"} style={this.props?.style} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onMouseOver={this.onMouseOver}>
         { this.state.hover === true && this.props.popup }
       </div>
     )
