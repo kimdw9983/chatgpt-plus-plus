@@ -1,14 +1,10 @@
 import { Context } from "preact"
-import { useContext } from "preact/hooks"
+import { useClick } from "../context/click"
 
-interface Props {
-  clickedContext: Context<number>
-}
-
-export default function Toolbar(props: Props) {
-  const clicked = useContext(props.clickedContext)
+export default function Toolbar() {
+  const { click } = useClick()
 
   return (
-    <div>{clicked}</div>
+    <div>{ click }</div>
   )
 }
