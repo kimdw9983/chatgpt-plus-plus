@@ -1,17 +1,18 @@
-import { h, Component } from "preact"
+import { Component, Context } from "preact"
+import { useContext } from "preact/hooks"
 
 interface Props {
-  textarea: HTMLTextAreaElement | null
+  clickedContext: Context<number>
 }
 
 interface State {
 
 }
 
-class Toolbar extends Component<Props, State> {
-  render() {
-    return ``
-  }
-}
+export default function Toolbar(props: Props, state: State) {
+  const clicked = useContext(props.clickedContext)
 
-export default Toolbar
+  return (
+    <div>{clicked}</div>
+  )
+}

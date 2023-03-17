@@ -1,30 +1,31 @@
-import { Component, JSX } from "preact"
+import { Component, JSX, Context } from "preact"
+import { useState } from 'preact/hooks'
 
 interface Props {
-  popup: JSX.Element
+  clickedContext: Context<number>
   style?: JSX.CSSProperties
+  class?: string
 }
 
 interface State {
-  clicked: boolean
+  clicked: number
 }
 
-class toggleButton extends Component<Props, State> {
-  state = { 
-    clicked: false 
+const defaultClass = ""
+
+export default function ToggleButton(props: Props, state: State) {
+  const [clicked, setClicked] = useState(0)
+
+  const handleClick = () => {
+    const flag = state.clicked ? 0 : 1
+    setClicked(flag)
   }
 
-  handleClick = () => {
-    this.setState({ clicked: !this.state.clicked })
-  }
-
-  render(props: Props, state: State) {
-    return (
-      <button onClick={this.handleClick} style={props?.style}>
-        { state.clicked === true && props.popup }
+  return (
+    <props.clickedContext.Provider value={ state.clicked }>
+      <button onClick={ handleClick } style={ props?.style } className={ defaultClass + props?.class }>
+        <span>⚙️</span>
       </button>
-    )
-  }
+    </props.clickedContext.Provider>
+  )
 }
-
-export default toggleButton
