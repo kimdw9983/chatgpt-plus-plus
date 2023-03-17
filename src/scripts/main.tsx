@@ -1,7 +1,6 @@
 import { h, render } from 'preact'
 import { getElement, getChatgptRoot } from '../utils/element'
-import HoverButton from '../components/hoverButton' 
-import MyButton from '../components/myButton' 
+import ToggleButton from '../components/toggleButton' 
 
 async function patch() {
   const textarea = getElement('div#__next textarea')
@@ -9,13 +8,7 @@ async function patch() {
   const inputHolder = textarea?.parentElement
   if (!textarea || !submit || !inputHolder ) return
 
-  const toolbarButton = document.createElement('button')
-  toolbarButton.style.position = "absolute"
-  toolbarButton.style.right = "50px"
-  toolbarButton.innerHTML = 'test'
-  
-  inputHolder.appendChild(toolbarButton)
-  render(<HoverButton popup={(
+  render(<ToggleButton style={{width: "80px", height: "80px", position: "absolute", right: "50px"}} popup={(
     <div>Popup!</div>
   )}/>, inputHolder)
   

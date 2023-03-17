@@ -7,17 +7,11 @@ interface Props {
 
 interface State {
   hover: boolean
-  isMounted: boolean
 }
 
 class HoverButton extends Component<Props, State> {
   state = { 
     hover: false,
-    isMounted: false
-  }
-  
-  componentWillUnmount = () => {
-    this.setState({ isMounted: false })
   }
   
   onMouseEnter = () => {
