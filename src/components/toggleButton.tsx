@@ -1,6 +1,5 @@
 import { JSX } from "preact"
-import { useContext } from "preact/hooks"
-import { ClickContext, useClick } from "../context/click"
+import { useClick } from "../context/click"
 
 interface Props {
   style?: JSX.CSSProperties

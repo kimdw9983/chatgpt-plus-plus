@@ -31,15 +31,15 @@ async function patch() {
     </ClickProvider>
     ), ToolbarContainer)
 
-  const toolbarButtonContainer = document.createElement('div')
-  const toolbarButton = (
-    <ClickProvider>
-      <ToggleButton style={{width: "28px", height: "24px", fontSize: "10pt"}} class={"hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md"} />
-    </ClickProvider>
-  )
-  buttonContainer.appendChild(toolbarButtonContainer)
-  render(toolbarButton, toolbarButtonContainer) 
-  buttonContainer.appendChild(submit)
+  // const toolbarButtonContainer = document.createElement('div')
+  // const toolbarButton = (
+  //   <ClickProvider>
+  //     <ToggleButton style={{width: "28px", height: "24px", fontSize: "10pt"}} class={"hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md"} />
+  //   </ClickProvider>
+  // )
+  // buttonContainer.appendChild(toolbarButtonContainer)
+  // render(toolbarButton, toolbarButtonContainer) 
+  // buttonContainer.appendChild(submit)
 }
 
 window.onload = function() {

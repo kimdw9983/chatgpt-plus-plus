@@ -1,4 +1,3 @@
-import { Context } from "preact"
 import { useClick } from "../context/click"
 
 export default function Toolbar() {
