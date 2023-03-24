@@ -7,12 +7,14 @@ interface Props {
 }
 
 const defaultClass = ""
-const { click, setClick } = useClick()
 
 export default function ToggleButton(props: Props) {
+  const { click, setClick } = useClick()
+
   const handleClick = () => {
     const flag = click ? 0 : 1
     setClick(flag)
+    console.log(flag, click)
   }
 
   return (
