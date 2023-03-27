@@ -1,5 +1,6 @@
 import { JSX } from "preact"
-import { useClick } from "../context/click"
+import { useContext } from "preact/hooks"
+import { ClickContext, ClickProvider } from "../hooks/click"
 
 interface Props {
   style?: JSX.CSSProperties
@@ -9,17 +10,13 @@ interface Props {
 const defaultClass = ""
 
 export default function ToggleButton(props: Props) {
-  const { click, setClick } = useClick()
-
-  const handleClick = () => {
-    const flag = click ? 0 : 1
-    setClick(flag)
-    console.log(flag, click)
-  }
+  const { click, toggle } = useContext(ClickContext)
 
   return (
-    <button onClick={ handleClick } style={ props?.style } className={ defaultClass + props?.class }>
-      <span>⚙️</span>
-    </button>
+    <ClickProvider>
+      <button onClick={ toggle } style={ props?.style } className={ defaultClass + props?.class }>
+        <span>⚙️{click}</span>
+      </button>
+    </ClickProvider>
   )
 }

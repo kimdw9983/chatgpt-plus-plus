@@ -1,5 +1,5 @@
 import { createContext, render } from 'preact'
-import { ClickProvider } from '../context/click'
+import { ClickProvider } from '../hooks/click'
 import { getElement, getChatgptRoot } from '../utils/element'
 import ToggleButton from '../components/toggleButton'
 import Toolbar from '../components/toolbar'
