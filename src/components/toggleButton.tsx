@@ -12,7 +12,7 @@ export default function ToggleButton(props: Props) {
 
   return (
     <button onClick={ toggle } style={ props?.style } className={ props?.class }>
-      <span>⚙️{click}</span>
+      <span>⚙️</span>
     </button>
   )
 }
