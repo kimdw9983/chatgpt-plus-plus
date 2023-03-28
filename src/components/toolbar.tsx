@@ -1,13 +1,13 @@
 import { useContext } from "preact/hooks"
-import { ClickProvider, ClickContext } from "../hooks/click"
+import { ClickProvider, useClick } from "../hooks/click"
 
 export default function Toolbar() {
-  const click = useContext(ClickContext)
+  const { click } = useClick()
 
   return (
     <ClickProvider>
       <div>
-        <span>{ click.click }</span>
+        <span>{ click }</span>
       </div>
     </ClickProvider>
   )
