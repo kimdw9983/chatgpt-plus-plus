@@ -7,16 +7,12 @@ interface Props {
   class?: string
 }
 
-const defaultClass = ""
-
 export default function ToggleButton(props: Props) {
   const { click, toggle } = useClick()
 
   return (
-    <ClickProvider>
-      <button onClick={ toggle } style={ props?.style } className={ defaultClass + props?.class }>
-        <span>⚙️{click}</span>
-      </button>
-    </ClickProvider>
+    <button onClick={ toggle } style={ props?.style } className={ props?.class }>
+      <span>⚙️{click}</span>
+    </button>
   )
 }

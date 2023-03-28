@@ -11,7 +11,7 @@ export const ClickContext = createContext<Click>({
   toggle: () => null
 })
 
-export const ClickProvider = ({ children }: { children: JSX.Element }) => {
+export const ClickProvider = ({ children }: { children: JSX.Element[] }) => {
   const [click, setClick] = useState<number>(0)
 
   function toggle() {
