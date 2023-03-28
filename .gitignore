@@ -25,5 +25,6 @@ build
 *.sw?
 
 # Version update script
+dev/
 commands.py
 .env
