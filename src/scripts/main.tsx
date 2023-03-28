@@ -1,7 +1,7 @@
 import { createContext, render } from 'preact'
 import { ClickProvider } from '../hooks/click'
 import { getElement, getChatgptRoot } from '../utils/element'
-import { getInputClassName, getToolbarWidth, calculateToolbarPosition } from '../utils/ui'
+import { getInputClassName, getToolbarWidth, calculateToolbarPosition, toolbarButtonRight, toolbarButtonWidth } from '../utils/ui'
 import ToggleButton from '../components/toggleButton'
 import Toolbar from '../components/toolbar'
 
@@ -22,7 +22,7 @@ async function patch() {
   buttonContainer.style.display = 'flex'
   buttonContainer.style.alignItems = 'center'
   buttonContainer.style.position = 'absolute'
-  buttonContainer.style.right = '36px'
+  buttonContainer.style.right = toolbarButtonRight + 'px'
 
   const inputContainerClass = inputContainer.className
   const inputClassName = getInputClassName(inputContainerClass)
@@ -31,8 +31,8 @@ async function patch() {
   const toolbarButtonContainer = document.createElement('div')
   const toolbarButton = (
     <ClickProvider>
-      <Toolbar style={{top: '-220%', width: toolbarWidth, left: left }} class={ inputClassName } />
-      <ToggleButton style={{width: "28px", height: "24px", fontSize: "10pt"}} class={"hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md"} />
+      <Toolbar style={{top: '-225%', width: toolbarWidth, left: left }} class={ inputClassName } />
+      <ToggleButton style={{width: toolbarButtonWidth+"px", height: "24px", fontSize: "10pt"}} class={"hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md"} />
     </ClickProvider>
   )
   buttonContainer.appendChild(toolbarButtonContainer)

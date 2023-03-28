@@ -5,8 +5,7 @@ interface Click {
   click: number
   toggle: () => void
 }
-
-export const ClickContext = createContext<Click>({
+const ClickContext = createContext<Click>({ 
   click: 0,
   toggle: () => null
 })
@@ -16,7 +15,6 @@ export const ClickProvider = ({ children }: { children: JSX.Element[] }) => {
 
   function toggle() {
     setClick(click ? 0 : 1)
-    console.log("triggered", click)
   }
 
   const value = useMemo(() => {

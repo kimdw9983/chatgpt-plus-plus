@@ -1,3 +1,6 @@
+export const toolbarButtonRight = 36
+export const toolbarButtonWidth = 28
+
 export function getInputClassName(className: string): string {
   return className.replace("relative", "absolute").replace(/md:py-3/g, "") + " cpp-toolbar"
 }
@@ -7,5 +10,5 @@ export function getToolbarWidth(inputContainer: HTMLElement): string {
 }
 
 export function calculateToolbarPosition(inputContainer: HTMLElement): string {
-  return -Number(getToolbarWidth(inputContainer).replace("px", "")) + 36 + 24 + 4 + "px"
+  return -Number(getToolbarWidth(inputContainer).replace("px", "")) + toolbarButtonRight + toolbarButtonWidth + "px"
 }
