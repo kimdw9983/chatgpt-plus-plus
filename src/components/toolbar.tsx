@@ -1,5 +1,6 @@
 import { JSX } from "preact"
-import { useClick } from "../hooks/click"
+import { useContext } from "preact/hooks"
+import { ClickProvider, useClick } from "../hooks/click"
 
 interface Props {
   style?: JSX.CSSProperties
@@ -9,10 +10,11 @@ interface Props {
 export default function Toolbar(props: Props) {
   const { click } = useClick()
 
-  const toggle = { display: click ? "flow" : "flow"}
-
+  const toggle = { display: click ? "block" : "none"}
+  const style = Object.assign({}, toggle, props?.style) 
+  
   return (
-    <div style={ Object.assign(toggle, props?.style) } className={ props?.class }>
+    <div style={ style } className={ props?.class }>
       <span>{ click }</span>
     </div>
   )
