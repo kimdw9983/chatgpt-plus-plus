@@ -2,7 +2,7 @@ export const toolbarButtonRight = 36
 export const toolbarButtonWidth = 28
 
 export function getInputClassName(className: string): string {
-  return className.replace("relative", "absolute").replace(/md:py-3/g, "") + " cpp-toolbar"
+  return className.replace("relative", "absolute").replace(/md:py-3/g, "").replace("flex-grow", "").replace("w-full", "").replace("flex-col", "") + " cpp-toolbar"
 }
 
 export function getToolbarWidth(inputContainer: HTMLElement): string {
