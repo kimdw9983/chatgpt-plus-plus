@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function ToggleButton(props: Props) {
-  const { click, toggle } = useClick()
+  const { toggle } = useClick()
 
   return (
     <button onClick={ toggle } style={ props?.style } className={ props?.class }>

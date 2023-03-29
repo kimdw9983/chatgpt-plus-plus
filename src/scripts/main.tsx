@@ -1,4 +1,4 @@
-import { createContext, render } from 'preact'
+import { render } from 'preact'
 import { ClickProvider } from '../hooks/click'
 import { getElement, getChatgptRoot } from '../utils/element'
 import { getInputClassName, getToolbarWidth, calculateToolbarPosition, toolbarButtonRight, toolbarButtonWidth } from '../utils/ui'
