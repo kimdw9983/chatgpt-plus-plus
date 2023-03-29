@@ -29,8 +29,8 @@ export default function Toolbar(props: Props) {
 
   return (
     <div style={ style } className={ className }>
-      <Dropdown value={ numResults } desc={ "temparature: " } onChange={ onChangeTest } options={ optionTest } />
-      <Dropdown value={ numResults } desc={ "max tokens: " } onChange={ onChangeTest } options={ optionTest } />
+      <Dropdown value={ numResults } desc={ "ℹ️ temparature" } onChange={ onChangeTest } options={ optionTest } />
+      <Dropdown value={ numResults } desc={ "ℹ️ max tokens" } onChange={ onChangeTest } options={ optionTest } />
     </div>
   )
 }

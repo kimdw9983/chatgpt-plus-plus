@@ -12,8 +12,9 @@ export default function Dropdown(props: Props): JSX.Element {
 
   return (
     <div className="relative block">
+      { props?.desc }
       <select className={ className } value={ props.value } onChange={ props.onChange }>
-        {props.options.map(({ value, label }) => (
+        { props.options.map(({ value, label }) => (
           <option key={ value } value={ value }>{ label }</option>
         ))}
       </select>
