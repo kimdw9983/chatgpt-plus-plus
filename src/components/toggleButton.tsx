@@ -4,12 +4,12 @@ import { useBoolean } from "../hooks/boolean"
 interface Props {
   style?: JSX.CSSProperties
   class?: string
-  text: string
+  text: string | HTMLElement
 }
 
 const defaultClass = "hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md"
 
-export default function ToggleButton(props: Props) {
+export default function ToggleButton(props: Props): JSX.Element {
   const { toggle } = useBoolean()
 
   const className = `${defaultClass} ${props?.class}`

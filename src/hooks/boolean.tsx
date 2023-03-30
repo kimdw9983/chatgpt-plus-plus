@@ -10,7 +10,7 @@ const BooleanContext = createContext<Boolean>({
   toggle: () => null
 })
 
-export const BooleanProvider = ({ children }: { children: JSX.Element[] }) => {
+export const BooleanProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const [bool, setBoolean] = useState<number>(0)
 
   function toggle() {

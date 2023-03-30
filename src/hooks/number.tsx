@@ -10,7 +10,7 @@ const NumberContext = createContext<Number>({
   setNumber: () => null
 })
 
-export const NumberProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
+export const NumberProvider = ({ children }: { children: JSX.Element | JSX.Element[] }): JSX.Element => {
   const [number, setNumber] = useState<number>(0)
 
   const value = useMemo(() => {

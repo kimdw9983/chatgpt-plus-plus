@@ -5,7 +5,7 @@ interface Props {
   min: number
   max: number
   onChange: (e: any) => void
-  class: string
+  class?: string
 }
 
 export default function Slider(props: Props): JSX.Element {
