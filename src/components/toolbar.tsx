@@ -34,7 +34,7 @@ export default function Toolbar(props: Props): JSX.Element {
   return (
     <div style={ style } className={ className }>
       <BooleanProvider>
-        <ToggleButton text={"⚙️"} class={ "cpp-temperatureButton" } />
+        <ToggleButton text={ <span>123</span> } class={ "cpp-temperatureButton" } />
       </BooleanProvider>
       
       <Dropdown value={ numResults } desc={ "ℹ️ prompts" } onChange={ onChangeTest } options={ optionTest } />
