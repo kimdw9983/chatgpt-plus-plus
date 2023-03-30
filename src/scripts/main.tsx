@@ -29,8 +29,8 @@ async function patch() {
   const toolbarButtonContainer = document.createElement('div')
   const toolbarButton = (
     <ClickProvider>
-      <Toolbar style={{ top: '-225%', width: toolbarWidth, left: left }} class={ inputClassName } />
-      <ToggleButton style={{ width: toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} class={ "hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md cpp-toolbarButton" } />
+      <Toolbar style={{ top: '-275%', width: toolbarWidth, left: left }} class={ inputClassName } />
+      <ToggleButton text={"⚙️"} style={{ width: toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} class={ "hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md cpp-toolbarButton" } />
     </ClickProvider>
   )
   buttonContainer.appendChild(toolbarButtonContainer)

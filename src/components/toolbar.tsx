@@ -1,6 +1,7 @@
 import { JSX } from "preact"
 import { useClick } from "../hooks/click"
 import Dropdown from "../components/dropdown"
+import Slider from "../components/slider"
 import { useState } from "preact/hooks"
 
 interface Props {
@@ -31,6 +32,7 @@ export default function Toolbar(props: Props) {
     <div style={ style } className={ className }>
       <Dropdown value={ numResults } desc={ "ℹ️ temparature" } onChange={ onChangeTest } options={ optionTest } />
       <Dropdown value={ numResults } desc={ "ℹ️ max tokens" } onChange={ onChangeTest } options={ optionTest } />
+      <Slider defaultValue={ 50 } min={ 0 } max={ 100 } onChange={ onChangeTest } />
     </div>
   )
 }
