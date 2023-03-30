@@ -29,7 +29,7 @@ export default function Toolbar(props: Props): JSX.Element {
   const style = Object.assign({}, defaultStyle, props?.style)
 
   const defaultClass = ""
-  const className = `${props?.class} ${defaultClass}`
+  const className = `${ props?.class } ${ defaultClass }`
 
   return (
     <div style={ style } className={ className }>
