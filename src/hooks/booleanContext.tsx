@@ -1,11 +1,11 @@
 import { createContext, JSX } from 'preact'
 import { useState, useContext, useMemo } from 'preact/hooks'
 
-export interface Boolean {
+export interface BooleanType {
   bool: number
   toggle: () => void
 }
-const BooleanContext = createContext<Boolean>({ 
+const BooleanContext = createContext<BooleanType>({ 
   bool: 0,
   toggle: () => null
 })

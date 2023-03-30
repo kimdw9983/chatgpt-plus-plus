@@ -22,8 +22,8 @@ const optionTest = Array.from({ length: 10 }, (_, i) => i + 1).map((num) => ({
 
 export default function Toolbar(props: Props): JSX.Element {
   const isShow = useBoolean()
-  const temperature = useNumber()
-  const [numResults, setNumResults] = useState(3)
+  const [temperature, setTemperature] = useState<number>(1)
+  const [numResults, setNumResults] = useState<number>(3)
 
   const defaultStyle = { display: isShow.bool ? "flex" : "none" }
   const style = Object.assign({}, defaultStyle, props?.style)
@@ -34,10 +34,8 @@ export default function Toolbar(props: Props): JSX.Element {
   return (
     <div style={ style } className={ className }>
       <BooleanProvider>
-        <NumberProvider>
-          <Slider defaultValue={ 50 } min={ 0 } max={ 100 } context={ temperature } />
-          <ToggleButton text={ <span>{ temperature.number }</span> } class={ "cpp-temperatureButton" } />
-        </NumberProvider>
+        <Slider min={ 0 } max={ 2 } step={ 0.05 } context={{ value: temperature, setValue: setTemperature }} />
+        <ToggleButton text={ <span>{ temperature }</span> } class={ "cpp-temperatureButton" } />
       </BooleanProvider>
       
       <Dropdown value={ numResults } desc={ "ℹ️ prompts" } onChange={ onChangeTest } options={ optionTest } />

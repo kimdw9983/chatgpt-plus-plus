@@ -1,11 +1,11 @@
 import { createContext, JSX } from 'preact'
 import { useState, useContext, useMemo, StateUpdater } from 'preact/hooks'
 
-export interface Number {
+export interface NumberType {
   number: number
   setNumber: StateUpdater<number>
 }
-const NumberContext = createContext<Number>({ 
+const NumberContext = createContext<NumberType>({ 
   number: 0,
   setNumber: () => null
 })
@@ -13,12 +13,8 @@ const NumberContext = createContext<Number>({
 export const NumberProvider = ({ children }: { children: JSX.Element | JSX.Element[] }): JSX.Element => {
   const [number, setNumber] = useState<number>(0)
 
-  const value = useMemo(() => {
-    return { number, setNumber }
-  }, [number])
-
   return (
-    <NumberContext.Provider value={ value }>
+    <NumberContext.Provider value={{ number, setNumber }}>
       { children }
     </NumberContext.Provider>
   )
