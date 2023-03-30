@@ -1,10 +1,10 @@
 import { JSX } from "preact"
 import { useState } from "preact/hooks"
 import { BooleanProvider, useBoolean } from "../hooks/booleanContext"
-import { NumberProvider, useNumber } from "../hooks/numberContext"
 import Slider from "../components/slider"
 import Dropdown from "../components/dropdown"
 import ToggleButton from "./toggleButton"
+import ConditionalPopup from "./contitionalPopup"
 
 interface Props {
   style?: JSX.CSSProperties
@@ -34,8 +34,12 @@ export default function Toolbar(props: Props): JSX.Element {
   return (
     <div style={ style } className={ className }>
       <BooleanProvider>
-        <Slider min={ 0 } max={ 2 } step={ 0.05 } context={{ value: temperature, setValue: setTemperature }} />
-        <ToggleButton text={ <span>{ temperature }</span> } class={ "cpp-temperatureButton" } />
+        <BooleanProvider>
+          <ConditionalPopup>
+            <Slider min={ 0 } max={ 2 } step={ 0.05 } context={{ value: temperature, setValue: setTemperature }} />
+          </ConditionalPopup>
+          <ToggleButton text={ <span>{ temperature }</span> } class={ "cpp-temperatureButton" } />
+        </BooleanProvider>
       </BooleanProvider>
       
       <Dropdown value={ numResults } desc={ "ℹ️ prompts" } onChange={ onChangeTest } options={ optionTest } />
