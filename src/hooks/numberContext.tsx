@@ -1,7 +1,7 @@
 import { createContext, JSX } from 'preact'
 import { useState, useContext, useMemo, StateUpdater } from 'preact/hooks'
 
-interface Number {
+export interface Number {
   number: number
   setNumber: StateUpdater<number>
 }
@@ -19,7 +19,7 @@ export const NumberProvider = ({ children }: { children: JSX.Element | JSX.Eleme
 
   return (
     <NumberContext.Provider value={ value }>
-      {children}
+      { children }
     </NumberContext.Provider>
   )
 }

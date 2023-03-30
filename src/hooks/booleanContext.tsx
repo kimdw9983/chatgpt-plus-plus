@@ -1,7 +1,7 @@
 import { createContext, JSX } from 'preact'
 import { useState, useContext, useMemo } from 'preact/hooks'
 
-interface Boolean {
+export interface Boolean {
   bool: number
   toggle: () => void
 }

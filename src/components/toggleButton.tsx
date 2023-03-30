@@ -1,5 +1,5 @@
 import { JSX } from "preact"
-import { useBoolean } from "../hooks/boolean"
+import { useBoolean } from "../hooks/booleanContext"
 
 interface Props {
   style?: JSX.CSSProperties

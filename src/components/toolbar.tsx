@@ -1,7 +1,7 @@
 import { JSX } from "preact"
 import { useState } from "preact/hooks"
-import { BooleanProvider, useBoolean } from "../hooks/boolean"
-import { NumberProvider, useNumber } from "../hooks/number"
+import { BooleanProvider, useBoolean } from "../hooks/booleanContext"
+import { NumberProvider, useNumber } from "../hooks/numberContext"
 import Slider from "../components/slider"
 import Dropdown from "../components/dropdown"
 import ToggleButton from "./toggleButton"
@@ -34,11 +34,13 @@ export default function Toolbar(props: Props): JSX.Element {
   return (
     <div style={ style } className={ className }>
       <BooleanProvider>
-        <ToggleButton text={ <span>123</span> } class={ "cpp-temperatureButton" } />
+        <NumberProvider>
+          <Slider defaultValue={ 50 } min={ 0 } max={ 100 } context={ temperature } />
+          <ToggleButton text={ <span>{ temperature.number }</span> } class={ "cpp-temperatureButton" } />
+        </NumberProvider>
       </BooleanProvider>
       
       <Dropdown value={ numResults } desc={ "ℹ️ prompts" } onChange={ onChangeTest } options={ optionTest } />
-      <Slider defaultValue={ 50 } min={ 0 } max={ 100 } onChange={ onChangeTest } />
     </div>
   )
 }

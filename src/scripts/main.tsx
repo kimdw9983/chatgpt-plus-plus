@@ -1,5 +1,5 @@
 import { render } from 'preact'
-import { BooleanProvider } from '../hooks/boolean'
+import { BooleanProvider } from '../hooks/booleanContext'
 import { getElement, getChatgptRoot } from '../utils/element'
 import { getInputClassName, getToolbarWidth, calculateToolbarPosition, toolbarButtonRight, toolbarButtonWidth } from '../utils/ui'
 import ToggleButton from '../components/toggleButton'
