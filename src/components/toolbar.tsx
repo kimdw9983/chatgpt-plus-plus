@@ -1,5 +1,5 @@
 import { JSX } from "preact"
-import { useClick } from "../hooks/click"
+import { useBoolean } from "../hooks/boolean"
 import Dropdown from "../components/dropdown"
 import Slider from "../components/slider"
 import { useState } from "preact/hooks"
@@ -19,10 +19,10 @@ const optionTest = Array.from({ length: 10 }, (_, i) => i + 1).map((num) => ({
 }))
 
 export default function Toolbar(props: Props) {
-  const { click } = useClick()
+  const { bool } = useBoolean()
   const [numResults, setNumResults] = useState(3)
 
-  const defaultStyle = { display: click ? "flex" : "none" }
+  const defaultStyle = { display: bool ? "flex" : "none" }
   const style = Object.assign({}, defaultStyle, props?.style)
 
   const defaultClass = ""
@@ -30,8 +30,8 @@ export default function Toolbar(props: Props) {
 
   return (
     <div style={ style } className={ className }>
-      <Dropdown value={ numResults } desc={ "ℹ️ temparature" } onChange={ onChangeTest } options={ optionTest } />
-      <Dropdown value={ numResults } desc={ "ℹ️ max tokens" } onChange={ onChangeTest } options={ optionTest } />
+      <Dropdown value={ numResults } desc={ "ℹ️ temparature: " } onChange={ onChangeTest } options={ optionTest } />
+      <Dropdown value={ numResults } desc={ "ℹ️ max tokens: " } onChange={ onChangeTest } options={ optionTest } />
       <Slider defaultValue={ 50 } min={ 0 } max={ 100 } onChange={ onChangeTest } />
     </div>
   )

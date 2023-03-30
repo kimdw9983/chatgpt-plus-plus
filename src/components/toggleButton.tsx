@@ -1,5 +1,5 @@
 import { JSX } from "preact"
-import { useClick } from "../hooks/click"
+import { useBoolean } from "../hooks/boolean"
 
 interface Props {
   style?: JSX.CSSProperties
@@ -7,11 +7,15 @@ interface Props {
   text: string
 }
 
+const defaultClass = "hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md"
+
 export default function ToggleButton(props: Props) {
-  const { toggle } = useClick()
+  const { toggle } = useBoolean()
+
+  const className = `${defaultClass} ${props?.class}`
 
   return (
-    <button onClick={ toggle } style={ props?.style } className={ props?.class }>
+    <button onClick={ toggle } style={ props?.style } className={ className }>
       <span>{ props.text }</span>
     </button>
   )

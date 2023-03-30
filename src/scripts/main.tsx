@@ -1,5 +1,5 @@
 import { render } from 'preact'
-import { ClickProvider } from '../hooks/click'
+import { BooleanProvider } from '../hooks/boolean'
 import { getElement, getChatgptRoot } from '../utils/element'
 import { getInputClassName, getToolbarWidth, calculateToolbarPosition, toolbarButtonRight, toolbarButtonWidth } from '../utils/ui'
 import ToggleButton from '../components/toggleButton'
@@ -25,13 +25,13 @@ async function patch() {
   const inputContainerClass = inputContainer.className
   const inputClassName = getInputClassName(inputContainerClass)
   const toolbarWidth = getToolbarWidth(inputContainer)
-  const left = calculateToolbarPosition(inputContainer)
+  const toolbarLeft = calculateToolbarPosition(inputContainer)
   const toolbarButtonContainer = document.createElement('div')
   const toolbarButton = (
-    <ClickProvider>
-      <Toolbar style={{ top: '-275%', width: toolbarWidth, left: left }} class={ inputClassName } />
-      <ToggleButton text={"⚙️"} style={{ width: toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} class={ "hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md cpp-toolbarButton" } />
-    </ClickProvider>
+    <BooleanProvider>
+      <Toolbar style={{ top: '-275%', width: toolbarWidth, left: toolbarLeft }} class={ inputClassName } />
+      <ToggleButton text={"⚙️"} style={{ width: toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} class={ "cpp-toolbarButton" } />
+    </BooleanProvider>
   )
   buttonContainer.appendChild(toolbarButtonContainer)
   render(toolbarButton, toolbarButtonContainer) 
