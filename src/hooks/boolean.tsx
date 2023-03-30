@@ -22,7 +22,7 @@ export const BooleanProvider = ({ children }: { children: JSX.Element[] }) => {
   }, [bool])
 
   return (
-    <BooleanContext.Provider value={value}>
+    <BooleanContext.Provider value={ value }>
       {children}
     </BooleanContext.Provider>
   )

@@ -1,8 +1,10 @@
 import { JSX } from "preact"
-import { useBoolean } from "../hooks/boolean"
-import Dropdown from "../components/dropdown"
-import Slider from "../components/slider"
 import { useState } from "preact/hooks"
+import { useBoolean } from "../hooks/boolean"
+import { NumberProvider, useNumber } from "../hooks/number"
+import Slider from "../components/slider"
+import Dropdown from "../components/dropdown"
+import ToggleButton from "./toggleButton"
 
 interface Props {
   style?: JSX.CSSProperties
@@ -19,10 +21,11 @@ const optionTest = Array.from({ length: 10 }, (_, i) => i + 1).map((num) => ({
 }))
 
 export default function Toolbar(props: Props) {
-  const { bool } = useBoolean()
+  const isShow = useBoolean()
+  const temperature = useNumber()
   const [numResults, setNumResults] = useState(3)
 
-  const defaultStyle = { display: bool ? "flex" : "none" }
+  const defaultStyle = { display: isShow.bool ? "flex" : "none" }
   const style = Object.assign({}, defaultStyle, props?.style)
 
   const defaultClass = ""
@@ -30,8 +33,11 @@ export default function Toolbar(props: Props) {
 
   return (
     <div style={ style } className={ className }>
-      <Dropdown value={ numResults } desc={ "ℹ️ temparature: " } onChange={ onChangeTest } options={ optionTest } />
-      <Dropdown value={ numResults } desc={ "ℹ️ max tokens: " } onChange={ onChangeTest } options={ optionTest } />
+      <NumberProvider>
+        <ToggleButton text={"⚙️"} class={ "cpp-temperatureButton" } />
+      </NumberProvider>
+      
+      <Dropdown value={ numResults } desc={ "ℹ️ prompts" } onChange={ onChangeTest } options={ optionTest } />
       <Slider defaultValue={ 50 } min={ 0 } max={ 100 } onChange={ onChangeTest } />
     </div>
   )
