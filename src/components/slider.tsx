@@ -31,9 +31,7 @@ export default function Slider(props: Props): JSX.Element {
     for(let i = 0; i < props.tickLabels.length; i++) {
       labels.push(<span className={"pointer-events-none select-none"}>{ props.tickLabels[i] }</span>)
     }
-    ticks = (<div className="flex justify-between w-full text-sm">
-      { labels }
-    </div>)
+    ticks = <div className="flex justify-between w-full text-sm">{ labels }</div>
   }
 
 
