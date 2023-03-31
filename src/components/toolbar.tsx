@@ -42,7 +42,7 @@ export default function Toolbar(props: Props): JSX.Element {
           <div className="flex items-center">
             <span>temperature:</span>
           </div>
-          <ToggleButton text={ <span>{ temperature }</span> } className={ "cpp-temperatureButton" } style={{ width: "2em" }} />
+          <ToggleButton innerText={ <span>{ temperature }</span> } className={ "cpp-temperatureButton" } style={{ width: "2em" }} />
         </BooleanProvider>
       </BooleanProvider>
       
