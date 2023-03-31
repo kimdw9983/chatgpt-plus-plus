@@ -5,6 +5,7 @@ import Slider from "../components/slider"
 import Dropdown from "../components/dropdown"
 import ToggleButton from "./toggleButton"
 import ConditionalPopup from "./contitionalPopup"
+import { uiUtils } from "../utils/ui"
 
 interface Props {
   style?: JSX.CSSProperties
@@ -35,13 +36,13 @@ export default function Toolbar(props: Props): JSX.Element {
     <div style={ style } className={ className }>
       <BooleanProvider>
         <BooleanProvider>
-          <ConditionalPopup className="">
-            <Slider min={ 0 } max={ 2 } step={ 0.05 } context={{ value: temperature, setValue: setTemperature }} />
+          <ConditionalPopup className={ `${uiUtils.getBoxClassName()} absolute` } style={{ top: '-75%', width: '256px', left: '-2px' }} >
+            <Slider min={ 0 } max={ 2 } step={ 0.05 } context={{ value: temperature, setValue: setTemperature }} containerClassName={ "px-2 pt-3 pb-1" } tickLabels={["Precise", "Balanced", "Creative"]} />
           </ConditionalPopup>
           <div className="flex items-center">
             <span>temperature:</span>
           </div>
-          <ToggleButton text={ <span>{ temperature }</span> } className={ "cpp-temperatureButton" } />
+          <ToggleButton text={ <span>{ temperature }</span> } className={ "cpp-temperatureButton" } style={{ width: "2em" }} />
         </BooleanProvider>
       </BooleanProvider>
       
