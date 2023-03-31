@@ -14,7 +14,6 @@ export default function ToggleButton(props: Props): JSX.Element {
 
   const className = `${defaultClass} ${props?.className}`
   const innerElement = typeof props?.innerText === "string" ? <span>{ props.innerText }</span> : props.innerText
-
   return (
     <button onClick={ toggle } style={ props?.style } className={ className }>
       { innerElement }

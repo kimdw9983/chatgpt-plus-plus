@@ -1,32 +1,32 @@
 import { JSX } from "preact"
-import { useState } from "preact/hooks"
+import { useBoolean } from "../hooks/booleanContext"
 
 interface Props {
-  popup: JSX.Element
+  innerText: string | JSX.Element
   style?: JSX.CSSProperties
   className?: string
 }
 
 function HoverBox(props: Props) {
-  const [hover, setHover] = useState(false)
+  const hover = useBoolean()
 
   const onMouseEnter = () => {
-    if (!hover) setHover(true)
+    if (!hover.bool) hover.setBool(1)
   }
 
   const onMouseOver = () => {
-    if (!hover) setHover(true)
+    if (!hover.bool) hover.setBool(1)
   }
 
   const onMouseLeave = () => {
-    if (hover) setHover(false)
+    if (hover.bool) hover.setBool(0)
   }
 
   const className = `${props.className} ${hover ? 'hover' : 'not-hover'}`
-
+  const innerElement = typeof props?.innerText === "string" ? <span>{ props.innerText }</span> : props.innerText
   return (
     <div className={ className } style={ props.style } onMouseEnter={ onMouseEnter } onMouseLeave={ onMouseLeave } onMouseOver={ onMouseOver }>
-      { hover && props.popup }
+      { innerElement }
     </div>
   )
 }
