@@ -7,7 +7,7 @@ interface Props {
   step?: number
   context: { value: number, setValue: StateUpdater<number> }
   onChange?: (e: any) => void
-  class?: string
+  className?: string
 }
 
 export default function Slider(props: Props): JSX.Element {
@@ -17,7 +17,7 @@ export default function Slider(props: Props): JSX.Element {
   }
 
   const defaultClass = "slider appearance-none h-1 w-full rounded-full bg-gray-300 dark:bg-gray-300 outline-none thumb:p-2 thumb:bg-white dark:thumb:bg-gray-500 thumb:shadow-md thumb:appearance-none thumb:outline-none thumb:rounded-full thumb:focus:outline-none thumb:hover:bg-white thumb:hover:shadow-lg transition-all duration-200"
-  const className = `${defaultClass} ${props?.class}`
+  const className = `${defaultClass} ${props?.className}`
 
   return (
     <div>

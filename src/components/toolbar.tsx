@@ -8,7 +8,7 @@ import ConditionalPopup from "./contitionalPopup"
 
 interface Props {
   style?: JSX.CSSProperties
-  class?: string
+  className?: string
 }
 
 function onChangeTest(e: { target: { value: string } }) {
@@ -29,16 +29,19 @@ export default function Toolbar(props: Props): JSX.Element {
   const style = Object.assign({}, defaultStyle, props?.style)
 
   const defaultClass = ""
-  const className = `${ props?.class } ${ defaultClass }`
+  const className = `${ props?.className } ${ defaultClass }`
 
   return (
     <div style={ style } className={ className }>
       <BooleanProvider>
         <BooleanProvider>
-          <ConditionalPopup>
+          <ConditionalPopup className="">
             <Slider min={ 0 } max={ 2 } step={ 0.05 } context={{ value: temperature, setValue: setTemperature }} />
           </ConditionalPopup>
-          <ToggleButton text={ <span>{ temperature }</span> } class={ "cpp-temperatureButton" } />
+          <div className="flex items-center">
+            <span>temperature:</span>
+          </div>
+          <ToggleButton text={ <span>{ temperature }</span> } className={ "cpp-temperatureButton" } />
         </BooleanProvider>
       </BooleanProvider>
       

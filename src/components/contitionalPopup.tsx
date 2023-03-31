@@ -3,7 +3,7 @@ import { BooleanProvider, useBoolean } from "../hooks/booleanContext"
 
 interface Props {
   style?: JSX.CSSProperties
-  class?: string
+  className?: string
   children: JSX.Element
 }
 
@@ -14,7 +14,7 @@ export default function ConditionalPopup(props: Props): JSX.Element {
   const style = Object.assign({}, defaultStyle, props?.style)
 
   const defaultClass = ""
-  const className = `${ props?.class } ${ defaultClass }`
+  const className = `${ props?.className } ${ defaultClass }`
 
   return (
     <div style={ style } className={ className }>
