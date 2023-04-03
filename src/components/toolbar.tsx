@@ -56,7 +56,7 @@ export default function Toolbar(props: Props): JSX.Element {
     <BooleanProvider>
       <HoverBox hoverElement={(<span className={`w-6 text-center ${uiUtils.getBoxBorder()}`}>❔</span>)}>
         <div className={ `${uiUtils.getBoxClassName()} absolute p-2` } style={{ top: '-275%', left: '8rem', width: "20rem"}}>
-          <span className="text-sm select-none">The maximum number of tokens(the smallest units of text that a language model processes) that the model can handle in a single input-output sequence. Note that this limit includes both input and output tokens. So very long inputs might lead to incomplete or cut-off outputs due to the token limit constraint.</span>
+          <span className="text-sm select-none">The maximum number of tokens that the model can handle in a single input-output sequence. Note that this limit includes both input and output tokens. So very long inputs might lead to incomplete or cut-off outputs due to the token limit constraint.</span>
         </div>
       </HoverBox>
     </BooleanProvider>
@@ -70,7 +70,7 @@ export default function Toolbar(props: Props): JSX.Element {
       <ToggleButton innerText={ <span>{ maxTokens }</span> } className={ "cpp-maxTokensButton" } style={{ width: "3em" }} />
     </BooleanProvider>
     
-    <Dropdown value={ numResults } desc={ "ℹ️ prompts" } onChange={ onChangeTest } options={ optionTest } />
+    <Dropdown value={ numResults } desc={ "prompts" } onChange={ onChangeTest } options={ optionTest } />
   </div>
   )
 }
