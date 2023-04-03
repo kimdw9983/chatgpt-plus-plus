@@ -1,5 +1,3 @@
-import { JSX } from "preact"
-
 export const uiUtils = {
   toolbarButtonRight: 36,
   toolbarButtonWidth: 28,
@@ -16,11 +14,9 @@ export const uiUtils = {
    * @returns {string} ChatGPT-themed className
    */
   getBoxClassName(): string {
-    return "flex border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]"
+    return "flex border border-black/10 dark:border-gray-900/50 dark:text-white bg-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]"
   },
-
-  // innerElement(element: string | JSX.Element): JSX.Element {
-  //   const inner = typeof element === "string" ? <span>{ element }</span> : element
-  //   return inner
-  // }
+  getBoxBorder(): string {
+    return "border border-black/10 dark:border-gray-900/50 rounded-md"
+  }
 }

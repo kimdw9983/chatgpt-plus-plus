@@ -1,5 +1,6 @@
 import { JSX } from "preact"
 import { useBoolean } from "../hooks/booleanContext"
+import { uiUtils } from "../utils/ui"
 
 interface Props {
   hoverElement: JSX.Element
@@ -23,12 +24,12 @@ function HoverBox(props: Props) {
     if (hover.bool) hover.setBool(0)
   }
 
-  const defaultClassName = "flex items-center"
-  const className = `${props.className} ${hover ? 'hover' : 'not-hover'} ${defaultClassName}`
+  const containerDefaultClassName = `flex select-none items-center mr-2`
+  const ContainerClassName = `${props?.className} ${hover ? 'hover' : 'not-hover'} ${containerDefaultClassName}`
   const popup = hover.bool? props.children : null
   return (
     <>
-      <div className={ className } style={ props.style } onMouseEnter={ onMouseEnter } onMouseLeave={ onMouseLeave } onMouseOver={ onMouseOver }>
+      <div className={ ContainerClassName } style={ props.style } onMouseEnter={ onMouseEnter } onMouseLeave={ onMouseLeave } onMouseOver={ onMouseOver }>
         { props.hoverElement }
       </div>
       { popup }

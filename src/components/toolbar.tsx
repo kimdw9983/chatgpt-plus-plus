@@ -37,9 +37,9 @@ export default function Toolbar(props: Props): JSX.Element {
   return (
   <div style={ style } className={ className }>
     <BooleanProvider>
-      <HoverBox hoverElement={(<span className="w-6 text-center">?</span>)}>
-        <div className={ `${uiUtils.getBoxClassName()} absolute p-2` } style={{ top: '-50%',}}>
-          <span className="text-sm select-none">TestPopup</span>
+      <HoverBox hoverElement={(<span className={`w-6 text-center ${uiUtils.getBoxBorder()}`}>❔</span>)}>
+        <div className={ `${uiUtils.getBoxClassName()} absolute p-2` } style={{ top: '-200%', width: "20rem"}}>
+          <span className="text-sm select-none">Controls the randomness or creativity of the generated text. The higher value will make the model generate more diverse and creative. The lower will generate more focused and conservative text. </span>
         </div>
       </HoverBox>
     </BooleanProvider>
@@ -53,11 +53,18 @@ export default function Toolbar(props: Props): JSX.Element {
       <ToggleButton innerText={ <span>{ temperature }</span> } className={ "cpp-temperatureButton" } style={{ width: "2em" }} />
     </BooleanProvider>
 
+    <BooleanProvider>
+      <HoverBox hoverElement={(<span className={`w-6 text-center ${uiUtils.getBoxBorder()}`}>❔</span>)}>
+        <div className={ `${uiUtils.getBoxClassName()} absolute p-2` } style={{ top: '-275%', left: '8rem', width: "20rem"}}>
+          <span className="text-sm select-none">The maximum number of tokens(the smallest units of text that a language model processes) that the model can handle in a single input-output sequence. Note that this limit includes both input and output tokens. So very long inputs might lead to incomplete or cut-off outputs due to the token limit constraint.</span>
+        </div>
+      </HoverBox>
+    </BooleanProvider>
     <div className="flex items-center">
       <span>max_tokens:</span>
     </div>
     <BooleanProvider>
-      <ConditionalPopup className={ `${uiUtils.getBoxClassName()} absolute` } style={{ top: '-75%', width: '256px', left: '8rem' }} >
+      <ConditionalPopup className={ `${uiUtils.getBoxClassName()} absolute` } style={{ top: '-75%', width: '256px', left: '10rem' }} >
         <Slider min={ 1 } max={ 4096 } step={ 1 } context={{ value: maxTokens, setValue: setMaxTokens }} containerClassName={ "px-2 pt-3 pb-1" } tickLabels={["1", "4096"]} />
       </ConditionalPopup>
       <ToggleButton innerText={ <span>{ maxTokens }</span> } className={ "cpp-maxTokensButton" } style={{ width: "3em" }} />

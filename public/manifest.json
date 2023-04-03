@@ -1,7 +1,7 @@
 {
   "name": "ChatGPT++",
   "description": "A chrome extension to enhance functionality of ChatGPT",
-  "version": "0.0.61",
+  "version": "0.0.62",
   "manifest_version": 3,
   "action": {
     "default_popup": "index.html",
