@@ -2,7 +2,8 @@ import { JSX } from "preact"
 import { useBoolean } from "../hooks/booleanContext"
 
 interface Props {
-  innerText: string | JSX.Element
+  hoverElement: JSX.Element
+  children: JSX.Element
   style?: JSX.CSSProperties
   className?: string
 }
@@ -22,12 +23,16 @@ function HoverBox(props: Props) {
     if (hover.bool) hover.setBool(0)
   }
 
-  const className = `${props.className} ${hover ? 'hover' : 'not-hover'}`
-  const innerElement = typeof props?.innerText === "string" ? <span>{ props.innerText }</span> : props.innerText
+  const defaultClassName = "flex items-center"
+  const className = `${props.className} ${hover ? 'hover' : 'not-hover'} ${defaultClassName}`
+  const popup = hover.bool? props.children : null
   return (
-    <div className={ className } style={ props.style } onMouseEnter={ onMouseEnter } onMouseLeave={ onMouseLeave } onMouseOver={ onMouseOver }>
-      { innerElement }
-    </div>
+    <>
+      <div className={ className } style={ props.style } onMouseEnter={ onMouseEnter } onMouseLeave={ onMouseLeave } onMouseOver={ onMouseOver }>
+        { props.hoverElement }
+      </div>
+      { popup }
+    </>
   )
 }
 
