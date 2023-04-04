@@ -26,10 +26,10 @@ async function patch() {
   const toolbarWidth = uiUtils.getToolbarWidth(inputContainer)
   const toolbarLeft = uiUtils.calculateToolbarPosition(inputContainer)
   const toolbarButton = (
-    <BooleanProvider>
-      <Toolbar style={{ top: '-275%', width: toolbarWidth, left: toolbarLeft }} className={ inputClassName } />
-      <ToggleButton innerText={"⚙️"} style={{ width: uiUtils.toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} className={ "cpp-toolbarButton" } />
-    </BooleanProvider>
+  <BooleanProvider>
+    <Toolbar style={{ top: '-50%', width: toolbarWidth, left: toolbarLeft, transform: "translate(0, -100%)" }} className={ inputClassName } />
+    <ToggleButton innerText={"⚙️"} style={{ width: uiUtils.toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} className={ "cpp-toolbarButton" } />
+  </BooleanProvider>
   )
   const toolbarButtonContainer = document.createElement('div')
   buttonContainer.appendChild(toolbarButtonContainer)

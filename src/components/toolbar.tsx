@@ -26,9 +26,10 @@ const optionTest = Array.from({ length: 10 }, (_, i) => i + 1).map((num) => ({
 export default function Toolbar(props: Props): JSX.Element {
   const isShow = useBoolean()
 
-  const [temperatureEnabled, setTemperatureEnabled] = useState<boolean>(true)
   const [temperature, setTemperature] = useState<number>(1)
+  const [temperatureEnabled, setTemperatureEnabled] = useState<boolean>(true)
   const [maxTokens, setMaxTokens] = useState<number>(4096)
+  const [maxTokensEnabled, setMaxTokensEnabled] = useState<boolean>(true)
   const [numResults, setNumResults] = useState<number>(3)
   
   const defaultClass = ""
@@ -38,52 +39,62 @@ export default function Toolbar(props: Props): JSX.Element {
 
   return (
   <div style={ style } className={ className }>
-    <BooleanProvider>
-      <HoverBox hoverElement={(<span className={`w-6 text-center ${uiUtils.getBoxBorder()}`}>❔</span>)}>
-        <div className={ `${uiUtils.getBoxClassName()} absolute p-2` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)" }}>
-          <span className="text-sm select-none">Controls the randomness or creativity of the generated text. The higher value will make the model generate more diverse and creative. The lower will generate more focused and conservative text. </span>
-        </div>
-      </HoverBox>
-    </BooleanProvider>
-    <div className="flex items-center">
-      <span>temperature:</span>
+    <div className="flex">
+      <BooleanProvider>
+        <HoverBox hoverElement={(<span className={`w-6 text-center ${uiUtils.getBoxBorder()}`}>❔</span>)}>
+          <div className={ `${uiUtils.getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)" }}>
+            <span className="text-sm select-none">Controls the randomness or creativity of the generated text. The higher value will make the model generate more diverse and creative. The lower will generate more focused and conservative text. </span>
+          </div>
+        </HoverBox>
+      </BooleanProvider>
+      <div className="flex items-center">
+        <span>temperature:</span>
+      </div>
+      <BooleanProvider>
+        <ConditionalPopup className={ `${uiUtils.getBoxClassName()} absolute flex-col` } style={{ width: '256px', transform: "translate(0, -100%)", top: "0", left: '-2px' }} >
+          <div className="flex justify-between w-full text-sm">
+            <InputBox type="checkbox" context={{ value: temperatureEnabled, setValue: setTemperatureEnabled }} inputClassName="ml-2" labelText={ "Enabled" } />
+            <InputBox type="number" min={ 0 } max={ 2 } step={ 0.01 } context={{ value: temperature, setValue: setTemperature }} inputStyle={{ width: '3em'}} />
+          </div>
+          <Slider min={ 0 } max={ 2 } step={ 0.05 } context={{ value: temperature, setValue: setTemperature }} containerClassName={ "px-2 pt-3 pb-1" } tickLabels={["Precise", "Balanced", "Creative"]} />
+        </ConditionalPopup>
+        <ToggleButton innerText={ <span>{ temperature }</span> } className={ "cpp-temperatureButton" } style={{ width: "2em" }} />
+      </BooleanProvider>
     </div>
-    <BooleanProvider>
-      <ConditionalPopup className={ `${uiUtils.getBoxClassName()} absolute flex-col` } style={{ width: '256px', transform: "translate(0, -100%)", left: '-2px', }} >
-        <div className="flex justify-between w-full text-sm">
-          <InputBox type="checkbox" context={{ value: temperatureEnabled, setValue: setTemperatureEnabled }} inputClassName="ml-2" labelText={"Enabled"} />
-          <InputBox type="number" min={ 0 } max={ 2 } step={ 0.01 } context={{ value: temperature, setValue: setTemperature }} inputStyle={{ width: '3em'}} />
-        </div>
-        <Slider min={ 0 } max={ 2 } step={ 0.05 } context={{ value: temperature, setValue: setTemperature }} containerClassName={ "px-2 pt-3 pb-1" } tickLabels={["Precise", "Balanced", "Creative"]} />
-      </ConditionalPopup>
-      <ToggleButton innerText={ <span>{ temperature }</span> } className={ "cpp-temperatureButton" } style={{ width: "2em" }} />
-    </BooleanProvider>
 
-    <BooleanProvider>
-      <HoverBox hoverElement={(<span className={`w-6 text-center ${uiUtils.getBoxBorder()}`}>❔</span>)}>
-        <div className={ `${uiUtils.getBoxClassName()} absolute p-2` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)", left: '10rem' }}>
-          <span className="text-sm select-none">The maximum number of tokens that the model can handle in a single input-output sequence. Note that this limit includes both input and output tokens. So very long inputs might lead to incomplete or cut-off outputs due to the token limit constraint.</span>
-        </div>
-      </HoverBox>
-    </BooleanProvider>
-    <div className="flex items-center">
-      <span>max_tokens:</span>
+    <div className="flex ml-2">  
+      <BooleanProvider>
+        <HoverBox hoverElement={(<span className={`w-6 text-center ${uiUtils.getBoxBorder()}`}>❔</span>)}>
+          <div className={ `${uiUtils.getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)", left: '10rem' }}>
+            <span className="text-sm select-none">The maximum number of tokens that the model can handle in a single input-output sequence. Note that this limit includes both input and output tokens. So very long inputs might lead to incomplete or cut-off outputs due to the token limit constraint.</span>
+          </div>
+        </HoverBox>
+      </BooleanProvider>
+      <div className="flex items-center">
+        <span>max_tokens:</span>
+      </div>
+      <BooleanProvider>
+        <ConditionalPopup className={ `${uiUtils.getBoxClassName()} absolute flex-col` } style={{ width: '256px', transform: "translate(0, -100%)", top: "0", left: '11rem' }} >
+          <div className="flex justify-between w-full text-sm">
+            <InputBox type="checkbox" context={{ value: temperatureEnabled, setValue: setTemperatureEnabled }} inputClassName="ml-2" labelText={ "Enabled" } />
+            <InputBox type="number" min={ 1 } max={ 4096 } step={ 1 } context={{ value: maxTokens, setValue: setMaxTokens }} inputStyle={{ width: '4em'}} />
+          </div>
+          <Slider min={ 1 } max={ 4096 } step={ 1 } context={{ value: maxTokens, setValue: setMaxTokens }} containerClassName={ "px-2 pt-3 pb-1" } tickLabels={["1", "4096"]} />
+        </ConditionalPopup>
+        <ToggleButton innerText={ <span>{ maxTokens }</span> } className={ "cpp-maxTokensButton" } style={{ width: "3em" }} />
+      </BooleanProvider>
     </div>
-    <BooleanProvider>
-      <ConditionalPopup className={ `${uiUtils.getBoxClassName()} absolute` } style={{ width: '256px', transform: "translate(0, -100%)", left: '10rem' }} >
-        <Slider min={ 1 } max={ 4096 } step={ 1 } context={{ value: maxTokens, setValue: setMaxTokens }} containerClassName={ "px-2 pt-3 pb-1" } tickLabels={["1", "4096"]} />
-      </ConditionalPopup>
-      <ToggleButton innerText={ <span>{ maxTokens }</span> } className={ "cpp-maxTokensButton" } style={{ width: "3em" }} />
-    </BooleanProvider>
-    
-    <BooleanProvider>
-      <HoverBox hoverElement={(<span className={`w-6 text-center ${uiUtils.getBoxBorder()}`}>❔</span>)}>
-        <div className={ `${uiUtils.getBoxClassName()} absolute p-2` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)", left: '20rem'}}>
-          <span className="text-sm select-none">Prompt is a piece of text or input provided to the model to guide its response or output. Well-crafted prompt can generate answer more clear, relevant, efficient. This extension offers to access the well-known prompts repositry known as Awesome ChatGPT Prompts.</span>
-        </div>
-      </HoverBox>
-    </BooleanProvider>
-    <Dropdown value={ numResults } desc={ "prompts" } onChange={ onChangeTest } options={ optionTest } />
+
+    <div className="flex ml-2">
+      <BooleanProvider>
+        <HoverBox hoverElement={(<span className={`w-6 text-center ${uiUtils.getBoxBorder()}`}>❔</span>)}>
+          <div className={ `${uiUtils.getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)", left: '22rem'}}>
+            <span className="text-sm select-none">Prompt is a piece of text or input provided to the model to guide its response or output. Well-crafted prompt can generate answer more clear, relevant, efficient. This extension offers to access the well-known prompts repositry, Awesome ChatGPT Prompts.</span>
+          </div>
+        </HoverBox>
+      </BooleanProvider>
+      <Dropdown value={ numResults } desc={ "prompts:" } onChange={ onChangeTest } options={ optionTest } className="py-1 ml-2" />
+    </div>   
   </div>
   )
 }
