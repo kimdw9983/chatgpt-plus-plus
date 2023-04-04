@@ -13,11 +13,12 @@ interface Props {
   labelStyle?: JSX.CSSProperties
   labelClassName?: string
   labelText?: string
+  enabled?: boolean
 }
  
 export default function InputBox(props: Props): JSX.Element {
   const onChange = props.onChange ? props.onChange : (e: any) => {
-    const value = e.target.value
+    const value = props.type == "checkbox" ? e.target.checked : e.target.value
     props.context.setValue(value)
   }
 
@@ -26,9 +27,10 @@ export default function InputBox(props: Props): JSX.Element {
   const defaultLabelClassName = "ml-1 text-sm"
   const LabelClassName = `${defaultLabelClassName} ${props.labelClassName}`
   const step = props.step ? props.step : ""
+  const disabled = props?.enabled !== undefined ? !props.enabled : false
 
   return (<div>
-    <input type={ props.type } min={ props.min } max={ props.max } step={ step } value={ props.context.value } checked={ props.context.value } onChange={ onChange } className={ InputClassName } style={ props.inputStyle } />
+    <input type={ props.type } min={ props.min } max={ props.max } step={ step } value={ props.context.value } checked={ props.context.value } onChange={ onChange } className={ InputClassName } style={ props.inputStyle } disabled={ disabled } />
     <label className={ LabelClassName } style={ props.labelStyle }>{ props.labelText }</label>
   </div>)
 }

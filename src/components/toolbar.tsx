@@ -54,9 +54,9 @@ export default function Toolbar(props: Props): JSX.Element {
         <ConditionalPopup className={ `${uiUtils.getBoxClassName()} absolute flex-col` } style={{ width: '256px', transform: "translate(0, -100%)", top: "0", left: '-2px' }} >
           <div className="flex justify-between w-full text-sm">
             <InputBox type="checkbox" context={{ value: temperatureEnabled, setValue: setTemperatureEnabled }} inputClassName="ml-2" labelText={ "Enabled" } />
-            <InputBox type="number" min={ 0 } max={ 2 } step={ 0.01 } context={{ value: temperature, setValue: setTemperature }} inputStyle={{ width: '3em'}} />
+            <InputBox type="number" min={ 0 } max={ 2 } step={ 0.01 } context={{ value: temperature, setValue: setTemperature }} inputStyle={{ width: '3em'}} enabled={ temperatureEnabled } />
           </div>
-          <Slider min={ 0 } max={ 2 } step={ 0.05 } context={{ value: temperature, setValue: setTemperature }} containerClassName={ "px-2 pt-3 pb-1" } tickLabels={["Precise", "Balanced", "Creative"]} />
+          <Slider min={ 0 } max={ 2 } step={ 0.05 } context={{ value: temperature, setValue: setTemperature }} containerClassName={ "px-2 pt-3 pb-1" } enabled={ temperatureEnabled } tickLabels={["Precise", "Balanced", "Creative"]} />
         </ConditionalPopup>
         <ToggleButton innerText={ <span>{ temperature }</span> } className={ "cpp-temperatureButton" } style={{ width: "2em" }} />
       </BooleanProvider>
@@ -76,7 +76,7 @@ export default function Toolbar(props: Props): JSX.Element {
       <BooleanProvider>
         <ConditionalPopup className={ `${uiUtils.getBoxClassName()} absolute flex-col` } style={{ width: '256px', transform: "translate(0, -100%)", top: "0", left: '11rem' }} >
           <div className="flex justify-between w-full text-sm">
-            <InputBox type="checkbox" context={{ value: temperatureEnabled, setValue: setTemperatureEnabled }} inputClassName="ml-2" labelText={ "Enabled" } />
+            <InputBox type="checkbox" context={{ value: maxTokensEnabled, setValue: setMaxTokensEnabled }} inputClassName="ml-2" labelText={ "Enabled" } />
             <InputBox type="number" min={ 1 } max={ 4096 } step={ 1 } context={{ value: maxTokens, setValue: setMaxTokens }} inputStyle={{ width: '4em'}} />
           </div>
           <Slider min={ 1 } max={ 4096 } step={ 1 } context={{ value: maxTokens, setValue: setMaxTokens }} containerClassName={ "px-2 pt-3 pb-1" } tickLabels={["1", "4096"]} />
