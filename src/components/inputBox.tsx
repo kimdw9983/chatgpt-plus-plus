@@ -10,7 +10,9 @@ interface Props {
   onChange?: (e: any) => void
   inputStyle?: JSX.CSSProperties
   inputClassName?: string
-  label?: JSX.Element
+  labelStyle?: JSX.CSSProperties
+  labelClassName?: string
+  labelText?: string
 }
  
 export default function InputBox(props: Props): JSX.Element {
@@ -19,12 +21,14 @@ export default function InputBox(props: Props): JSX.Element {
     props.context.setValue(value)
   }
 
-  const defaultClassName = "p-0 text-sm text-gray-900"
-  const className = `${defaultClassName} ${props.inputClassName}`
+  const defaultInputClassName = "p-0 text-sm text-gray-900"
+  const InputClassName = `${defaultInputClassName} ${props.inputClassName}`
+  const defaultLabelClassName = "ml-1 text-sm"
+  const LabelClassName = `${defaultLabelClassName} ${props.labelClassName}`
   const step = props.step ? props.step : ""
 
-  return (<>
-    { props.label }
-    <input type={ props.type } min={ props.min } max={ props.max } step={ step } value={ props.context.value } onChange={ onChange } className={ className } style={ props.inputStyle } />
-  </>)
+  return (<div>
+    <input type={ props.type } min={ props.min } max={ props.max } step={ step } value={ props.context.value } checked={ props.context.value } onChange={ onChange } className={ InputClassName } style={ props.inputStyle } />
+    <label className={ LabelClassName } style={ props.labelStyle }>{ props.labelText }</label>
+  </div>)
 }
