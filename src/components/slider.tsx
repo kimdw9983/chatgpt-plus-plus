@@ -16,15 +16,10 @@ interface Props {
 }
 
 export default function Slider(props: Props): JSX.Element {
-  const inputRef = useRef<HTMLInputElement>(null)
   const [disabled, setDisabled] = useState<boolean>(props?.enabled !== undefined ? !props.enabled : false)
 
   useEffect(() => {
     setDisabled(props?.enabled !== undefined ? !props.enabled : false)
-    if (inputRef.current) {
-      console.log(inputRef.current, "present")
-      inputRef.current.disabled = props?.enabled !== undefined ? !props.enabled : false
-    }
   }, [props?.enabled])
 
   const onChange = props.onChange ? props.onChange : (e: any) => {
@@ -50,7 +45,7 @@ export default function Slider(props: Props): JSX.Element {
 
   return (
     <div className={ containerClassName } style={ props?.containerStyle }>
-      <input type="range" min={ props.min } max={ props.max } step={ props?.step } value={ props.context.value } onChange={ onChange } className={ inputClassName } style={ inputStyle } ref={ inputRef } />
+      <input type="range" min={ props.min } max={ props.max } step={ props?.step } value={ props.context.value } onChange={ onChange } className={ inputClassName } style={ inputStyle } disabled={ disabled } />
       { ticks }
     </div>
   )

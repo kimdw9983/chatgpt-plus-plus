@@ -22,12 +22,12 @@ export default function InputBox(props: Props): JSX.Element {
     props.context.setValue(value)
   }
 
-  const defaultInputClassName = "p-0 text-sm text-gray-900"
+  const disabled = props?.enabled !== undefined ? !props.enabled : false
+  const defaultInputClassName = `p-0 text-sm text-gray-900 ${ disabled ? "bg-gray-100 dark:bg-gray-600": "" }`
   const InputClassName = `${defaultInputClassName} ${props.inputClassName}`
   const defaultLabelClassName = "ml-1 text-sm"
   const LabelClassName = `${defaultLabelClassName} ${props.labelClassName}`
   const step = props.step ? props.step : ""
-  const disabled = props?.enabled !== undefined ? !props.enabled : false
 
   return (<div>
     <input type={ props.type } min={ props.min } max={ props.max } step={ step } value={ props.context.value } checked={ props.context.value } onChange={ onChange } className={ InputClassName } style={ props.inputStyle } disabled={ disabled } />

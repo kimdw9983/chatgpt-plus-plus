@@ -58,7 +58,7 @@ export default function Toolbar(props: Props): JSX.Element {
           </div>
           <Slider min={ 0 } max={ 2 } step={ 0.05 } context={{ value: temperature, setValue: setTemperature }} containerClassName={ "px-2 pt-3 pb-1" } enabled={ temperatureEnabled } tickLabels={["Precise", "Balanced", "Creative"]} />
         </ConditionalPopup>
-        <ToggleButton innerText={ <span>{ temperature }</span> } className={ "cpp-temperatureButton" } style={{ width: "2em" }} />
+        <ToggleButton innerText={ <span>{ temperatureEnabled ? temperature : "❌" }</span> } className={ "cpp-temperatureButton" } style={{ width: "2em" }} />
       </BooleanProvider>
     </div>
 
@@ -77,11 +77,11 @@ export default function Toolbar(props: Props): JSX.Element {
         <ConditionalPopup className={ `${uiUtils.getBoxClassName()} absolute flex-col` } style={{ width: '256px', transform: "translate(0, -100%)", top: "0", left: '11rem' }} >
           <div className="flex justify-between w-full text-sm">
             <InputBox type="checkbox" context={{ value: maxTokensEnabled, setValue: setMaxTokensEnabled }} inputClassName="ml-2" labelText={ "Enabled" } />
-            <InputBox type="number" min={ 1 } max={ 4096 } step={ 1 } context={{ value: maxTokens, setValue: setMaxTokens }} inputStyle={{ width: '4em'}} />
+            <InputBox type="number" min={ 1 } max={ 4096 } step={ 1 } context={{ value: maxTokens, setValue: setMaxTokens }} inputStyle={{ width: '4em'}} enabled={ maxTokensEnabled } />
           </div>
-          <Slider min={ 1 } max={ 4096 } step={ 1 } context={{ value: maxTokens, setValue: setMaxTokens }} containerClassName={ "px-2 pt-3 pb-1" } tickLabels={["1", "4096"]} />
+          <Slider min={ 1 } max={ 4096 } step={ 1 } context={{ value: maxTokens, setValue: setMaxTokens }} containerClassName={ "px-2 pt-3 pb-1" } enabled={ maxTokensEnabled } tickLabels={["1", "4096"]} />
         </ConditionalPopup>
-        <ToggleButton innerText={ <span>{ maxTokens }</span> } className={ "cpp-maxTokensButton" } style={{ width: "3em" }} />
+        <ToggleButton innerText={ <span>{ maxTokensEnabled ? maxTokens : "❌" }</span> } className={ "cpp-maxTokensButton" } style={{ width: "3em" }} />
       </BooleanProvider>
     </div>
 
