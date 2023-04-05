@@ -1,5 +1,5 @@
 import { JSX } from "preact"
-import { useBoolean } from "../hooks/booleanContext"
+import { useBoolean } from "../../hooks/booleanContext"
 
 interface Props {
   innerText: string | JSX.Element

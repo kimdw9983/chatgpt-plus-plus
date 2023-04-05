@@ -2,7 +2,7 @@ import { render } from 'preact'
 import { BooleanProvider } from '../hooks/booleanContext'
 import { getElement, getChatgptRoot } from '../utils/element'
 import { uiUtils } from '../utils/ui'
-import ToggleButton from '../components/toggleButton'
+import ToggleButton from '../components/base/toggleButton'
 import Toolbar from '../components/toolbar'
 
 async function patch() {

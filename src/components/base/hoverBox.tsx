@@ -1,6 +1,6 @@
 import { JSX } from "preact"
-import { useBoolean } from "../hooks/booleanContext"
-import { uiUtils } from "../utils/ui"
+import { useBoolean } from "../../hooks/booleanContext"
+import { uiUtils } from "../../utils/ui"
 
 interface Props {
   hoverElement: JSX.Element

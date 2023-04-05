@@ -2,12 +2,12 @@ import { JSX } from "preact"
 import { useState } from "preact/hooks"
 import { BooleanProvider, useBoolean } from "../hooks/booleanContext"
 import { uiUtils } from "../utils/ui"
-import Slider from "../components/slider"
-import Dropdown from "../components/dropdown"
-import ToggleButton from "./toggleButton"
-import ConditionalPopup from "./contitionalPopup"
-import HoverBox from "./hoverBox"
-import InputBox from "./inputBox"
+import Slider from "./base/slider"
+import Dropdown from "./base/dropdown"
+import ToggleButton from "./base/toggleButton"
+import ConditionalPopup from "./base/contitionalPopup"
+import HoverBox from "./base/hoverBox"
+import InputBox from "./base/inputBox"
 
 interface Props {
   style?: JSX.CSSProperties

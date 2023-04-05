@@ -1,5 +1,5 @@
 import { JSX } from "preact"
-import { StateUpdater, useEffect, useRef, useState } from "preact/hooks"
+import { StateUpdater, useEffect, useState } from "preact/hooks"
 
 interface Props {
   min: number
