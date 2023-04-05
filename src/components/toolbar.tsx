@@ -94,6 +94,7 @@ export default function Toolbar(props: Props): JSX.Element {
         </HoverBox>
       </BooleanProvider>
       <Dropdown value={ numResults } desc={ "prompts:" } onChange={ onChangeTest } options={ optionTest } className="py-1 ml-2" />
+      {/* 🛠️ */}
     </div>   
   </div>
   )
