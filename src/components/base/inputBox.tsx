@@ -18,7 +18,7 @@ interface Props {
  
 export default function InputBox(props: Props): JSX.Element {
   const onChange = props.onChange ? props.onChange : (e: any) => {
-    const value = props.type == "checkbox" ? e.target.checked : e.target.value
+    let value = props.type == "checkbox" ? !!e.target.checked : e.target.value
     props.context.setValue(value)
   }
 
