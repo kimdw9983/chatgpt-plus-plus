@@ -19,7 +19,6 @@ const optionTest = Array.from({ length: 10 }, (_, i) => i + 1).map((num) => ({
   label: `${num} result${num === 1 ? '' : 's'}`
 }))
 
-
 function SliderSelection(props: {
   propertyName: string
   description: string
