@@ -32,7 +32,7 @@ function SliderSelection(props: {
   inputStep: number
   sliderStep: number
   tickLabels?: Array<string>
-}): JSX.Element {
+}) {
   return (
   <div className="flex ml-2">
     <BooleanProvider>
@@ -64,7 +64,7 @@ interface ToolbarProps {
   className?: string
 }
 
-export default function Toolbar(props: ToolbarProps): JSX.Element {
+export default function Toolbar(props: ToolbarProps) {
   const isShow = useBoolean()
 
   const [temperature, setTemperature] = useState<number>(defaultUserConfig.cppTemperature)

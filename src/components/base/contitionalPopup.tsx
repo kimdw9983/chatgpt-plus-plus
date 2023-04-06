@@ -7,7 +7,7 @@ interface Props {
   children: JSX.Element | JSX.Element[]
 }
 
-export default function ConditionalPopup(props: Props): JSX.Element {
+export default function ConditionalPopup(props: Props) {
   const isShow = useBoolean()
 
   const defaultStyle = { display: isShow.bool ? "flex" : "none" }

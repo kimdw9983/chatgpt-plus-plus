@@ -2,7 +2,7 @@ import { h, JSX } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 import './popup.css'
 
-function popup(): JSX.Element {
+function popup() {
   return (
     <div className="App">
       Hello World!

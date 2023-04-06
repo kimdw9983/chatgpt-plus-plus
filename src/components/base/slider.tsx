@@ -15,7 +15,7 @@ interface Props {
   tickLabels?: Array<string>
 }
 
-export default function Slider(props: Props): JSX.Element {
+export default function Slider(props: Props) {
   const [disabled, setDisabled] = useState<boolean>(props?.enabled !== undefined ? !props.enabled : false)
 
   useEffect(() => {

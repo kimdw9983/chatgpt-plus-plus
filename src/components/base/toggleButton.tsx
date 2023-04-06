@@ -9,7 +9,7 @@ interface Props {
 
 const defaultClass = "hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md"
 
-export default function ToggleButton(props: Props): JSX.Element {
+export default function ToggleButton(props: Props) {
   const { toggle } = useBoolean()
 
   const className = `${defaultClass} ${props?.className}`
