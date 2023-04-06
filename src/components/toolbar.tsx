@@ -8,6 +8,7 @@ import ToggleButton from "./base/toggleButton"
 import ConditionalPopup from "./base/contitionalPopup"
 import HoverBox from "./base/hoverBox"
 import InputBox from "./base/inputBox"
+import { defaultUserConfig } from "../managers/userConfig"
 
 
 function onChangeTest(e: { target: { value: string } }) {
@@ -66,9 +67,9 @@ interface ToolbarProps {
 export default function Toolbar(props: ToolbarProps): JSX.Element {
   const isShow = useBoolean()
 
-  const [temperature, setTemperature] = useState<number>(1)
+  const [temperature, setTemperature] = useState<number>(defaultUserConfig.cppTemperature)
   const [temperatureEnabled, setTemperatureEnabled] = useState<boolean>(true)
-  const [maxTokens, setMaxTokens] = useState<number>(4096)
+  const [maxTokens, setMaxTokens] = useState<number>(defaultUserConfig.cppMaxTokens)
   const [maxTokensEnabled, setMaxTokensEnabled] = useState<boolean>(true)
   
   const defaultClass = ""

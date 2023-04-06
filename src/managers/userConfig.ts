@@ -1,6 +1,6 @@
 import { getSyncedStorage, setSyncedStorage } from "../utils/storage"
 
-const defaultUserConfig = {
+export const defaultUserConfig = {
   cppTemperature: 1,
   cppMaxTokens: 2048,
   cppPromptID: "empty",
