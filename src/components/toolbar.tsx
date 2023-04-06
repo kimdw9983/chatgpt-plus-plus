@@ -1,5 +1,6 @@
 import { JSX } from "preact"
 import { StateUpdater, useEffect, useState } from "preact/hooks"
+import { defaultUserConfig, getUserConfig, saveUserConfig } from "../managers/userConfig"
 import { BooleanProvider, useBoolean } from "../hooks/booleanContext"
 import { uiUtils } from "../utils/ui"
 import Slider from "./base/slider"
@@ -8,7 +9,6 @@ import ToggleButton from "./base/toggleButton"
 import ConditionalPopup from "./base/contitionalPopup"
 import HoverBox from "./base/hoverBox"
 import InputBox from "./base/inputBox"
-import { defaultUserConfig, getUserConfig, saveUserConfig } from "../managers/userConfig"
 
 
 function onChangeTest(e: { target: { value: string } }) {
@@ -68,19 +68,26 @@ export default function Toolbar(props: ToolbarProps): JSX.Element {
   const isShow = useBoolean()
 
   const [temperature, setTemperature] = useState<number>(defaultUserConfig.cppTemperature)
-  const [temperatureEnabled, setTemperatureEnabled] = useState<boolean>(true)
+  const [temperatureEnabled, setTemperatureEnabled] = useState<boolean>(defaultUserConfig.cppTemperatureEnabled)
   const [maxTokens, setMaxTokens] = useState<number>(defaultUserConfig.cppMaxTokens)
-  const [maxTokensEnabled, setMaxTokensEnabled] = useState<boolean>(true)
+  const [maxTokensEnabled, setMaxTokensEnabled] = useState<boolean>(defaultUserConfig.cppMaxTokensEnabled)
   
   useEffect(() => {
     getUserConfig().then((userConfig) => {
       setTemperature(userConfig.cppTemperature)
+      setTemperatureEnabled(userConfig.cppTemperatureEnabled)
       setMaxTokens(userConfig.cppMaxTokens)
+      setMaxTokensEnabled(userConfig.cppMaxTokensEnabled)
     })
   }, [])
   useEffect(() => {
-    saveUserConfig({ cppTemperature: temperature, cppMaxTokens: maxTokens })
-  }, [temperature, maxTokens])
+    saveUserConfig({ 
+      cppTemperature: temperature, 
+      cppTemperatureEnabled: temperatureEnabled,
+      cppMaxTokens: maxTokens,
+      cppMaxTokensEnabled: maxTokensEnabled
+    })
+  }, [temperature, temperatureEnabled, maxTokens, maxTokensEnabled])
 
   const defaultClass = ""
   const className = `${ props?.className } ${ defaultClass }`
