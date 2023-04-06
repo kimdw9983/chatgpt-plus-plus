@@ -1,5 +1,5 @@
 import { JSX } from "preact"
-import { StateUpdater, useState } from "preact/hooks"
+import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { BooleanProvider, useBoolean } from "../hooks/booleanContext"
 import { uiUtils } from "../utils/ui"
 import Slider from "./base/slider"
@@ -8,7 +8,7 @@ import ToggleButton from "./base/toggleButton"
 import ConditionalPopup from "./base/contitionalPopup"
 import HoverBox from "./base/hoverBox"
 import InputBox from "./base/inputBox"
-import { defaultUserConfig } from "../managers/userConfig"
+import { defaultUserConfig, getUserConfig, saveUserConfig } from "../managers/userConfig"
 
 
 function onChangeTest(e: { target: { value: string } }) {
@@ -72,6 +72,16 @@ export default function Toolbar(props: ToolbarProps): JSX.Element {
   const [maxTokens, setMaxTokens] = useState<number>(defaultUserConfig.cppMaxTokens)
   const [maxTokensEnabled, setMaxTokensEnabled] = useState<boolean>(true)
   
+  useEffect(() => {
+    getUserConfig().then((userConfig) => {
+      setTemperature(userConfig.cppTemperature)
+      setMaxTokens(userConfig.cppMaxTokens)
+    })
+  })
+  useEffect(() => {
+    saveUserConfig({ cppTemperature: temperature, cppMaxTokens: maxTokens })
+  }, [temperature, maxTokens])
+
   const defaultClass = ""
   const className = `${ props?.className } ${ defaultClass }`
   const defaultStyle = { display: isShow.bool ? "flex" : "none" }
