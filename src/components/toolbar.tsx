@@ -77,7 +77,7 @@ export default function Toolbar(props: ToolbarProps): JSX.Element {
       setTemperature(userConfig.cppTemperature)
       setMaxTokens(userConfig.cppMaxTokens)
     })
-  })
+  }, [])
   useEffect(() => {
     saveUserConfig({ cppTemperature: temperature, cppMaxTokens: maxTokens })
   }, [temperature, maxTokens])
