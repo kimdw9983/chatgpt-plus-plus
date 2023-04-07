@@ -22,12 +22,12 @@ async function patch() {
   buttonContainer.style.position = 'absolute'
   buttonContainer.style.right = uiUtils.toolbarButtonRight + 'px'
 
-  const inputClassName = `${uiUtils.getBoxClassName()} absolute py-2 md:pl-4 cpp-toolbar`
+  const inputClassName = `${uiUtils.getBoxClassName()} absolute py-3 md:pl-4 cpp-toolbar`
   const toolbarWidth = uiUtils.getToolbarWidth(inputContainer)
   const toolbarLeft = uiUtils.calculateToolbarPosition(inputContainer)
   const toolbarButton = (
   <BooleanProvider>
-    <Toolbar style={{ top: '-50%', width: toolbarWidth, left: toolbarLeft, transform: "translate(0, -100%)" }} className={ inputClassName } />
+    <Toolbar style={{ top: '-12px', width: toolbarWidth, left: toolbarLeft, transform: "translate(0, -100%)" }} className={ inputClassName } />
     <ToggleButton innerText={"⚙️"} style={{ width: uiUtils.toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} className={ "cpp-toolbarButton" } />
   </BooleanProvider>
   )
