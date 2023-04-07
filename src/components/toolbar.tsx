@@ -133,6 +133,7 @@ export default function Toolbar(props: ToolbarProps) {
         </HoverBox>
       </BooleanProvider>
       {/* <Dropdown value={ numResults } desc={ "prompts:" } onChange={ onChangeTest } options={ optionTest } className="py-1 ml-2" /> */}
+      
       {/* 🛠️ */}
     </div>
   </div>

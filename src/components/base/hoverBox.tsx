@@ -25,7 +25,7 @@ function HoverBox(props: Props) {
   }
 
   const containerDefaultClassName = `flex select-none items-center mr-2`
-  const ContainerClassName = `${props?.className} ${hover ? 'hover' : 'not-hover'} ${containerDefaultClassName}`
+  const ContainerClassName = `${props?.className ? props.className : ""} ${hover ? 'hover' : 'not-hover'} ${containerDefaultClassName}`
   const popup = hover.bool? props.children : null
   return (
     <>
