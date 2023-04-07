@@ -16,19 +16,23 @@ function DialogTitle(props: DialogTitleProps) {
   )
 }
 
+interface DialogState { [key: string]: {isVisible: boolean, setVisible: StateUpdater<boolean>} }
+var dialogStates: DialogState = {}
+
 interface DialogProps {
   namespace: string
-  state: {isVisible: boolean, setVisible: StateUpdater<boolean>}
   title?: string
+  isVisible: boolean
+  setVisible: StateUpdater<boolean>
   chilren?: JSX.Element
 }
 
 function Dialog(props: DialogProps): JSX.Element {
   function closeDialog() {
-    props.state.setVisible(false)
+    props.setVisible(false)
   }
 
-  return (<>{props.state.isVisible && (<>
+  return (<>{ props.isVisible && (<>
   <div className="fixed w-full h-full inset-0 bg-gray-500/90 transition-opacity dark:bg-gray-800/90 opacity-100" />
   <div className="fixed inset-0 overflow-y-auto">
     <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 !p-0">
@@ -59,9 +63,6 @@ function getDialogRoot(): HTMLDivElement {
   }
   return cppDialogRoot
 }
-
-interface DialogState { [key: string]: {isVisible: boolean, setVisible: StateUpdater<boolean>} }
-var dialogStates: DialogState = {}
 interface PromptEditProps {
   namespace: string
   title?: string
@@ -81,12 +82,12 @@ function checkVisibility() {
   cppDialogRoot.style.display = shouldShow ? "" : "none"
 }
 
-function registerDialog(namespace: string) {
+function useDialogState(namespace: string) {
   const [isVisible, setVisible] = useState<boolean>(false)
   
   useEffect(() => {
     dialogStates[namespace] = { isVisible, setVisible }
-    checkVisibility()  
+    checkVisibility()
   }, [isVisible])
 
   return { isVisible, setVisible }
@@ -94,11 +95,11 @@ function registerDialog(namespace: string) {
 
 export default function CppDialog(props: PromptEditProps) {
   const cppDialogRoot = getDialogRoot()
-  const { isVisible, setVisible } = registerDialog(props.namespace)
+  const { isVisible, setVisible } = useDialogState(props.namespace)
 
   function openDialog() {
     setVisible(true)
-    render(<Dialog namespace={ props.namespace } state={{ isVisible, setVisible }} />, cppDialogRoot)
+    render(<Dialog isVisible={ isVisible } setVisible={ setVisible } namespace={ props.namespace } />, cppDialogRoot)
   }
 
   return (
