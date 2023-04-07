@@ -3,6 +3,7 @@ import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { defaultUserConfig, getUserConfig, saveUserConfig } from "../managers/userConfig"
 import { BooleanProvider, useBoolean } from "../hooks/booleanContext"
 import { uiUtils } from "../utils/ui"
+import CppDialog from "./base/cppDialog"
 import Slider from "./base/slider"
 import Dropdown from "./base/dropdown"
 import ToggleButton from "./base/toggleButton"
@@ -132,8 +133,8 @@ export default function Toolbar(props: ToolbarProps) {
           </div>
         </HoverBox>
       </BooleanProvider>
+      <CppDialog namespace="prompt-edit"/>
       {/* <Dropdown value={ numResults } desc={ "prompts:" } onChange={ onChangeTest } options={ optionTest } className="py-1 ml-2" /> */}
-      
       {/* 🛠️ */}
     </div>
   </div>
