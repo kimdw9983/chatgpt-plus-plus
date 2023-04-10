@@ -133,7 +133,11 @@ export default function Toolbar(props: ToolbarProps) {
           </div>
         </HoverBox>
       </BooleanProvider>
-      <CppDialog namespace="prompt-edit"/>
+      <CppDialog namespace="prompt-edit" title="테스트 다이얼로그">
+        <div>
+          <span>테스트</span>
+        </div>
+      </CppDialog>
       {/* <Dropdown value={ numResults } desc={ "prompts:" } onChange={ onChangeTest } options={ optionTest } className="py-1 ml-2" /> */}
       {/* 🛠️ */}
     </div>
