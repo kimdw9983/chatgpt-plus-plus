@@ -72,6 +72,7 @@ interface PromptEditProps {
   namespace: string
   title?: string
   children?: JSX.Element
+  buttonText: string
 }
 
 function checkVisibility() {
@@ -110,7 +111,7 @@ export default function CppDialog(props: PromptEditProps) {
   }
 
   useEffect(() => {
-    if (!cppDialogRoot.childNodes.length) {
+    if (!cppDialogRoot?.childNodes?.length) {
       render(<Dialog 
         namespace={ props.namespace } 
         isVisible={ isVisible }
@@ -118,13 +119,15 @@ export default function CppDialog(props: PromptEditProps) {
         onVisibleChange = {(cb) => (onVisibilityChange(cb))}
         title={ props.title }
         body={ props.children }
-        ></Dialog>, cppDialogRoot)
+        />, cppDialogRoot)
     } else {
       onVisibilityChange(isVisible)
     }
   })
 
   return (
-    <button onClick={ openDialog }>open</button>
+    <button onClick={ openDialog }>
+      { props.buttonText }
+    </button>
   )
 }
