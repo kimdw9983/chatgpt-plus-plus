@@ -101,12 +101,10 @@ function useDialogState(namespace: string) {
 export default function CppDialog(props: PromptEditProps) {
   const cppDialogRoot = getDialogRoot()
   const { isVisible, setVisible } = useDialogState(props.namespace)
-  const onVisibleChangeRef = useRef<any>()
+  const onVisibleChangeRef = useRef<(isVisible: boolean) => void>()
 
   function onVisibilityChange(isVisible: boolean) {
-    if (onVisibleChangeRef.current) {
-      onVisibleChangeRef.current(isVisible)
-    }
+    if (onVisibleChangeRef.current) onVisibleChangeRef.current(isVisible)
   }
 
   function openDialog() {
