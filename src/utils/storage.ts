@@ -1,6 +1,6 @@
 import Browser from "webextension-polyfill"
 
-export async function getSyncedStorage(obj: string[]): Promise<Record<string, any>> {
+export async function getSyncedStorage(obj: string | string[]): Promise<Record<string, any>> {
   return await Browser.storage.sync.get(obj)
 }
 

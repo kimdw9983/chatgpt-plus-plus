@@ -7,7 +7,7 @@ interface PromptEditProps {
 }
 
 function PromptBox(props: { essential?: boolean }) {
-  
+
 }
 
 function PromptList() {
@@ -17,8 +17,8 @@ function PromptList() {
   return (
     <div>
       <div className="overflow-auto">
-
-      </div>      
+        
+      </div>
     </div>
   )
 }

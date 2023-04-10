@@ -11,9 +11,9 @@ export const defaultUserConfig = {
 export type UserConfig = typeof defaultUserConfig
 
 export async function getUserConfig(): Promise<UserConfig> {
-  const config = await getSyncedStorage(Object.keys(defaultUserConfig))
+  const config = await getSyncedStorage(Object.keys(defaultUserConfig)) as UserConfig
   if (!config) return defaultUserConfig
-  return config as UserConfig
+  return config
 }
 
 export async function saveUserConfig(config: Partial<UserConfig>) {
