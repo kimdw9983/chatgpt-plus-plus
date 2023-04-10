@@ -10,6 +10,7 @@ import ToggleButton from "./base/toggleButton"
 import ConditionalPopup from "./base/contitionalPopup"
 import HoverBox from "./base/hoverBox"
 import InputBox from "./base/inputBox"
+import PromptEdit from "./promptEdit"
 
 
 function onChangeTest(e: { target: { value: string } }) {
@@ -133,10 +134,8 @@ export default function Toolbar(props: ToolbarProps) {
           </div>
         </HoverBox>
       </BooleanProvider>
-      <CppDialog buttonText="🛠️" namespace="prompt-edit" title="테스트 다이얼로그">
-        <div>
-          <span>테스트</span>
-        </div>
+      <CppDialog buttonText="🛠️" namespace="prompt-edit" title="Edit prompts">
+        <PromptEdit />
       </CppDialog>
       {/* <Dropdown value={ numResults } desc={ "prompts:" } onChange={ onChangeTest } options={ optionTest } className="py-1 ml-2" /> */}
     </div>
