@@ -1,5 +1,5 @@
 import { render } from "preact"
-import { StateUpdater, useEffect, useState } from "preact/hooks"
+import { StateUpdater, useEffect, useRef, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 
 interface DialogTitleProps {
@@ -22,17 +22,22 @@ var dialogStates: DialogState = {}
 interface DialogProps {
   namespace: string
   title?: string
-  isVisible: boolean
-  setVisible: StateUpdater<boolean>
   chilren?: JSX.Element
+  onVisibleChange: (isVisible: boolean) => void
 }
 
 function Dialog(props: DialogProps): JSX.Element {
+  const { isVisible, setVisible } = dialogStates[props.namespace]
+
   function closeDialog() {
-    props.setVisible(false)
+    setVisible(false)
   }
 
-  return (<>{ props.isVisible && (<>
+  useEffect(() => {
+    if (props.onVisibleChange) props.onVisibleChange(isVisible)
+  }, [isVisible])
+
+  return (<>{ isVisible && (<>
   <div className="fixed w-full h-full inset-0 bg-gray-500/90 transition-opacity dark:bg-gray-800/90 opacity-100" />
   <div className="fixed inset-0 overflow-y-auto">
     <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 !p-0">
@@ -56,7 +61,7 @@ function getDialogRoot(): HTMLDivElement {
   if (!cppDialogRoot) {
     cppDialogRoot = document.createElement('div')
     cppDialogRoot.id = "cpp-dialog-root"
-    cppDialogRoot.className = "fixed w-full h-full inset-0"
+    cppDialogRoot.className = "w-full h-full inset-0"
     cppDialogRoot.style.zIndex = "500"
 
     document.body.appendChild(cppDialogRoot)
@@ -84,9 +89,9 @@ function checkVisibility() {
 
 function useDialogState(namespace: string) {
   const [isVisible, setVisible] = useState<boolean>(false)
+  dialogStates[namespace] = { isVisible, setVisible }
   
   useEffect(() => {
-    dialogStates[namespace] = { isVisible, setVisible }
     checkVisibility()
   }, [isVisible])
 
@@ -96,15 +101,27 @@ function useDialogState(namespace: string) {
 export default function CppDialog(props: PromptEditProps) {
   const cppDialogRoot = getDialogRoot()
   const { isVisible, setVisible } = useDialogState(props.namespace)
+  const onVisibleChangeRef = useRef<any>()
+
+  function onVisibilityChange(isVisible: boolean) {
+    if (onVisibleChangeRef.current) {
+      onVisibleChangeRef.current(isVisible)
+    }
+  }
 
   function openDialog() {
     setVisible(true)
-    render(<Dialog isVisible={ isVisible } setVisible={ setVisible } namespace={ props.namespace } />, cppDialogRoot)
   }
 
+  useEffect(() => {
+    if (!cppDialogRoot.childNodes.length) {
+      render(<Dialog namespace={ props.namespace } onVisibleChange = {(cb) => (onVisibilityChange(cb))} />, cppDialogRoot)
+    } else {
+      onVisibilityChange(isVisible)
+    }
+  })
+
   return (
-    <button onClick={ openDialog }>
-      open
-    </button>
+    <button onClick={ openDialog }>open</button>
   )
 }
