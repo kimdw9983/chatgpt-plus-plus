@@ -26,6 +26,7 @@ interface DialogProps {
   isVisible: boolean
   setVisible: StateUpdater<boolean>
   onVisibleChange: (isVisible: boolean) => void
+  closeOnClickOutside?: boolean
 }
 
 function Dialog(props: DialogProps): JSX.Element {
@@ -33,13 +34,17 @@ function Dialog(props: DialogProps): JSX.Element {
     props.setVisible(false)
   }
 
+  function clickOutside(){
+    if(props.closeOnClickOutside) closeDialog()
+  }
+
   useEffect(() => {
     if (props.onVisibleChange) props.onVisibleChange(props.isVisible)
   }, [props.isVisible])
 
   return (<>{ props.isVisible && (<>
-  <div className="fixed w-full h-full inset-0 bg-gray-500/90 transition-opacity dark:bg-gray-800/90 opacity-100" style={{ zIndex: 510}}/>
-  <div className="fixed inset-0 overflow-y-auto" style={{ zIndex: 520}} onClick={ closeDialog } >
+  <div className="fixed w-full h-full inset-0 bg-gray-500/90 transition-opacity dark:bg-gray-800/90 opacity-100" style={{ zIndex: 510 }}/>
+  <div className="fixed inset-0 overflow-y-auto" style={{ zIndex: 520 }} onClick={ clickOutside } >
     <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 !p-0">
       <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all dark:bg-gray-900 sm:my-8 sm:w-full !my-0 flex min-h-screen w-full flex-col items-center justify-center !rounded-none !py-0 px-4 pt-5 pb-4 sm:p-6 bg-transparent dark:bg-transparent opacity-100 translate-y-0 sm:scale-100">
         <div className="flex h-full flex-col items-center justify-start">
@@ -73,6 +78,7 @@ interface PromptEditProps {
   title?: string
   children?: JSX.Element
   buttonText: string
+  closeOnClickOutside?: boolean
 }
 
 function checkVisibility() {
@@ -119,6 +125,7 @@ export default function CppDialog(props: PromptEditProps) {
         onVisibleChange = {(cb) => (onVisibilityChange(cb))}
         title={ props.title }
         body={ props.children }
+        closeOnClickOutside={ props.closeOnClickOutside }
         />, cppDialogRoot)
     } else {
       onVisibilityChange(isVisible)
