@@ -2,11 +2,9 @@ import { getSyncedStorage, setSyncedStorage } from "../utils/storage"
 
 export const defaultPromptSetting = {
   cppSelectedPromptID: "default",
-  cppShowOnToolbar: true,
 }
 
 export type PromptSetting = typeof defaultPromptSetting
-
 export async function getPromptSetting(): Promise<PromptSetting> {
   const setting = await getSyncedStorage(Object.keys(defaultPromptSetting))
   if (!setting) return defaultPromptSetting
@@ -22,18 +20,25 @@ export const defaultPrompt = {
   name: "Default",
   body: "",
   pattern: "{&temperature}{&max_tokens}\n{&prompt}\n{&context}",
+  showOnToolbar: true
 }
 
 export type Prompt = typeof defaultPrompt
-
-export async function getPromptList(): Promise<Prompt[]> {
-  const raw = await getSyncedStorage("cppPrompt") as Prompt[]
-  if (!raw) return [defaultPrompt]
+export type PromptList = { [id: string]: Prompt }
+export async function getPromptList(): Promise<PromptList> {
+  const raw = await getSyncedStorage("cppPrompt") as PromptList
+  if (!raw) return { default: defaultPrompt }
   return raw
 }
 
 export async function getPrompt(id: string): Promise<Prompt | undefined> {
-  const raw = await getSyncedStorage("cppPrompt") as Prompt[]
-  if (!raw) return undefined
-  return raw.find(prompt => prompt.id === id)
+  const list = await getPromptList()
+  return list[id]
+}
+
+export async function savePrompt(prompt: Prompt) {
+  const list = await getPromptList()
+  list[prompt.id] = prompt
+
+  await setSyncedStorage(list)
 }

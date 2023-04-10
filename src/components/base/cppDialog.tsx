@@ -117,7 +117,7 @@ export default function CppDialog(props: PromptEditProps) {
   }
 
   useEffect(() => {
-    if (!cppDialogRoot?.childNodes?.length) {
+    if (!cppDialogRoot?.childNodes || !cppDialogRoot?.childNodes?.length) {
       render(<Dialog 
         namespace={ props.namespace } 
         isVisible={ isVisible }
