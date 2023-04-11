@@ -1,7 +1,7 @@
 import { render } from 'preact'
 import { BooleanProvider } from '../hooks/booleanContext'
 import { getElement, getChatgptRoot } from '../utils/element'
-import { uiUtils } from '../utils/ui'
+import { svg, uiUtils } from '../utils/ui'
 import ToggleButton from '../components/base/toggleButton'
 import Toolbar from '../components/toolbar'
 
@@ -28,7 +28,7 @@ async function patch() {
   const toolbarButton = (
   <BooleanProvider>
     <Toolbar style={{ top: '-12px', width: toolbarWidth, left: toolbarLeft, transform: "translate(0, -100%)" }} className={ inputClassName } />
-    <ToggleButton innerText={"⚙️"} style={{ width: uiUtils.toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} className={ "cpp-toolbarButton" } />
+    <ToggleButton innerText={(<svg.settings />)} style={{ width: uiUtils.toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} className={ "cpp-toolbarButton" } />
   </BooleanProvider>
   )
   const toolbarButtonContainer = document.createElement('div')

@@ -1,6 +1,7 @@
 import { render } from "preact"
 import { StateUpdater, useEffect, useRef, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
+import { svg } from "../../utils/ui"
 
 interface DialogTitleProps {
   closeDialog: () => void
@@ -11,7 +12,9 @@ function DialogTitle(props: DialogTitleProps) {
   return (
     <div className="flex w-full flex-row items-center justify-between border-b py-3 px-4 dark:border-gray-700">
       { props?.title && (<span class="text-base font-semibold sm:text-base">{ props.title }</span>) }
-      <button className="text-gray-700 opacity-50 transition hover:opacity-75 dark:text-white" onClick={ props.closeDialog }>❌</button>
+      <button className="text-gray-700 opacity-50 transition hover:opacity-75 dark:text-white" onClick={ props.closeDialog }>
+        <svg.crossMark />  
+      </button>
     </div>
   )
 }

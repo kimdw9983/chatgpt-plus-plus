@@ -7,11 +7,10 @@ interface Props {
   className?: string
 }
 
-const defaultClass = "hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md"
-
 export default function ToggleButton(props: Props) {
   const { toggle } = useBoolean()
 
+  const defaultClass = "flex justify-center items-center text-gray-300 hover:text-white hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md"
   const className = `${defaultClass} ${props?.className}`
   const innerElement = typeof props?.innerText === "string" ? <span>{ props.innerText }</span> : props.innerText
   return (
