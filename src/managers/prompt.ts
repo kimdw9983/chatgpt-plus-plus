@@ -38,8 +38,12 @@ export type Prompt = typeof defaultPrompt
 export type PromptList = { [id: string]: Prompt }
 export async function getPromptList(): Promise<PromptList> {
   const raw = await getSyncedStorage("cppPrompt") as PromptList
-  if (!raw) return { default: defaultPrompt }
+  if (!raw) return {}
   return raw
+}
+
+export async function savePromptList(list: PromptList) {
+  await setSyncedStorage(list)
 }
 
 export async function getPrompt(id: string): Promise<Prompt | undefined> {

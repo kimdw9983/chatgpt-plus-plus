@@ -29,7 +29,7 @@ interface DialogProps {
   isVisible: boolean
   setVisible: StateUpdater<boolean>
   onVisibleChange: (isVisible: boolean) => void
-  closeOnClickOutside?: boolean
+  closeOnClickOutside?: boolean | Function
 }
 
 function Dialog(props: DialogProps): JSX.Element {
@@ -38,7 +38,8 @@ function Dialog(props: DialogProps): JSX.Element {
   }
 
   function clickOutside(){
-    if(props.closeOnClickOutside) closeDialog()
+    if (typeof props.closeOnClickOutside === "function" && props.closeOnClickOutside())closeDialog()
+    else if (typeof props.closeOnClickOutside === "boolean" && props.closeOnClickOutside) closeDialog()
   }
 
   useEffect(() => {
@@ -82,7 +83,7 @@ interface PromptEditProps {
   title?: string
   children?: JSX.Element
   buttonText: string
-  closeOnClickOutside?: boolean
+  closeOnClickOutside?: boolean | Function
 }
 
 function checkVisibility() {
@@ -121,7 +122,7 @@ export default function CppDialog(props: PromptEditProps) {
   }
 
   useEffect(() => {
-    if (!cppDialogRoot?.childNodes || !cppDialogRoot?.childNodes?.length) {
+    if (!cppDialogRoot || !cppDialogRoot?.childNodes || !cppDialogRoot?.childNodes?.length) {
       render(<Dialog 
         namespace={ props.namespace } 
         isVisible={ isVisible }
