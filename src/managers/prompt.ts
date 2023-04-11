@@ -1,3 +1,4 @@
+import { uuidv4 } from "../utils/common"
 import { getSyncedStorage, setSyncedStorage } from "../utils/storage"
 
 export const defaultPromptSetting = {
@@ -21,6 +22,16 @@ export const defaultPrompt = {
   body: "",
   pattern: "{&temperature}{&max_tokens}\n{&prompt}\n{&context}",
   showOnToolbar: true
+}
+
+export const getPromptTemplate = (): Prompt => {
+  return {
+    id: uuidv4(),
+    name: "Unnamed prompt",
+    body: "",
+    pattern: "{&temperature}{&max_tokens}\n{&prompt}\n{&context}",
+    showOnToolbar: true
+  }
 }
 
 export type Prompt = typeof defaultPrompt

@@ -1,7 +1,6 @@
 import { useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
-import { defaultPromptSetting, defaultPrompt, PromptList, Prompt } from "../managers/prompt"
-import { deepCopy, uuidv4 } from "../utils/common"
+import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate,  } from "../managers/prompt"
 
 function PromptBox(props: { prompt: Prompt, selected: boolean }) {
   const promptName = props.prompt.name
@@ -32,7 +31,17 @@ function PromptList() {
   const [promptList, setPromptList] = useState<PromptList>({ default: defaultPrompt })
 
   function onNewPrompt() {
-    setPromptList(promptList)
+    //TODO: save prompt permenant
+    const template = getPromptTemplate()
+    const id = template.id
+
+    const updatedPromptList = {
+      ...promptList,
+      [id]: template,
+    }
+  
+    setPromptList(updatedPromptList)
+    console.log(updatedPromptList, "new Prompt")
   }
 
   return (
@@ -42,7 +51,9 @@ function PromptList() {
         <PromptBox key={ key } prompt={ prompt } selected={ false } />
       )}
     </div>
-    <a className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm mb-2 flex-shrink-0 border border-white/20">
+    <a 
+      onClick = { onNewPrompt }
+      className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm mb-2 flex-shrink-0 border border-white/20">
       New prompt
     </a>
   </nav>
