@@ -1,11 +1,12 @@
 import { useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate,  } from "../managers/prompt"
+import { svg } from "../utils/ui"
 
 function PromptBox(props: { prompt: Prompt, selected: boolean }) {
   const promptName = props.prompt.name
   const promptBody = props.prompt.body
-  const isDefault = props.prompt.id === "default"
+  const isDefault = props.prompt.id === "default" || false
 
   return (
   <div className="flex flex-col gap-2 text-gray-100 text-sm" style={{width: "12.5rem"}}>
@@ -14,13 +15,17 @@ function PromptBox(props: { prompt: Prompt, selected: boolean }) {
       <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative">
         { promptName }
         <div className="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l from-gray-900 group-hover:from-[#2A2B32]"/>
-        {!isDefault && (
-          <div className="absolute flex right-1 z-10 text-gray-300 visible">
-            <input type='button' value="🗑️" title="Delete this prompt" className="hover:text-white" />
-            <input type='button' value={ props.prompt.showOnToolbar ? "✅" : "🗙"} title="Toggle visibility on toolbar" className="hover:text-white" />
-          </div>
-        )}
       </div>
+      {!isDefault && (
+        <div className="absolute flex right-1 text-gray-300" style={{ zIndex: 530 }}>
+          <button title="Toggle visibility on toolbar" className="hover:text-white p-1">
+            { props.prompt.showOnToolbar ? <svg.visible /> : <svg.invisible />}
+          </button>
+          <button title="Delete this prompt" className="hover:text-white p-1">
+            <svg.trashcan />
+          </button>
+        </div>
+      )}
     </a>
   </div>
   )
@@ -41,7 +46,6 @@ function PromptList() {
     }
   
     setPromptList(updatedPromptList)
-    console.log(updatedPromptList, "new Prompt")
   }
 
   return (
@@ -65,7 +69,8 @@ interface PromptEditProps {
   ContainerClassName?: string
 }
 export default function PromptEdit(props: PromptEditProps) {
-  const ContainerClassName = `${props.ContainerClassName ? props.ContainerClassName : ""}`
+  const defaultClassName = ""
+  const ContainerClassName = `${defaultClassName} ${props.ContainerClassName ? props.ContainerClassName : ""}`
   const ContainerStyle = props.ContainerStyle? props.ContainerStyle : {}
 
   return( 
