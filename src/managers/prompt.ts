@@ -21,7 +21,8 @@ export const defaultPrompt = {
   name: "Default",
   body: "",
   pattern: "{&temperature}{&max_tokens}\n{&prompt}\n{&context}",
-  showOnToolbar: true
+  showOnToolbar: true,
+  timecreated: "",
 }
 
 export const getPromptTemplate = (): Prompt => {
@@ -30,7 +31,8 @@ export const getPromptTemplate = (): Prompt => {
     name: "Unnamed prompt",
     body: "",
     pattern: "{&temperature}{&max_tokens}\n{&prompt}\n{&context}",
-    showOnToolbar: true
+    showOnToolbar: true,
+    timecreated: new Date().toISOString(),
   }
 }
 
@@ -38,29 +40,29 @@ export type Prompt = typeof defaultPrompt
 export type PromptList = { [id: string]: Prompt }
 export async function getPromptList(): Promise<PromptList> {
   const raw = await getSyncedStorage("cppPrompt")
-  if (!raw) return {}
+  if (!raw || Object.keys(raw).length === 1) return {}
   return raw.cppPrompt as PromptList
 }
 
-export async function savePromptList(list: PromptList) {
+export async function persistPromptList(list: PromptList) {
   const record = {cppPrompt: list}
   await setSyncedStorage(record)
 }
 
-export async function getPrompt(id: string): Promise<Prompt | undefined> {
+export async function readPrompt(id: string): Promise<Prompt | undefined> {
   const list = await getPromptList()
   return list[id]
 }
 
-export async function savePrompt(prompt: Prompt) {
+export async function persistPrompt(prompt: Prompt) {
   const list = await getPromptList()
   list[prompt.id] = prompt
-  await savePromptList(list)
+  await persistPromptList(list)
 }
 
 export async function destroyPrompt(id: string): Promise<PromptList> {
   const list = await getPromptList()
   delete list[id]
-  await savePromptList(list)
+  await persistPromptList(list)
   return list
 }

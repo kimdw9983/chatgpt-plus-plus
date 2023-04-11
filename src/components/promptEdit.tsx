@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
-import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, savePrompt, savePromptList, getPromptList, destroyPrompt,  } from "../managers/prompt"
+import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, getPromptList, destroyPrompt,  } from "../managers/prompt"
 import { svg } from "../utils/ui"
 
 function PromptBox(props: { prompt: Prompt, selected: boolean, onDelete: (id: string) => void }) {
@@ -8,7 +8,7 @@ function PromptBox(props: { prompt: Prompt, selected: boolean, onDelete: (id: st
   const isDefault = prompt.id === "default"
  
   useEffect(() => {
-    savePrompt(prompt)
+    persistPrompt(prompt)
   }, [prompt])
 
   function toggleVisibility() {
@@ -20,7 +20,9 @@ function PromptBox(props: { prompt: Prompt, selected: boolean, onDelete: (id: st
   }
 
   function deletePrompt() {
-    props.onDelete(prompt.id)
+    if (window.confirm("Are you sure you want to delete this prompt?")) {
+      destroyPrompt(prompt.id)
+    }
   }
 
   return (
@@ -58,12 +60,14 @@ function PromptList() {
           ...list
         }
         setPromptList(savedPromptList)
+      } else {
+        console.log("No saved prompt list, loading default", list) //TODO: debug code
       }
     })
   }, [])
 
   function newPrompt() {
-    savePromptList(promptList)
+    persistPromptList(promptList)
 
     const template = getPromptTemplate()
     const id = template.id
