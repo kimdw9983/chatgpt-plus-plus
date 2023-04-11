@@ -1,19 +1,19 @@
 import { uuidv4 } from "../utils/common"
-import { getSyncedStorage, setSyncedStorage } from "../utils/storage"
+import { readSyncedStorage, persistSyncedStorage } from "../utils/storage"
 
 export const defaultPromptSetting = {
   cppSelectedPromptID: "default",
 }
 
 export type PromptSetting = typeof defaultPromptSetting
-export async function getPromptSetting(): Promise<PromptSetting> {
-  const setting = await getSyncedStorage(Object.keys(defaultPromptSetting))
+export async function readPromptSetting(): Promise<PromptSetting> {
+  const setting = await readSyncedStorage(Object.keys(defaultPromptSetting))
   if (!setting) return defaultPromptSetting
   return setting as PromptSetting
 }
 
-export async function saveUserConfig(setting: Partial<PromptSetting>) {
-  await setSyncedStorage(setting)
+export async function persistPromptSetting(setting: Partial<PromptSetting>) {
+  await persistSyncedStorage(setting)
 }
 
 export const defaultPrompt = {
@@ -39,14 +39,14 @@ export const getPromptTemplate = (): Prompt => {
 export type Prompt = typeof defaultPrompt
 export type PromptList = { [id: string]: Prompt }
 export async function getPromptList(): Promise<PromptList> {
-  const raw = await getSyncedStorage("cppPrompt")
+  const raw = await readSyncedStorage("cppPrompt")
   if (!raw || Object.keys(raw).length === 1) return {}
   return raw.cppPrompt as PromptList
 }
 
 export async function persistPromptList(list: PromptList) {
   const record = {cppPrompt: list}
-  await setSyncedStorage(record)
+  await persistSyncedStorage(record)
 }
 
 export async function readPrompt(id: string): Promise<Prompt | undefined> {
