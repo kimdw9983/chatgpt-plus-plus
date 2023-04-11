@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
-import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, getPromptList, destroyPrompt,  } from "../managers/prompt"
+import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt,  } from "../managers/prompt"
 import { svg } from "../utils/ui"
 
 function PromptBox(props: { prompt: Prompt, selected: boolean, onDelete: (id: string) => void }) {
@@ -53,7 +53,7 @@ function PromptList() {
   const [promptList, setPromptList] = useState<PromptList>({ default: defaultPrompt })
 
   useEffect(() => {
-    getPromptList().then((list) => {
+    readPromptList().then((list) => {
       if (Object.keys(list).length !== 0) {
         const savedPromptList = {
           ...promptList, //default first
@@ -71,12 +71,12 @@ function PromptList() {
 
     const template = getPromptTemplate()
     const id = template.id
-
+    console.log("promptList when newPrompt", promptList)
     const updatedPromptList = {
       ...promptList,
       [id]: template,
     }
-  
+    console.debug("updatedPromptList", updatedPromptList)
     setPromptList(updatedPromptList)
     setSelectedPromptID(id)
   }
