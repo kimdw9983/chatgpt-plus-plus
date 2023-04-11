@@ -57,3 +57,10 @@ export async function savePrompt(prompt: Prompt) {
   list[prompt.id] = prompt
   await savePromptList(list)
 }
+
+export async function destroyPrompt(id: string): Promise<PromptList> {
+  const list = await getPromptList()
+  delete list[id]
+  await savePromptList(list)
+  return list
+}
