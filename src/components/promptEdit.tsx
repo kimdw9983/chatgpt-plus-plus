@@ -4,7 +4,7 @@ import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTempl
 import { svg } from "../utils/ui"
 
 function PromptBox(props: { prompt: Prompt, selected: boolean }) {
-  const [prompt, setPromptList] = useState<Prompt>(props.prompt)
+  const [prompt, setPrompt] = useState<Prompt>(props.prompt)
   const isDefault = prompt.id === "default"
  
   useEffect(() => {
@@ -16,7 +16,7 @@ function PromptBox(props: { prompt: Prompt, selected: boolean }) {
       ...prompt,
       showOnToolbar: !prompt.showOnToolbar
     }
-    setPromptList(updatedPrompt)
+    setPrompt(updatedPrompt)
   }
 
   return (
@@ -48,7 +48,13 @@ function PromptList() {
 
   useEffect(() => {
     getPromptList().then((list) => {
-      if (list.length) setPromptList(list)
+      if (Object.keys(list).length !== 0) {
+        const savedPromptList = {
+          ...promptList,
+          ...list
+        }
+        setPromptList(savedPromptList)
+      }
     })
   }, [])
 

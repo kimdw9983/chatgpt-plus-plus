@@ -37,13 +37,14 @@ export const getPromptTemplate = (): Prompt => {
 export type Prompt = typeof defaultPrompt
 export type PromptList = { [id: string]: Prompt }
 export async function getPromptList(): Promise<PromptList> {
-  const raw = await getSyncedStorage("cppPrompt") as PromptList
+  const raw = await getSyncedStorage("cppPrompt")
   if (!raw) return {}
-  return raw
+  return raw.cppPrompt as PromptList
 }
 
 export async function savePromptList(list: PromptList) {
-  await setSyncedStorage(list)
+  const record = {cppPrompt: list}
+  await setSyncedStorage(record)
 }
 
 export async function getPrompt(id: string): Promise<Prompt | undefined> {
@@ -54,6 +55,5 @@ export async function getPrompt(id: string): Promise<Prompt | undefined> {
 export async function savePrompt(prompt: Prompt) {
   const list = await getPromptList()
   list[prompt.id] = prompt
-
-  await setSyncedStorage(list)
+  await savePromptList(list)
 }
