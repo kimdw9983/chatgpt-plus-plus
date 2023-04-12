@@ -1,4 +1,4 @@
-import { useEffect, useState } from "preact/hooks"
+import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt,  } from "../managers/prompt"
 import { svg } from "../utils/ui"
@@ -36,7 +36,9 @@ function PromptBox(props: PromptBoxProps) {
       "flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-14 bg-gray-800 hover:bg-gray-800 group" :
       "flex py-3 px-3 items-center gap-3 relative rounded-md hover:bg-[#2A2B32] pr-14 cursor-pointer break-all group"
       } title={ prompt.body } onClick={ (event) => props.onClick(event, prompt.id) }>
-      <svg.instruction />
+      <div class="text-white">
+        <svg.instruction />
+      </div>
       <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative" style={{ zIndex: 520 }}>
         { prompt.name }
         {/* ChatGPT's fading-out styling instead of ellipsising-out */}
@@ -60,9 +62,14 @@ function PromptBox(props: PromptBoxProps) {
   )
 }
 
-function PromptList() {
-  const [selectedPrompt, setSelectedPromptID] = useState<string>(defaultPromptSetting.cppSelectedPromptID)
-  const [promptList, setPromptList] = useState<PromptList>({ default: defaultPrompt })
+interface PromptListProps { 
+  selectedPrompt: { selectedPrompt: string, setSelectedPrompt: StateUpdater<string> }
+  promptList: { promptList: PromptList, setPromptList: StateUpdater<PromptList> }
+}
+
+function PromptList(props: PromptListProps) {
+  const {selectedPrompt, setSelectedPrompt} = props.selectedPrompt
+  const {promptList, setPromptList} = props.promptList
 
   useEffect(() => {
     readPromptList().then((list) => {
@@ -80,11 +87,12 @@ function PromptList() {
     }
     setPromptList(updatedPromptList)
     persistPromptList(updatedPromptList)
-    setSelectedPromptID(id)
+    setSelectedPrompt(id)
   }
 
   async function onDeletPrompt(id: string) {
     const record = await destroyPrompt(id)
+    setSelectedPrompt("default")
     setPromptList(record)
   }
 
@@ -94,11 +102,11 @@ function PromptList() {
   }
 
   function onClickPrompt(_: MouseEvent, id: string) {
-    setSelectedPromptID(id)
+    setSelectedPrompt(id)
   }
 
   return (
-  <nav className="flex h-full flex-col space-y-1 p-2" style={{ width: "16rem" }}>
+  <nav className="flex h-full flex-col space-y-1 p-2 bg-gray-900" style={{ width: "16rem" }}>
     <div className="flex-col flex-1 overflow-y-auto overscroll-none border-b border-white/20 h-full">
       {Object.values(promptList).sort(sortBytimeCreated).map(prompt => 
         <PromptBox key={ prompt.id } prompt={ prompt } selected={ prompt.id === selectedPrompt } onClick={ onClickPrompt } onDelete={ onDeletPrompt } />
@@ -115,11 +123,19 @@ function PromptList() {
 }
 
 interface PromptFormProps { 
-  prompt: Prompt
+  selectedPrompt: string 
+  promptList: PromptList
 }
 
-function PromptForm() {
+function PromptForm(props: PromptFormProps) {
   const containerWidthInPx = 640
+  const [prompt, setPrompt] = useState<Prompt>(defaultPrompt)
+  const isDefault = prompt.id === "default"
+
+  useEffect(() => {
+    console.log(props.promptList, props.selectedPrompt)
+    setPrompt(props.promptList[props.selectedPrompt])
+  }, [props.promptList, props.selectedPrompt])
 
   return (
   <>
@@ -128,12 +144,14 @@ function PromptForm() {
         <div className="group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 dark:bg-gray-800">
           <div className="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0 m-auto justify-center">
             <div className="relative flex" style={{ width: `${containerWidthInPx - 95}px` }}>
-              <div className="flex items-center justify-center" style="width: 100px">
+              <div className="flex items-center justify-center mr-2" style="width: 100px">
                 <span>Prompt name</span>
               </div>
-              <input type="text" placeholder="Enter a prompt name"
+              <input type="text" placeholder={ isDefault ? "Default prompt" : "Enter a prompt name" }
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
-                style={{ height: "44px", width: `${containerWidthInPx - 220}px` }} tabIndex={1}/>
+                style={{ height: "44px", width: `${containerWidthInPx - 220}px` }} 
+                tabIndex={1}
+                disabled={isDefault}/>
             </div>
           </div>
         </div>
@@ -141,15 +159,17 @@ function PromptForm() {
           <div className="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0 m-auto justify-center">
             <div className="relative flex flex-col gap-1 md:gap-3" style={{ width: `${containerWidthInPx - 95}px` }}>
               <span>Prompt :</span>
-              <textarea placeholder="Enter a instruction"
+              <textarea placeholder= { isDefault ? "Enter a instruction" : "" }
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
-                style="height: 96px; overflow-y: hidden;" tabIndex={2}/>
+                style="height: 96px; overflow-y: hidden;" 
+                tabIndex={2}
+                disabled={isDefault}/>
             </div>
           </div>
         </div>
         <div className="w-full flex-shrink-0" style="height: 4rem"/>
       </div>
-      <div className="absolute w-full bottom-0 left-0" style="height: 4rem">Button Area</div>
+      <div className="absolute w-full bottom-0 left-0 dark:bg-gray-800" style="height: 4rem">Button Area</div>
     </div>
   </>
   )
@@ -165,11 +185,14 @@ export default function PromptEdit(props: PromptEditProps) {
   const defaultContainerStyle = {}
   const ContainerStyle = Object.assign({}, defaultContainerStyle, props.ContainerStyle? props.ContainerStyle : {})
 
+  const [selectedPrompt, setSelectedPrompt] = useState<string>(defaultPromptSetting.cppSelectedPromptID)
+  const [promptList, setPromptList] = useState<PromptList>({ default: defaultPrompt })
+
   return( 
     <div className={ ContainerClassName } style={ ContainerStyle }>
       <div className="relative flex h-full max-w-full">
-        <PromptList />
-        <PromptForm />
+        <PromptList selectedPrompt={{ selectedPrompt, setSelectedPrompt }} promptList={{ promptList, setPromptList }}/>
+        <PromptForm selectedPrompt={ selectedPrompt } promptList={ promptList }/>
       </div>
     </div>
   )
