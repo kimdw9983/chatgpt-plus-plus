@@ -114,18 +114,44 @@ function PromptList() {
   )
 }
 
+interface PromptFormProps { 
+  prompt: Prompt
+}
+
 function PromptForm() {
+  const containerWidthInPx = 640
+
   return (
-    <div className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1">
-      <div className="flex h-full flex-col items-center text-sm dark:bg-gray-800" style={{ width: "40rem" }}>
+  <>
+    <div className="relative h-full w-full transition-width flex flex-col items-stretch flex-1">
+      <div className="flex overflow-y-auto overscroll-none h-full flex-col items-center text-sm dark:bg-gray-800" style={{ width: `${containerWidthInPx}px` }}>
         <div className="group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 dark:bg-gray-800">
-          Title Area
+          <div className="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0 m-auto justify-center">
+            <div className="relative flex" style={{ width: `${containerWidthInPx - 95}px` }}>
+              <div className="flex items-center justify-center" style="width: 100px">
+                <span>Prompt name</span>
+              </div>
+              <input type="text" placeholder="Enter a prompt name"
+                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
+                style={{ height: "44px", width: `${containerWidthInPx - 220}px` }} tabIndex={1}/>
+            </div>
+          </div>
         </div>
         <div className="group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 bg-gray-50 dark:bg-[#444654]">
-          Prompt Area
+          <div className="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0 m-auto justify-center">
+            <div className="relative flex flex-col gap-1 md:gap-3" style={{ width: `${containerWidthInPx - 95}px` }}>
+              <span>Prompt :</span>
+              <textarea placeholder="Enter a instruction"
+                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
+                style="height: 96px; overflow-y: hidden;" tabIndex={2}/>
+            </div>
+          </div>
         </div>
+        <div className="w-full flex-shrink-0" style="height: 4rem"/>
       </div>
+      <div className="absolute w-full bottom-0 left-0" style="height: 4rem">Button Area</div>
     </div>
+  </>
   )
 }
 
@@ -141,7 +167,7 @@ export default function PromptEdit(props: PromptEditProps) {
 
   return( 
     <div className={ ContainerClassName } style={ ContainerStyle }>
-      <div className="flex h-full max-w-full">
+      <div className="relative flex h-full max-w-full">
         <PromptList />
         <PromptForm />
       </div>
