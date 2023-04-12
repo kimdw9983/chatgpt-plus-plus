@@ -142,7 +142,6 @@ function PromptForm(props: PromptFormProps) {
   }, [props.promptList, props.selectedPrompt])
 
   function autoSave(e: any, key: string) {
-    console.debug("Auto saving...")
     const updatedPrompt = {
       ...prompt,
       [key]: e.target.value
@@ -178,7 +177,7 @@ function PromptForm(props: PromptFormProps) {
         </div>
         <div className="group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 bg-gray-50 dark:bg-[#444654]">
           <div className="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0 m-auto justify-center">
-            <div className="relative flex flex-col gap-1 md:gap-3" style={{ width: `${containerWidthInPx - 95}px` }}>
+            <div className="relative flex flex-col" style={{ width: `${containerWidthInPx - 95}px` }}>
               <div className="flex items-center">
                 <svg.instruction />
                 <span className="ml-2">Prompt</span>
@@ -190,6 +189,9 @@ function PromptForm(props: PromptFormProps) {
                 disabled={ isDefault } 
                 value={ prompt.body }
                 onBlur={ (event) => autoSave(event, "body") } />
+              <button className="right-0">
+                ▼ Advnaced prompt
+              </button>
             </div>
           </div>
         </div>
