@@ -6,7 +6,7 @@ import { svg } from "../utils/ui"
 interface PromptBoxProps { 
   prompt: Prompt
   selected: boolean
-  onClick: (id: string) => void
+  onClick: (event: MouseEvent, id: string) => void
   onDelete: (id: string) => void 
 }
 
@@ -35,7 +35,7 @@ function PromptBox(props: PromptBoxProps) {
     <a className={ isSelected ?
       "flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-14 bg-gray-800 hover:bg-gray-800 group" :
       "flex py-3 px-3 items-center gap-3 relative rounded-md hover:bg-[#2A2B32] pr-14 cursor-pointer break-all group"
-      } title={ prompt.body }>
+      } title={ prompt.body } onClick={ (event) => props.onClick(event, prompt.id) }>
       <svg.instruction />
       <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative" style={{ zIndex: 520 }}>
         { prompt.name }
@@ -93,7 +93,7 @@ function PromptList() {
     return (new Date(a.timecreated).getTime() || defaultComesFirst) - (new Date(b.timecreated).getTime() || defaultComesFirst)
   }
 
-  function onClickPrompt(id: string) {
+  function onClickPrompt(_: MouseEvent, id: string) {
     setSelectedPromptID(id)
   }
 
