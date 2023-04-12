@@ -24,6 +24,10 @@ function PromptBox(props: PromptBoxProps) {
     persistPrompt(updatedPrompt)
   }
 
+  useEffect(() => {
+    setPrompt(props.prompt)
+  }, [props.prompt])
+
   function deletePrompt() {
     if (window.confirm("Are you sure you want to delete this prompt?")) {
       props.onDelete(prompt.id)
@@ -137,11 +141,16 @@ function PromptForm(props: PromptFormProps) {
     setPrompt(props.promptList[props.selectedPrompt])
   }, [props.promptList, props.selectedPrompt])
 
-  function autoSave() {
+  function autoSave(e: any, key: string) {
     console.debug("Auto saving...")
+    const updatedPrompt = {
+      ...prompt,
+      [key]: e.target.value
+    }
+
     const updatedPromptList = {
       ...props.promptList,
-      [prompt.id]: prompt,
+      [prompt.id]: updatedPrompt,
     }
     props.setPromptList(updatedPromptList)
     persistPromptList(updatedPromptList)
@@ -163,21 +172,24 @@ function PromptForm(props: PromptFormProps) {
                 tabIndex={ 1 }
                 disabled={ isDefault }
                 value={ prompt.name }
-                onBlur={ autoSave } />
+                onBlur={ (event) => autoSave(event, "name") } />
             </div>
           </div>
         </div>
         <div className="group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 bg-gray-50 dark:bg-[#444654]">
           <div className="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0 m-auto justify-center">
             <div className="relative flex flex-col gap-1 md:gap-3" style={{ width: `${containerWidthInPx - 95}px` }}>
-              <span>Prompt :</span>
-              <textarea placeholder= { isDefault ? "" : "Enter a instruction" }
+              <div className="flex items-center">
+                <svg.instruction />
+                <span className="ml-2">Prompt</span>
+              </div>
+              <textarea placeholder= { isDefault ? "" : "Enter an instruction" }
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
                 style="height: 96px; overflow-y: hidden;" 
                 tabIndex={ 2 }
                 disabled={ isDefault } 
                 value={ prompt.body }
-                onBlur={ autoSave } />
+                onBlur={ (event) => autoSave(event, "body") } />
             </div>
           </div>
         </div>
