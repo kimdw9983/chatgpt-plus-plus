@@ -82,7 +82,7 @@ interface PromptEditProps {
   namespace: string
   title?: string
   children?: JSX.Element
-  buttonText: string
+  buttonText: string | JSX.Element
   closeOnClickOutside?: boolean | Function
 }
 

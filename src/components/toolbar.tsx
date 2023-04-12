@@ -2,7 +2,7 @@ import { JSX } from "preact"
 import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { defaultUserConfig, getUserConfig, saveUserConfig } from "../managers/userConfig"
 import { BooleanProvider, useBoolean } from "../hooks/booleanContext"
-import { uiUtils } from "../utils/ui"
+import { svg, uiUtils } from "../utils/ui"
 import CppDialog from "./base/cppDialog"
 import Slider from "./base/slider"
 import Dropdown from "./base/dropdown"
@@ -22,6 +22,14 @@ const optionTest = Array.from({ length: 10 }, (_, i) => i + 1).map((num) => ({
   label: `${num} result${num === 1 ? '' : 's'}`
 }))
 
+function HoverElement() {
+  return (
+  <div className={`p-1 ${uiUtils.getBoxBorder()}`}>
+    <svg.questionMark />
+  </div>
+  )
+}
+
 function SliderSelection(props: {
   propertyName: string
   description: string
@@ -38,7 +46,7 @@ function SliderSelection(props: {
   return (
   <div className="flex ml-2">
     <BooleanProvider>
-      <HoverBox hoverElement={(<span className={`w-6 text-center ${uiUtils.getBoxBorder()}`}>❔</span>)}>
+      <HoverBox hoverElement={<HoverElement />}>
         <div className={ `${uiUtils.getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)", left: props.leftInEm + 'em' }}>
           <span className="text-sm select-none">{ props.description }</span>
         </div>
@@ -128,13 +136,13 @@ export default function Toolbar(props: ToolbarProps) {
 
     <div className="flex ml-2">
       <BooleanProvider>
-        <HoverBox hoverElement={(<span className={`w-6 text-center ${uiUtils.getBoxBorder()}`}>❔</span>)}>
+        <HoverBox hoverElement={<HoverElement />}>
           <div className={ `${uiUtils.getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)", left: '22rem'}}>
             <span className="text-sm select-none">Prompt is a piece of text or input provided to the model to guide its response or output. Well-crafted prompt can generate answer more clear, relevant, efficient. ChatGPT++ offers the access to well-known prompts repositry, Awesome ChatGPT Prompts.</span>
           </div>
         </HoverBox>
       </BooleanProvider>
-      <CppDialog buttonText="🛠️" namespace="prompt-edit" title="Edit prompts">
+      <CppDialog buttonText={<svg.modification/>} namespace="prompt-edit" title="Edit prompts">
         <PromptEdit ContainerStyle={{ height: '30rem' }}/>
       </CppDialog>
       {/* <Dropdown value={ numResults } desc={ "prompts:" } onChange={ onChangeTest } options={ optionTest } className="py-1 ml-2" /> */}

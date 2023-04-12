@@ -23,7 +23,7 @@ export const uiUtils = {
 
 //Direct svg sources for mdi icons that ChatGPT uses
 export const svg = {
-  modify() {
+  modification() {
     return (
       <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 20h9" />
@@ -60,6 +60,14 @@ export const svg = {
     )
   },
 
+  questionMark() {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="text-gray-900 dark:text-gray-200">
+        <path fill="currentColor" d="M12.025 16q-.6 0-1.012-.425t-.363-1q.075-1.05.5-1.825t1.35-1.6q1.025-.9 1.563-1.563t.537-1.512q0-1.025-.687-1.7T12 5.7q-.8 0-1.363.338t-.912.837q-.35.5-.862.675t-.988-.025q-.575-.25-.787-.825t.087-1.075Q7.9 4.5 9.125 3.75T12 3q2.625 0 4.038 1.462t1.412 3.513q0 1.25-.537 2.138t-1.688 2.012q-.85.8-1.2 1.3t-.475 1.15q-.1.625-.525 1.025t-1 .4ZM12 22q-.825 0-1.413-.588T10 20q0-.825.588-1.413T12 18q.825 0 1.413.588T14 20q0 .825-.588 1.413T12 22Z"/>
+      </svg>
+    )
+  },
+
   crossMark() {
     return (
       <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="text-gray-900 dark:text-gray-200" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
@@ -80,7 +88,7 @@ export const svg = {
 
   instruction() {
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="text-gray-900 dark:text-gray-200">
         <path fill="currentColor" d="M11 14.17L8.83 12L11 9.83L9.59 8.41L6 12l3.59 3.59zm3.41 1.42L18 12l-3.59-3.59L13 9.83L15.17 12L13 14.17z"/>
         <path fill="currentColor" d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-.14 0-.27.01-.4.04a2.008 2.008 0 0 0-1.44 1.19c-.1.23-.16.49-.16.77v14c0 .27.06.54.16.78s.25.45.43.64c.27.27.62.47 1.01.55c.13.02.26.03.4.03h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7-.25c.41 0 .75.34.75.75s-.34.75-.75.75s-.75-.34-.75-.75s.34-.75.75-.75zM19 15v4H5V5h14v10z"/>
       </svg>
