@@ -21,7 +21,7 @@ function PromptBox(props: { prompt: Prompt, selected: boolean, onDelete: (id: st
 
   function deletePrompt() {
     if (window.confirm("Are you sure you want to delete this prompt?")) {
-      destroyPrompt(prompt.id)
+      return props.onDelete(prompt.id)
     }
   }
 
@@ -60,31 +60,25 @@ function PromptList() {
           ...list
         }
         setPromptList(savedPromptList)
-      } else {
-        console.log("No saved prompt list, loading default", list) //TODO: debug code
       }
     })
   }, [])
 
   function newPrompt() {
-    persistPromptList(promptList)
-
     const template = getPromptTemplate()
     const id = template.id
-    console.log("promptList when newPrompt", promptList)
     const updatedPromptList = {
       ...promptList,
       [id]: template,
     }
-    console.debug("updatedPromptList", updatedPromptList)
     setPromptList(updatedPromptList)
     setSelectedPromptID(id)
   }
 
-  function onDeletPrompt(id: string) {
-    destroyPrompt(id).then((record) => {
-      setPromptList(record)
-    })
+  async function onDeletPrompt(id: string) {
+    const record = await destroyPrompt(id)
+    setPromptList(record)
+    return true
   }
 
   return (

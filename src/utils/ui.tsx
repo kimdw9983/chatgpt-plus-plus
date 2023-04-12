@@ -1,5 +1,3 @@
-import { JSX } from "preact/jsx-runtime"
-
 export const uiUtils = {
   toolbarButtonRight: 36,
   toolbarButtonWidth: 28,
