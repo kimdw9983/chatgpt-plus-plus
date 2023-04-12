@@ -78,10 +78,15 @@ function PromptList() {
     setPromptList(record)
   }
 
+  function sortBytimeCreated(a: Prompt, b: Prompt) {
+    const defaultComesFirst = -1
+    return (new Date(a.timecreated).getTime() || defaultComesFirst) - (new Date(b.timecreated).getTime() || defaultComesFirst)
+  }
+
   return (
   <nav className="flex h-full flex-1 flex-col space-y-1 p-2">
     <div className="flex-col flex-1 overflow-y-auto overscroll-none border-b border-white/20 -mr-2 h-full">
-      {Object.values(promptList).map(prompt => 
+      {Object.values(promptList).sort(sortBytimeCreated).map(prompt => 
         <PromptBox key={ prompt.timecreated } prompt={ prompt } selected={ prompt.id === selectedPrompt } onDelete={ onDeletPrompt } />
       )}
     </div>

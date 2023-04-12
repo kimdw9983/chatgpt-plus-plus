@@ -40,7 +40,6 @@ export type Prompt = typeof defaultPrompt
 export type PromptList = { [id: string]: Prompt }
 export async function readPromptList(): Promise<PromptList> {
   const raw = await readSyncedStorage("cppPrompt")
-  console.log("readPromptList", raw)
   if (!raw || !raw.cppPrompt || Object.keys(raw.cppPrompt).length === 1) return {}
   return raw.cppPrompt as PromptList
 }
@@ -48,7 +47,6 @@ export async function readPromptList(): Promise<PromptList> {
 export async function persistPromptList(list: PromptList) {
   const record = {cppPrompt: list}
   await persistSyncedStorage(record)
-  console.log("persistPromptList", record)
 }
 
 export async function readPrompt(id: string): Promise<Prompt | undefined> {
