@@ -31,7 +31,7 @@ function PromptBox(props: PromptBoxProps) {
   }
 
   return (
-  <div className="flex flex-col gap-2 text-gray-100 text-sm" style={{ width: "16rem" }}>
+  <div className="flex flex-col gap-2 text-gray-100 text-sm">
     <a className={ isSelected ?
       "flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-14 bg-gray-800 hover:bg-gray-800 group" :
       "flex py-3 px-3 items-center gap-3 relative rounded-md hover:bg-[#2A2B32] pr-14 cursor-pointer break-all group"
@@ -98,7 +98,7 @@ function PromptList() {
   }
 
   return (
-  <nav className="flex h-full flex-1 flex-col space-y-1 p-2">
+  <nav className="flex h-full flex-col space-y-1 p-2" style={{ width: "16rem" }}>
     <div className="flex-col flex-1 overflow-y-auto overscroll-none border-b border-white/20 h-full">
       {Object.values(promptList).sort(sortBytimeCreated).map(prompt => 
         <PromptBox key={ prompt.id } prompt={ prompt } selected={ prompt.id === selectedPrompt } onClick={ onClickPrompt } onDelete={ onDeletPrompt } />
@@ -114,18 +114,37 @@ function PromptList() {
   )
 }
 
+function PromptForm() {
+  return (
+    <div className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1">
+      <div className="flex h-full flex-col items-center text-sm dark:bg-gray-800" style={{ width: "40rem" }}>
+        <div className="group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 dark:bg-gray-800">
+          Title Area
+        </div>
+        <div className="group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 bg-gray-50 dark:bg-[#444654]">
+          Prompt Area
+        </div>
+      </div>
+    </div>
+  )
+}
+
 interface PromptEditProps {
   ContainerStyle?: JSX.CSSProperties
   ContainerClassName?: string
 }
 export default function PromptEdit(props: PromptEditProps) {
-  const defaultClassName = ""
+  const defaultClassName = "flex overflow-hidden relative"
   const ContainerClassName = `${defaultClassName} ${props.ContainerClassName ? props.ContainerClassName : ""}`
-  const ContainerStyle = props.ContainerStyle? props.ContainerStyle : {}
+  const defaultContainerStyle = {}
+  const ContainerStyle = Object.assign({}, defaultContainerStyle, props.ContainerStyle? props.ContainerStyle : {})
 
   return( 
     <div className={ ContainerClassName } style={ ContainerStyle }>
-      <PromptList />
+      <div className="flex h-full max-w-full">
+        <PromptList />
+        <PromptForm />
+      </div>
     </div>
   )
 }
