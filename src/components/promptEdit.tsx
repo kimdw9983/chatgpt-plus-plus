@@ -3,7 +3,14 @@ import { JSX } from "preact/jsx-runtime"
 import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt,  } from "../managers/prompt"
 import { svg } from "../utils/ui"
 
-function PromptBox(props: { prompt: Prompt, selected: boolean, onDelete: (id: string) => void }) {
+interface PromptBoxProps { 
+  prompt: Prompt
+  selected: boolean
+  onClick: (id: string) => void
+  onDelete: (id: string) => void 
+}
+
+function PromptBox(props: PromptBoxProps) {
   const [prompt, setPrompt] = useState<Prompt>(props.prompt)
   const isDefault = prompt.id === "default"
   const isSelected = props.selected
@@ -24,7 +31,7 @@ function PromptBox(props: { prompt: Prompt, selected: boolean, onDelete: (id: st
   }
 
   return (
-  <div className="flex flex-col gap-2 text-gray-100 text-sm" style={{ width: "12.5rem" }}>
+  <div className="flex flex-col gap-2 text-gray-100 text-sm" style={{ width: "16rem" }}>
     <a className={ isSelected ?
       "flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-14 bg-gray-800 hover:bg-gray-800 group" :
       "flex py-3 px-3 items-center gap-3 relative rounded-md hover:bg-[#2A2B32] pr-14 cursor-pointer break-all group"
@@ -59,13 +66,8 @@ function PromptList() {
 
   useEffect(() => {
     readPromptList().then((list) => {
-      if (Object.keys(list).length !== 0) {
-        const savedPromptList = {
-          ...promptList,
-          ...list
-        }
-        setPromptList(savedPromptList)
-      }
+      if (Object.keys(list).length === 0) return
+      setPromptList(list)
     })
   }, [])
 
@@ -91,11 +93,15 @@ function PromptList() {
     return (new Date(a.timecreated).getTime() || defaultComesFirst) - (new Date(b.timecreated).getTime() || defaultComesFirst)
   }
 
+  function onClickPrompt(id: string) {
+    setSelectedPromptID(id)
+  }
+
   return (
   <nav className="flex h-full flex-1 flex-col space-y-1 p-2">
-    <div className="flex-col flex-1 overflow-y-auto overscroll-none border-b border-white/20 -mr-2 h-full">
+    <div className="flex-col flex-1 overflow-y-auto overscroll-none border-b border-white/20 h-full">
       {Object.values(promptList).sort(sortBytimeCreated).map(prompt => 
-        <PromptBox key={ prompt.id } prompt={ prompt } selected={ prompt.id === selectedPrompt } onDelete={ onDeletPrompt } />
+        <PromptBox key={ prompt.id } prompt={ prompt } selected={ prompt.id === selectedPrompt } onClick={ onClickPrompt } onDelete={ onDeletPrompt } />
       )}
     </div>
     <a 
