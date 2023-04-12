@@ -133,7 +133,6 @@ function PromptForm(props: PromptFormProps) {
   const isDefault = prompt.id === "default"
 
   useEffect(() => {
-    console.log(props.promptList, props.selectedPrompt)
     setPrompt(props.promptList[props.selectedPrompt])
   }, [props.promptList, props.selectedPrompt])
 
@@ -159,7 +158,7 @@ function PromptForm(props: PromptFormProps) {
           <div className="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0 m-auto justify-center">
             <div className="relative flex flex-col gap-1 md:gap-3" style={{ width: `${containerWidthInPx - 95}px` }}>
               <span>Prompt :</span>
-              <textarea placeholder= { isDefault ? "Enter a instruction" : "" }
+              <textarea placeholder= { isDefault ? "" : "Enter a instruction" }
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
                 style="height: 96px; overflow-y: hidden;" 
                 tabIndex={2}
