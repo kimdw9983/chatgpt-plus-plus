@@ -125,6 +125,7 @@ function PromptList(props: PromptListProps) {
 interface PromptFormProps { 
   selectedPrompt: string 
   promptList: PromptList
+  setPromptList: StateUpdater<PromptList>
 }
 
 function PromptForm(props: PromptFormProps) {
@@ -135,6 +136,16 @@ function PromptForm(props: PromptFormProps) {
   useEffect(() => {
     setPrompt(props.promptList[props.selectedPrompt])
   }, [props.promptList, props.selectedPrompt])
+
+  function autoSave() {
+    console.debug("Auto saving...")
+    const updatedPromptList = {
+      ...props.promptList,
+      [prompt.id]: prompt,
+    }
+    props.setPromptList(updatedPromptList)
+    persistPromptList(updatedPromptList)
+  }
 
   return (
   <>
@@ -149,8 +160,10 @@ function PromptForm(props: PromptFormProps) {
               <input type="text" placeholder={ isDefault ? "Default prompt" : "Enter a prompt name" }
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
                 style={{ height: "44px", width: `${containerWidthInPx - 220}px` }} 
-                tabIndex={1}
-                disabled={isDefault}/>
+                tabIndex={ 1 }
+                disabled={ isDefault }
+                value={ prompt.name }
+                onBlur={ autoSave } />
             </div>
           </div>
         </div>
@@ -161,8 +174,10 @@ function PromptForm(props: PromptFormProps) {
               <textarea placeholder= { isDefault ? "" : "Enter a instruction" }
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
                 style="height: 96px; overflow-y: hidden;" 
-                tabIndex={2}
-                disabled={isDefault}/>
+                tabIndex={ 2 }
+                disabled={ isDefault } 
+                value={ prompt.body }
+                onBlur={ autoSave } />
             </div>
           </div>
         </div>
@@ -191,7 +206,7 @@ export default function PromptEdit(props: PromptEditProps) {
     <div className={ ContainerClassName } style={ ContainerStyle }>
       <div className="relative flex h-full max-w-full">
         <PromptList selectedPrompt={{ selectedPrompt, setSelectedPrompt }} promptList={{ promptList, setPromptList }}/>
-        <PromptForm selectedPrompt={ selectedPrompt } promptList={ promptList }/>
+        <PromptForm selectedPrompt={ selectedPrompt } promptList={ promptList } setPromptList={ setPromptList } />
       </div>
     </div>
   )
