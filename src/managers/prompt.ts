@@ -20,7 +20,7 @@ export const defaultPrompt = {
   id: "default",
   name: "Default",
   body: "",
-  pattern: "{&temperature}{&max_tokens}\n{&prompt}\n{&context}",
+  pattern: "{&temperature}{&max_tokens}Don't explain about hyperparameters I set.\n{&prompt}\n{&context}",
   showOnToolbar: true,
   timecreated: "",
 }
@@ -30,7 +30,7 @@ export const getPromptTemplate = (): Prompt => {
     id: uuidv4(),
     name: uuidv4(),
     body: "",
-    pattern: "{&temperature}{&max_tokens}\n{&prompt}\n{&context}",
+    pattern: defaultPrompt.pattern,
     showOnToolbar: true,
     timecreated: new Date().toISOString(),
   }

@@ -135,6 +135,7 @@ interface PromptFormProps {
 function PromptForm(props: PromptFormProps) {
   const containerWidthInPx = 640
   const [prompt, setPrompt] = useState<Prompt>(defaultPrompt)
+  const [advanced, setAdvanced] = useState<boolean>(false)
   const isDefault = prompt.id === "default"
 
   useEffect(() => {
@@ -153,6 +154,10 @@ function PromptForm(props: PromptFormProps) {
     }
     props.setPromptList(updatedPromptList)
     persistPromptList(updatedPromptList)
+  }
+
+  function toggleAdvanced() {
+    setAdvanced(!advanced)
   }
 
   return (
@@ -189,9 +194,32 @@ function PromptForm(props: PromptFormProps) {
                 disabled={ isDefault } 
                 value={ prompt.body }
                 onBlur={ (event) => autoSave(event, "body") } />
-              <button className="right-0">
-                ▼ Advnaced prompt
+              <button className="relative " onClick= { toggleAdvanced }>
+                <div className="flex absolute justify-center items-center right-0">
+                  { advanced ? <svg.arrowUp /> : <svg.arrowDown /> }
+                  <span>Advnaced prompt</span>
+                </div>
               </button>
+              {advanced && <>
+              <div className="mt-6" />
+              <div className="flex items-center">
+                <svg.gears />
+                <span className="ml-2">Pattern</span>
+              </div>
+              <textarea placeholder= { isDefault ? "" : "You can restore the default pattern by click restore button below." }
+                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
+                style="height: 96px; overflow-y: hidden;" 
+                tabIndex={ 3 }
+                disabled={ isDefault } 
+                value={ prompt.pattern }
+                onBlur={ (event) => autoSave(event, "pattern") } />
+              <button>
+                <div className="flex">
+                  <svg.restore/>
+                  <span>restore</span>
+                </div>
+              </button>
+              </>}
             </div>
           </div>
         </div>
