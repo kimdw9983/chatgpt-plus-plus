@@ -1,6 +1,6 @@
 import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
-import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt,  } from "../managers/prompt"
+import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern,  } from "../managers/prompt"
 import { svg } from "../utils/ui"
 
 interface PromptBoxProps { 
@@ -136,11 +136,17 @@ function PromptForm(props: PromptFormProps) {
   const containerWidthInPx = 640
   const [prompt, setPrompt] = useState<Prompt>(defaultPrompt)
   const [advanced, setAdvanced] = useState<boolean>(false)
+  const [resolvedPattern, setResolvedPattern] = useState<string>("")
   const isDefault = prompt.id === "default"
 
   useEffect(() => {
     setPrompt(props.promptList[props.selectedPrompt])
   }, [props.promptList, props.selectedPrompt])
+
+  useEffect(() => async function() {
+    const resolved = await resolvePattern(prompt)
+    setResolvedPattern(resolved)
+  }, [prompt])
 
   function persist(prompt: Prompt) {
     const updatedPromptList = {
@@ -151,14 +157,14 @@ function PromptForm(props: PromptFormProps) {
     persistPromptList(updatedPromptList)
   }
 
-  function autoSave(e: any, key: string) {
+  function autoSave(e: any, key: string, shouldPersist: boolean) {
     if (!e.target) return
     const updatedPrompt = {
       ...prompt,
       [key]: e.target.value
     }
 
-    persist(updatedPrompt)
+    if (shouldPersist) persist(updatedPrompt)
   }
 
   function toggleAdvanced() {
@@ -190,7 +196,7 @@ function PromptForm(props: PromptFormProps) {
                 tabIndex={ 1 }
                 disabled={ isDefault }
                 value={ prompt.name }
-                onBlur={ (event) => autoSave(event, "name") } />
+                onBlur={ (event) => autoSave(event, "name", true) } />
             </div>
           </div>
         </div>
@@ -207,7 +213,8 @@ function PromptForm(props: PromptFormProps) {
                 tabIndex={ 2 }
                 disabled={ isDefault } 
                 value={ prompt.body }
-                onBlur={ (event) => autoSave(event, "body") } />
+                onChange={ (event) => autoSave(event, "body", false) }
+                onBlur={ (event) => autoSave(event, "body", true) } />
               <button className="relative " onClick= { toggleAdvanced }>
                 <div className="flex absolute justify-center items-center right-0">
                   { advanced ? <svg.arrowUp /> : <svg.arrowDown /> }
@@ -228,7 +235,8 @@ function PromptForm(props: PromptFormProps) {
                 tabIndex={ 3 }
                 disabled={ isDefault } 
                 value={ prompt.pattern }
-                onBlur={ (event) => autoSave(event, "pattern") } />
+                onChange={ (event) => autoSave(event, "body", false) }
+                onBlur={ (event) => autoSave(event, "pattern", true) } />
               <button className="p-1" disabled={ isDefault } onClick={ resetPattern }>
                 <div className="flex w-full items-center justify-center text-sm">
                   <svg.restore/>
@@ -243,7 +251,7 @@ function PromptForm(props: PromptFormProps) {
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
                 style="height: 136px; overflow-y: hidden;" 
                 readOnly
-                value={ prompt.pattern } />
+                value={ resolvedPattern } />
               </>}
             </div>
           </div>

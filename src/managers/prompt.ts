@@ -1,3 +1,4 @@
+import { UserConfig, defaultUserConfig } from './userConfig'
 import { uuidv4 } from "../utils/common"
 import { readSyncedStorage, persistSyncedStorage } from "../utils/storage"
 
@@ -65,4 +66,18 @@ export async function destroyPrompt(id: string): Promise<PromptList> {
   delete list[id]
   await persistPromptList(list)
   return list
+}
+
+export async function resolvePattern(prompt: Prompt): Promise<string> {
+  const userConfig = await readSyncedStorage(Object.keys(defaultUserConfig)) as UserConfig
+  const mapping: Record<string, string> = {
+    "{&temperature}": userConfig.cppTemperatureEnabled ? `temperature ${userConfig.cppTemperature} ` : "",
+    "{&max_tokens}": userConfig.cppMaxTokensEnabled? `max_tokens ${userConfig.cppMaxTokens} ` : "",
+    "{&prompt}": prompt.body,
+    "{&context}": "'Your message on chat'",
+  }
+
+  return Object.keys(mapping).reduce((str, keyword) => {
+    return str.replaceAll(keyword, mapping[keyword])
+  }, prompt.pattern)
 }

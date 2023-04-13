@@ -5,7 +5,7 @@ export const defaultUserConfig = {
   cppTemperatureEnabled: false,
   cppMaxTokens: 2048,
   cppMaxTokensEnabled: false,
-  cppPromptID: "empty",
+  cppPromptID: "default",
 }
 
 export type UserConfig = typeof defaultUserConfig
