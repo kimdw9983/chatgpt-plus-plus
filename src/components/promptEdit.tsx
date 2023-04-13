@@ -142,22 +142,36 @@ function PromptForm(props: PromptFormProps) {
     setPrompt(props.promptList[props.selectedPrompt])
   }, [props.promptList, props.selectedPrompt])
 
-  function autoSave(e: any, key: string) {
-    const updatedPrompt = {
-      ...prompt,
-      [key]: e.target.value
-    }
-
+  function persist(prompt: Prompt) {
     const updatedPromptList = {
-      ...props.promptList,
-      [prompt.id]: updatedPrompt,
+    ...props.promptList,
+      [prompt.id]: prompt,
     }
     props.setPromptList(updatedPromptList)
     persistPromptList(updatedPromptList)
   }
 
+  function autoSave(e: any, key: string) {
+    if (!e.target) return
+    const updatedPrompt = {
+      ...prompt,
+      [key]: e.target.value
+    }
+
+    persist(updatedPrompt)
+  }
+
   function toggleAdvanced() {
     setAdvanced(!advanced)
+  }
+
+  function resetPattern() {
+    const updatedPrompt = {
+      ...prompt,
+      pattern: defaultPrompt.pattern
+    }
+
+    persist(updatedPrompt)
   }
 
   return (
@@ -200,7 +214,8 @@ function PromptForm(props: PromptFormProps) {
                   <span>Advnaced prompt</span>
                 </div>
               </button>
-              {advanced && <>
+
+              { advanced && <> {/*TODO: add transition*/} 
               <div className="mt-6" />
               <div className="flex items-center">
                 <svg.gears />
@@ -208,15 +223,15 @@ function PromptForm(props: PromptFormProps) {
               </div>
               <textarea placeholder= { isDefault ? "" : "You can restore the default pattern by click restore button below." }
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
-                style="height: 96px; overflow-y: hidden;" 
+                style="height: 112px; overflow-y: hidden;" 
                 tabIndex={ 3 }
                 disabled={ isDefault } 
                 value={ prompt.pattern }
                 onBlur={ (event) => autoSave(event, "pattern") } />
-              <button>
-                <div className="flex">
+              <button className="p-1" disabled={ isDefault } onClick={ resetPattern }>
+                <div className="flex w-full items-center justify-center text-sm">
                   <svg.restore/>
-                  <span>restore</span>
+                  <span className="pl-1">restore</span>
                 </div>
               </button>
               </>}
