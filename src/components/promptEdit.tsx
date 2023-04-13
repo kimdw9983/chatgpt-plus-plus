@@ -215,7 +215,8 @@ function PromptForm(props: PromptFormProps) {
                 </div>
               </button>
 
-              { advanced && <> {/*TODO: add transition*/} 
+              { advanced && <> 
+              {/*TODO: add transition*/} 
               <div className="mt-6" />
               <div className="flex items-center">
                 <svg.gears />
@@ -234,6 +235,15 @@ function PromptForm(props: PromptFormProps) {
                   <span className="pl-1">restore</span>
                 </div>
               </button>
+              <div className="flex items-center">
+                <svg.preview/>
+                <span className="ml-2">Preview</span>
+              </div>
+              <textarea placeholder= { "Warning: there is no message to send" }
+                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
+                style="height: 136px; overflow-y: hidden;" 
+                readOnly
+                value={ prompt.pattern } />
               </>}
             </div>
           </div>
