@@ -135,40 +135,62 @@ interface PromptFormProps {
 function PromptForm(props: PromptFormProps) {
   const containerWidthInPx = 640
   const [prompt, setPrompt] = useState<Prompt>(defaultPrompt)
+
+  const [body, setBody] = useState<string>(defaultPrompt.body)
+  const [pattern, setPattern] = useState<string>(defaultPrompt.pattern)
   const [advanced, setAdvanced] = useState<boolean>(false)
   const [resolvedPattern, setResolvedPattern] = useState<string>("")
   const isDefault = prompt.id === "default"
 
-  useEffect(() => {
-    setPrompt(props.promptList[props.selectedPrompt])
-  }, [props.promptList, props.selectedPrompt])
-
   useEffect(() => async function() {
-    const resolved = await resolvePattern(prompt)
-    setResolvedPattern(resolved)
-  }, [prompt])
+    const prompt = props.promptList[props.selectedPrompt]
+
+    setBody(prompt.body)
+    setPattern(prompt.pattern)
+    setPrompt(prompt)
+    setResolvedPattern(await resolvePattern(prompt))
+  }, [props.promptList, props.selectedPrompt])
 
   function persist(prompt: Prompt) {
     const updatedPromptList = {
-    ...props.promptList,
+      ...props.promptList,
       [prompt.id]: prompt,
     }
-    props.setPromptList(updatedPromptList)
+
     persistPromptList(updatedPromptList)
   }
 
-  function autoSave(e: any, key: string, shouldPersist: boolean) {
+  function autoSave(e: any, key: string) {
     if (!e.target) return
     const updatedPrompt = {
       ...prompt,
       [key]: e.target.value
     }
 
-    if (shouldPersist) persist(updatedPrompt)
+    setPrompt(updatedPrompt)
+    persist(updatedPrompt)
   }
 
-  function toggleAdvanced() {
-    setAdvanced(!advanced)
+  async function updateBody(e: any) {
+    const body = e.target.value
+    setBody(body)
+    
+    const promptDirty = {
+      ...prompt,
+      body: body
+    }
+    setResolvedPattern(await resolvePattern(promptDirty))
+  }
+
+  async function updatePattern(e: any) {
+    const pattern = e.target.value
+    setPattern(pattern)
+
+    const promptDirty = {
+      ...prompt,
+      pattern: pattern
+    }
+    setResolvedPattern(await resolvePattern(promptDirty))
   }
 
   function resetPattern() {
@@ -177,7 +199,12 @@ function PromptForm(props: PromptFormProps) {
       pattern: defaultPrompt.pattern
     }
 
+    setPattern(defaultPrompt.pattern)
     persist(updatedPrompt)
+  }
+
+  function toggleAdvanced() {
+    setAdvanced(!advanced)
   }
 
   return (
@@ -196,7 +223,7 @@ function PromptForm(props: PromptFormProps) {
                 tabIndex={ 1 }
                 disabled={ isDefault }
                 value={ prompt.name }
-                onBlur={ (event) => autoSave(event, "name", true) } />
+                onBlur={ (event) => autoSave(event, "name") } />
             </div>
           </div>
         </div>
@@ -212,9 +239,9 @@ function PromptForm(props: PromptFormProps) {
                 style="height: 96px; overflow-y: hidden;" 
                 tabIndex={ 2 }
                 disabled={ isDefault } 
-                value={ prompt.body }
-                onChange={ (event) => autoSave(event, "body", false) }
-                onBlur={ (event) => autoSave(event, "body", true) } />
+                value={ body }
+                onInput={ updateBody }
+                onBlur={ (event) => autoSave(event, "body") } />
               <button className="relative " onClick= { toggleAdvanced }>
                 <div className="flex absolute justify-center items-center right-0">
                   { advanced ? <svg.arrowUp /> : <svg.arrowDown /> }
@@ -234,9 +261,9 @@ function PromptForm(props: PromptFormProps) {
                 style="height: 112px; overflow-y: hidden;" 
                 tabIndex={ 3 }
                 disabled={ isDefault } 
-                value={ prompt.pattern }
-                onChange={ (event) => autoSave(event, "body", false) }
-                onBlur={ (event) => autoSave(event, "pattern", true) } />
+                value={ pattern }
+                onInput={ updatePattern }
+                onBlur={ (event) => autoSave(event, "pattern") } />
               <button className="p-1" disabled={ isDefault } onClick={ resetPattern }>
                 <div className="flex w-full items-center justify-center text-sm">
                   <svg.restore/>
