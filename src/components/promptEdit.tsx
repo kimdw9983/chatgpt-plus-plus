@@ -2,7 +2,6 @@ import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern,  } from "../managers/prompt"
 import { svg } from "../utils/ui"
-import { BooleanType, useBoolean } from "../hooks/booleanContext"
 
 interface PromptBoxProps { 
   prompt: Prompt
@@ -68,14 +67,18 @@ function PromptBox(props: PromptBoxProps) {
 }
 
 interface PromptListProps { 
-  selectedPrompt: { selectedPrompt: string, setSelectedPrompt: StateUpdater<string> }
-  promptList: { promptList: PromptList, setPromptList: StateUpdater<PromptList> }
+  selectedPrompt: string
+  setSelectedPrompt: StateUpdater<string>
+  promptList: PromptList
+  setPromptList: StateUpdater<PromptList>
 }
 
 function PromptList(props: PromptListProps) {
-  const {selectedPrompt, setSelectedPrompt} = props.selectedPrompt
-  const {promptList, setPromptList} = props.promptList
-
+  const selectedPrompt = props.selectedPrompt
+  const setSelectedPrompt = props.setSelectedPrompt
+  const promptList = props.promptList
+  const setPromptList = props.setPromptList
+  
   useEffect(() => {
     readPromptList().then((list) => {
       if (Object.keys(list).length === 0) return
@@ -131,7 +134,6 @@ interface PromptFormProps {
   selectedPrompt: string 
   promptList: PromptList
   setPromptList: StateUpdater<PromptList>
-  isShow: BooleanType
 }
 
 function PromptForm(props: PromptFormProps) {
@@ -171,14 +173,17 @@ function PromptForm(props: PromptFormProps) {
     }
   })
 
-  useEffect(() => async function() {
-    const prompt = props.promptList[props.selectedPrompt]
-
-    setBody(prompt.body)
-    setPattern(prompt.pattern)
-    setPrompt(prompt)
-    setResolvedPattern(await resolvePattern(prompt))
-  }, [props.promptList, props.selectedPrompt, isDialogOpen])
+  useEffect(() => {
+    async function updatePrompt() {
+      const prompt = props.promptList[props.selectedPrompt]
+  
+      setBody(prompt.body)
+      setPattern(prompt.pattern)
+      setPrompt(prompt)
+      setResolvedPattern(await resolvePattern(prompt))
+    }
+    updatePrompt()
+  }, [props.selectedPrompt, props.promptList, isDialogOpen])
 
   function persist(prompt: Prompt) {
     const updatedPromptList = {
@@ -336,7 +341,6 @@ interface PromptEditProps {
   ContainerClassName?: string
 }
 export default function PromptEdit(props: PromptEditProps) {
-  const isShow = useBoolean()
   const defaultClassName = "flex overflow-hidden relative"
   const ContainerClassName = `${defaultClassName} ${props.ContainerClassName ? props.ContainerClassName : ""}`
   const defaultContainerStyle = {}
@@ -348,8 +352,8 @@ export default function PromptEdit(props: PromptEditProps) {
   return( 
     <div className={ ContainerClassName } style={ ContainerStyle }>
       <div className="relative flex h-full max-w-full">
-        <PromptList selectedPrompt={{ selectedPrompt, setSelectedPrompt }} promptList={{ promptList, setPromptList }}/>
-        <PromptForm selectedPrompt={ selectedPrompt } promptList={ promptList } setPromptList={ setPromptList } isShow={isShow} />
+        <PromptList selectedPrompt={ selectedPrompt} setSelectedPrompt={ setSelectedPrompt } promptList={ promptList } setPromptList={ setPromptList }/>
+        <PromptForm selectedPrompt={ selectedPrompt } promptList={ promptList } setPromptList={ setPromptList } />
       </div>
     </div>
   )
