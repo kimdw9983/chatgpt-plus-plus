@@ -235,7 +235,7 @@ function PromptForm(props: PromptFormProps) {
                 <span className="ml-2">Prompt</span>
               </div>
               <textarea placeholder= { isDefault ? "" : "Enter an instruction" }
-                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
+                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white text-sm disabled:text-gray-300 disabled:italic"
                 style="height: 96px; overflow-y: hidden;" 
                 tabIndex={ 2 }
                 disabled={ isDefault } 
@@ -245,7 +245,7 @@ function PromptForm(props: PromptFormProps) {
               <button className="relative " onClick= { toggleAdvanced }>
                 <div className="flex absolute justify-center items-center right-0">
                   { advanced ? <svg.arrowUp /> : <svg.arrowDown /> }
-                  <span>Advnaced prompt</span>
+                  <span className="text-gray-300 hover:text-white">Advnaced prompt</span>
                 </div>
               </button>
 
@@ -256,26 +256,28 @@ function PromptForm(props: PromptFormProps) {
                 <svg.gears />
                 <span className="ml-2">Pattern</span>
               </div>
-              <textarea placeholder= { isDefault ? "" : "You can restore the default pattern by the button below." }
-                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white text-sm"
+              <textarea placeholder= { isDefault ? "(Default prompt is empty)" : "You can restore the default pattern by the button below." }
+                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white text-sm disabled:text-gray-300 disabled:italic"
                 style="height: 112px; overflow-y: hidden;" 
                 tabIndex={ 3 }
                 disabled={ isDefault } 
                 value={ pattern }
                 onInput={ updatePattern }
                 onBlur={ (event) => autoSave(event, "pattern") } />
+              {!isDefault && (
               <button className="p-1" disabled={ isDefault } onClick={ resetPattern }>
                 <div className="flex w-full items-center justify-center text-sm">
                   <svg.restore/>
                   <span className="pl-1">back to default</span>
                 </div>
               </button>
-              <div className="flex items-center">
+              )}
+              <div className="flex items-center mt-2">
                 <svg.preview/>
                 <span className="ml-2">Preview</span>
               </div>
               <textarea placeholder= { "Warning: there is no message to send" }
-                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white text-sm"
+                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white text-sm text-gray-300"
                 style="height: 136px; overflow-y: hidden;" 
                 readOnly
                 value={ resolvedPattern } />

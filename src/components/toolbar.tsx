@@ -185,7 +185,7 @@ export default function Toolbar(props: ToolbarProps) {
         </HoverBox>
       </BooleanProvider>
       <PromptDropdown />
-      <CppDialog buttonText={<svg.modification/>} namespace="prompt-edit" title="Edit prompts">
+      <CppDialog buttonText={<div className="text-gray-300 hover:text-white"><svg.modification/></div>} namespace="prompt-edit" title="Edit prompts">
         <PromptEdit ContainerStyle={{ height: '30rem' }}/>
       </CppDialog>
     </div>
