@@ -27,9 +27,11 @@ export const defaultPrompt = {
 }
 
 export const getPromptTemplate = (): Prompt => {
+  const id = uuidv4()
+
   return {
-    id: uuidv4(),
-    name: uuidv4(),
+    id: id,
+    name: id,
     body: "",
     pattern: defaultPrompt.pattern,
     showOnToolbar: true,

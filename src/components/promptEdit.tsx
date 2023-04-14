@@ -138,16 +138,14 @@ interface PromptFormProps {
 
 function PromptForm(props: PromptFormProps) {
   const containerWidthInPx = 640
-  const [prompt, setPrompt] = useState<Prompt>(defaultPrompt)
   const [isDialogOpen, setDialogOpen] = useState<boolean>(true)
-
   const [body, setBody] = useState<string>(defaultPrompt.body)
   const [pattern, setPattern] = useState<string>(defaultPrompt.pattern)
   const [advanced, setAdvanced] = useState<boolean>(false)
   const [resolvedPattern, setResolvedPattern] = useState<string>("")
 
   document.querySelector<HTMLDivElement>("#cpp-dialog-root")?.style.display == "none"
-  const isDefault = prompt.id === "default"
+  const isDefault = props.promptList[props.selectedPrompt].id === "default"
 
   //Check if this dialog is currently shown, currently only checks whether the root's display is none. 
   //Unnecessary re-rendering would happen if multiple dialogs are being created.
@@ -179,7 +177,6 @@ function PromptForm(props: PromptFormProps) {
   
       setBody(prompt.body)
       setPattern(prompt.pattern)
-      setPrompt(prompt)
       setResolvedPattern(await resolvePattern(prompt))
     }
     updatePrompt()
@@ -192,16 +189,16 @@ function PromptForm(props: PromptFormProps) {
     }
 
     persistPromptList(updatedPromptList)
+    props.setPromptList(updatedPromptList)
   }
 
   function autoSave(e: any, key: string) {
     if (!e.target) return
     const updatedPrompt = {
-      ...prompt,
+      ...props.promptList[props.selectedPrompt],
       [key]: e.target.value
     }
 
-    setPrompt(updatedPrompt)
     persist(updatedPrompt)
   }
 
@@ -210,7 +207,7 @@ function PromptForm(props: PromptFormProps) {
     setBody(body)
     
     const promptDirty = {
-      ...prompt,
+      ...props.promptList[props.selectedPrompt],
       body: body
     }
     setResolvedPattern(await resolvePattern(promptDirty))
@@ -221,7 +218,7 @@ function PromptForm(props: PromptFormProps) {
     setPattern(pattern)
 
     const promptDirty = {
-      ...prompt,
+      ...props.promptList[props.selectedPrompt],
       pattern: pattern
     }
     setResolvedPattern(await resolvePattern(promptDirty))
@@ -229,13 +226,13 @@ function PromptForm(props: PromptFormProps) {
 
   async function resetPattern() {
     const updatedPrompt = {
-      ...prompt,
+      ...props.promptList[props.selectedPrompt],
       pattern: defaultPrompt.pattern
     }
 
     setPattern(defaultPrompt.pattern)
-    persist(updatedPrompt)
     setResolvedPattern(await resolvePattern(updatedPrompt))
+    persist(updatedPrompt)
   }
 
   function toggleAdvanced() {
@@ -257,7 +254,7 @@ function PromptForm(props: PromptFormProps) {
                 style={{ height: "44px", width: `${containerWidthInPx - 220}px` }} 
                 tabIndex={ 1 }
                 disabled={ isDefault }
-                value={ prompt.name }
+                value={ props.promptList[props.selectedPrompt].name }
                 onBlur={ (event) => autoSave(event, "name") } />
             </div>
           </div>
