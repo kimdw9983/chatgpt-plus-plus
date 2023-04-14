@@ -12,16 +12,6 @@ import HoverBox from "./base/hoverBox"
 import InputBox from "./base/inputBox"
 import PromptEdit from "./promptEdit"
 
-
-function onChangeTest(e: { target: { value: string } }) {
-  console.log(e.target.value, e)
-}
-
-const optionTest = Array.from({ length: 10 }, (_, i) => i + 1).map((num) => ({
-  value: num,
-  label: `${num} result${num === 1 ? '' : 's'}`
-}))
-
 function HoverElement() {
   return (
   <div className={`p-1 ${uiUtils.getBoxBorder()}`}>
@@ -30,7 +20,7 @@ function HoverElement() {
   )
 }
 
-function SliderSelection(props: {
+interface SliderSelectionProps {
   propertyName: string
   description: string
   valueState: { value: number, setValue: StateUpdater<number> }
@@ -42,7 +32,8 @@ function SliderSelection(props: {
   inputStep: number
   sliderStep: number
   tickLabels?: Array<string>
-}) {
+}
+function SliderSelection(props: SliderSelectionProps) {
   return (
   <div className="flex ml-2">
     <BooleanProvider>

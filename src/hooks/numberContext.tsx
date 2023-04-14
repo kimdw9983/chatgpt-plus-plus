@@ -1,5 +1,5 @@
 import { createContext, JSX } from 'preact'
-import { useState, useContext, useMemo, StateUpdater } from 'preact/hooks'
+import { useState, useContext, StateUpdater } from 'preact/hooks'
 
 export interface NumberType {
   number: number

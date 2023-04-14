@@ -2,6 +2,7 @@ import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern,  } from "../managers/prompt"
 import { svg } from "../utils/ui"
+import { BooleanType, useBoolean } from "../hooks/booleanContext"
 
 interface PromptBoxProps { 
   prompt: Prompt
@@ -130,6 +131,7 @@ interface PromptFormProps {
   selectedPrompt: string 
   promptList: PromptList
   setPromptList: StateUpdater<PromptList>
+  isShow: BooleanType
 }
 
 function PromptForm(props: PromptFormProps) {
@@ -284,7 +286,7 @@ function PromptForm(props: PromptFormProps) {
                 <svg.gears />
                 <span className="ml-2">Pattern</span>
               </div>
-              <textarea placeholder= { isDefault ? "" : "You can restore the default pattern by click restore button below." }
+              <textarea placeholder= { isDefault ? "" : "You can restore the default pattern by the button below." }
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
                 style="height: 112px; overflow-y: hidden;" 
                 tabIndex={ 3 }
@@ -295,7 +297,7 @@ function PromptForm(props: PromptFormProps) {
               <button className="p-1" disabled={ isDefault } onClick={ resetPattern }>
                 <div className="flex w-full items-center justify-center text-sm">
                   <svg.restore/>
-                  <span className="pl-1">restore</span>
+                  <span className="pl-1">back to default</span>
                 </div>
               </button>
               <div className="flex items-center">
@@ -313,7 +315,17 @@ function PromptForm(props: PromptFormProps) {
         </div>
         <div className="w-full flex-shrink-0" style="height: 4rem"/>
       </div>
-      <div className="absolute w-full bottom-0 left-0 dark:bg-gray-800" style="height: 4rem">Button Area</div>
+      <div className="absolute w-full bottom-0 left-0 dark:bg-gray-800" style="height: 4rem">
+        <div className="flex w-full h-full items-center">
+          <a class="btn relative btn-neutral ml-2" href="https://prompts.chat/" target="_blank" rel="noopener noreferrer">
+            <svg.community />
+            <div class="flex w-full items-center justify-center gap-2">Community prompts</div>
+          </a>
+          <button class="btn relative btn-neutral ml-auto mr-2" style="width: 6rem">
+            <div class="flex w-full items-center justify-center gap-2">Close</div>
+          </button>
+        </div>
+      </div>
     </div>
   </>
   )
@@ -324,6 +336,7 @@ interface PromptEditProps {
   ContainerClassName?: string
 }
 export default function PromptEdit(props: PromptEditProps) {
+  const isShow = useBoolean()
   const defaultClassName = "flex overflow-hidden relative"
   const ContainerClassName = `${defaultClassName} ${props.ContainerClassName ? props.ContainerClassName : ""}`
   const defaultContainerStyle = {}
@@ -336,7 +349,7 @@ export default function PromptEdit(props: PromptEditProps) {
     <div className={ ContainerClassName } style={ ContainerStyle }>
       <div className="relative flex h-full max-w-full">
         <PromptList selectedPrompt={{ selectedPrompt, setSelectedPrompt }} promptList={{ promptList, setPromptList }}/>
-        <PromptForm selectedPrompt={ selectedPrompt } promptList={ promptList } setPromptList={ setPromptList } />
+        <PromptForm selectedPrompt={ selectedPrompt } promptList={ promptList } setPromptList={ setPromptList } isShow={isShow} />
       </div>
     </div>
   )
