@@ -108,7 +108,7 @@ function PromptDropdown() {
   })
 
   return (
-    <Dropdown value={ selectedPrompt } onChange={ onChangePrompt } options={ options } className="py-1 mr-2" /> 
+    <Dropdown value={ selectedPrompt } onChange={ onChangePrompt } options={ options } desc={ "prompt" } className="py-1 mx-2 text-ellipsis" style={{ width: "10rem" }} /> 
   )
 }
 
