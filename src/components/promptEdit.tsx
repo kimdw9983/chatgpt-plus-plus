@@ -292,7 +292,7 @@ function PromptForm(props: PromptFormProps) {
                 <span className="ml-2">Pattern</span>
               </div>
               <textarea placeholder= { isDefault ? "" : "You can restore the default pattern by the button below." }
-                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
+                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white text-sm"
                 style="height: 112px; overflow-y: hidden;" 
                 tabIndex={ 3 }
                 disabled={ isDefault } 
@@ -310,7 +310,7 @@ function PromptForm(props: PromptFormProps) {
                 <span className="ml-2">Preview</span>
               </div>
               <textarea placeholder= { "Warning: there is no message to send" }
-                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white"
+                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white text-sm"
                 style="height: 136px; overflow-y: hidden;" 
                 readOnly
                 value={ resolvedPattern } />
