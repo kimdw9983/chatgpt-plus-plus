@@ -5,13 +5,13 @@ import { BooleanProvider, useBoolean } from "../hooks/booleanContext"
 import { svg, uiUtils } from "../utils/ui"
 import CppDialog from "./base/cppDialog"
 import Slider from "./base/slider"
-import Dropdown, { DropDownProps } from "./base/dropdown"
+import Dropdown from "./base/dropdown"
 import ToggleButton from "./base/toggleButton"
 import ConditionalPopup from "./base/contitionalPopup"
 import HoverBox from "./base/hoverBox"
 import InputBox from "./base/inputBox"
 import PromptEdit from "./promptEdit"
-import { PromptList, defaultPrompt, defaultPromptSetting, readPromptList, readPromptSetting, sortBytimeCreated } from "../managers/prompt"
+import { defaultPromptSetting, persistPromptSetting, readPromptList, readPromptSetting, sortBytimeCreated } from "../managers/prompt"
 
 function HoverElement() {
   return (
@@ -62,6 +62,7 @@ function SliderSelection(props: SliderSelectionProps) {
 }
   
 function PromptDropdown() {
+  const [isDialogOpen, setDialogOpen] = useState<boolean>(false)
   const [options, setOptions] = useState<{ value: string | number, label: string }[]>([])
   const [selectedPrompt, setSelectedPrompt] = useState<string>(defaultPromptSetting.cppSelectedPromptID)
 
@@ -72,16 +73,18 @@ function PromptDropdown() {
       setOptions(filtered)
     })
     readPromptSetting().then((setting) => {
+      console.log(setting.cppSelectedPromptID)
       setSelectedPrompt(setting.cppSelectedPromptID)
     })
   }
 
   useEffect(() => {
     readPersistent()
-  }, [])
+  }, [isDialogOpen])
 
   function onChangePrompt(e: any) {
     setSelectedPrompt(e.target.value)
+    persistPromptSetting({cppSelectedPromptID: e.target.value})
   }
 
   //Check if this dialog is currently shown, currently only checks whether the root's display is none. 
@@ -93,7 +96,7 @@ function PromptDropdown() {
     const observer = new MutationObserver(mutationsList => {
       for (const mutation of mutationsList) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-          readPersistent()
+          setDialogOpen(dialogRoot.style.display !== "none")
         }
       }
     })
@@ -176,7 +179,7 @@ export default function Toolbar(props: ToolbarProps) {
     <div className="flex ml-2">
       <BooleanProvider>
         <HoverBox hoverElement={<HoverElement />}>
-          <div className={ `${uiUtils.getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)", left: '22rem'}}>
+          <div className={ `${uiUtils.getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)", left: '22rem' }}>
             <span className="text-sm select-none">Prompt is a piece of text or input provided to the model to guide its response or output. Well-crafted prompt can generate answer more clear, relevant, efficient. ChatGPT++ offers the access to well-known prompts repositry, Awesome ChatGPT Prompts.</span>
           </div>
         </HoverBox>

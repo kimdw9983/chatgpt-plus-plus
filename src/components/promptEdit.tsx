@@ -1,6 +1,6 @@
 import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
-import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern, sortBytimeCreated, readPromptSetting,  } from "../managers/prompt"
+import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern, sortBytimeCreated, readPromptSetting, persistPromptSetting,  } from "../managers/prompt"
 import { svg } from "../utils/ui"
 
 interface PromptBoxProps { 
@@ -78,6 +78,10 @@ function PromptList(props: PromptListProps) {
   const promptList = props.promptList
   const setPromptList = props.setPromptList
 
+  useEffect(() => {
+    persistPromptSetting({cppSelectedPromptID: selectedPrompt})
+  }, [selectedPrompt])
+
   function newPrompt() {
     const template = getPromptTemplate()
     const id = template.id
@@ -121,9 +125,9 @@ interface PromptFormProps {
   selectedPrompt: string 
   promptList: PromptList
   setPromptList: StateUpdater<PromptList>
+  isDialogOpen: boolean
 }
 function PromptForm(props: PromptFormProps) {
-  const [isDialogOpen, setDialogOpen] = useState<boolean>(true)
   const [isDefault, setIsDefault] = useState<boolean>(false)
   const [name, setName] = useState<string>(defaultPrompt.name)
   const [body, setBody] = useState<string>(defaultPrompt.body)
@@ -133,34 +137,9 @@ function PromptForm(props: PromptFormProps) {
 
   document.querySelector<HTMLDivElement>("#cpp-dialog-root")?.style.display == "none"
 
-  //Check if this dialog is currently shown, currently only checks whether the root's display is none. 
-  //Unnecessary re-rendering would happen if multiple dialogs are being created.
-  useEffect(() => {
-    const dialogRoot = document.querySelector<HTMLDivElement>("#cpp-dialog-root")
-    if (!dialogRoot) return
-
-    const updateDialogOpen = () => {
-      setDialogOpen(dialogRoot.style.display !== "none")
-    }
-
-    const observer = new MutationObserver(mutationsList => {
-      for (const mutation of mutationsList) {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-          updateDialogOpen()
-        }
-      }
-    })
-    observer.observe(dialogRoot, { attributes: true })
-
-    return () => {
-      observer.disconnect()
-    }
-  })
-
   useEffect(() => {
     async function updatePrompt() {
       const prompt = props.promptList[props.selectedPrompt]
-      console.trace(prompt)
       setName(prompt.name)
       setBody(prompt.body)
       setPattern(prompt.pattern)
@@ -168,7 +147,7 @@ function PromptForm(props: PromptFormProps) {
       setResolvedPattern(await resolvePattern(prompt))
     }
     updatePrompt()
-  }, [props.selectedPrompt, props.promptList, isDialogOpen])
+  }, [props.selectedPrompt, props.promptList, props.isDialogOpen])
 
   function persist(prompt: Prompt) {
     const updatedPromptList = {
@@ -334,22 +313,50 @@ export default function PromptEdit(props: PromptEditProps) {
 
   const [selectedPrompt, setSelectedPrompt] = useState<string>(defaultPromptSetting.cppSelectedPromptID)
   const [promptList, setPromptList] = useState<PromptList>({ default: defaultPrompt })
+  const [isDialogOpen, setDialogOpen] = useState<boolean>(true)
 
+  function updateSetting() {
+    readPromptSetting().then((setting) => {
+      setSelectedPrompt(setting.cppSelectedPromptID)
+    })
+  }
+  
   useEffect(() => {
     readPromptList().then((list) => {
       if (Object.keys(list).length === 0) return
       setPromptList(list)
     })
-    readPromptSetting().then((setting) => {
-      setSelectedPrompt(setting.cppSelectedPromptID)
-    })
+    updateSetting()
+
+    //Check if this dialog is currently shown, currently only checks whether the root's display is none. 
+    //Unnecessary re-rendering would happen if multiple dialogs are being created.
+    const dialogRoot = document.querySelector<HTMLDivElement>("#cpp-dialog-root")
+    let observer: MutationObserver
+    if (dialogRoot) {
+      observer = new MutationObserver(mutationsList => {
+        for (const mutation of mutationsList) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+            setDialogOpen(dialogRoot.style.display !== "none")
+          }
+        }
+      })
+      observer.observe(dialogRoot, { attributes: true })
+    }
+
+    return () => {
+      observer.disconnect()
+    }
   }, [])
+
+  useEffect(() => {
+    updateSetting()
+  }, [isDialogOpen])
 
   return( 
     <div className={ ContainerClassName } style={ ContainerStyle }>
       <div className="relative flex h-full max-w-full">
         <PromptList selectedPrompt={ selectedPrompt } setSelectedPrompt={ setSelectedPrompt } promptList={ promptList } setPromptList={ setPromptList }/>
-        <PromptForm selectedPrompt={ selectedPrompt } promptList={ promptList } setPromptList={ setPromptList } />
+        <PromptForm selectedPrompt={ selectedPrompt } promptList={ promptList } setPromptList={ setPromptList } isDialogOpen={ isDialogOpen } />
       </div>
     </div>
   )
