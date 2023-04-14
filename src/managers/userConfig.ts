@@ -6,6 +6,11 @@ export const defaultUserConfig = {
   cppMaxTokens: 2048,
   cppMaxTokensEnabled: false,
   cppPromptID: "default",
+  cppPresencePenalty: 0,
+  cppPresencePenaltyEnabled: false,
+  cppFrequencyPenalty: 0,
+  cppFrequencyPenaltyEnabled: false
+  //TODO: make UI/model for logit_bias, best_of, n, logprobs(what even is this?)
 }
 
 export type UserConfig = typeof defaultUserConfig

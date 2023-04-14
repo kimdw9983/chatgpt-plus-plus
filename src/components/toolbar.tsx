@@ -123,6 +123,10 @@ export default function Toolbar(props: ToolbarProps) {
   const [temperatureEnabled, setTemperatureEnabled] = useState<boolean>(defaultUserConfig.cppTemperatureEnabled)
   const [maxTokens, setMaxTokens] = useState<number>(defaultUserConfig.cppMaxTokens)
   const [maxTokensEnabled, setMaxTokensEnabled] = useState<boolean>(defaultUserConfig.cppMaxTokensEnabled)
+  const [presencePenalty, setPresencePenalty] = useState<number>(defaultUserConfig.cppPresencePenalty)
+  const [presencePenaltyEnabled, setPresencePenaltyEnabled] = useState<boolean>(defaultUserConfig.cppPresencePenaltyEnabled)
+  const [frequencyPenalty, setFrequencyPenalty] = useState<number>(defaultUserConfig.cppFrequencyPenalty)
+  const [frequencyPenaltyEnabled, setFrequencyPenaltyEnabled] = useState<boolean>(defaultUserConfig.cppFrequencyPenaltyEnabled)
   
   useEffect(() => {
     getUserConfig().then((userConfig) => {
@@ -130,6 +134,10 @@ export default function Toolbar(props: ToolbarProps) {
       setTemperatureEnabled(userConfig.cppTemperatureEnabled)
       setMaxTokens(userConfig.cppMaxTokens)
       setMaxTokensEnabled(userConfig.cppMaxTokensEnabled)
+      setPresencePenalty(userConfig.cppPresencePenalty)
+      setPresencePenaltyEnabled(userConfig.cppPresencePenaltyEnabled)
+      setPresencePenalty(userConfig.cppFrequencyPenalty)
+      setFrequencyPenalty(userConfig.cppFrequencyPenalty)
     })
   }, [])
   useEffect(() => {
@@ -137,9 +145,13 @@ export default function Toolbar(props: ToolbarProps) {
       cppTemperature: temperature, 
       cppTemperatureEnabled: temperatureEnabled,
       cppMaxTokens: maxTokens,
-      cppMaxTokensEnabled: maxTokensEnabled
+      cppMaxTokensEnabled: maxTokensEnabled,
+      cppPresencePenalty: presencePenalty,
+      cppPresencePenaltyEnabled: presencePenaltyEnabled,
+      cppFrequencyPenalty: frequencyPenalty,
+      cppFrequencyPenaltyEnabled: frequencyPenaltyEnabled
     })
-  }, [temperature, temperatureEnabled, maxTokens, maxTokensEnabled])
+  }, [temperature, temperatureEnabled, maxTokens, maxTokensEnabled, presencePenalty, presencePenaltyEnabled, frequencyPenalty, frequencyPenaltyEnabled])
 
   const defaultClass = ""
   const className = `${ props?.className } ${ defaultClass }`
@@ -175,6 +187,34 @@ export default function Toolbar(props: ToolbarProps) {
       sliderStep={ 1 }
       tickLabels={["1", "4096"]}
     />
+
+    {/* <SliderSelection 
+      propertyName="presence_penalty" 
+      description="{{{Add description here}}}"
+      valueState={{ value: presencePenalty, setValue: setPresencePenalty }}
+      toggleState={{ value: presencePenaltyEnabled, setValue: setPresencePenaltyEnabled }}
+      widthInEm={ 3 }
+      leftInEm={ 20 }
+      min={ -2.0 }
+      max={ 2.0 }
+      inputStep={ 0.01 }
+      sliderStep={ 0.1 }
+      tickLabels={["-2.0", "0.0", "2.0"]}
+    /> */}
+
+    {/* <SliderSelection 
+      propertyName="frequency_penalty" 
+      description="{{{Add description here}}}"
+      valueState={{ value: frequencyPenalty, setValue: setFrequencyPenalty }}
+      toggleState={{ value: frequencyPenaltyEnabled, setValue: setFrequencyPenaltyEnabled }}
+      widthInEm={ 3 }
+      leftInEm={ 30 }
+      min={ -2.0 }
+      max={ 2.0 }
+      inputStep={ 0.01 }
+      sliderStep={ 0.1 }
+      tickLabels={["-2.0", "0.0", "2.0"]}
+    /> */}
 
     <div className="flex ml-2">
       <BooleanProvider>
