@@ -44,7 +44,7 @@ function SliderSelection(props: SliderSelectionProps) {
         </div>
       </HoverBox>
     </BooleanProvider>
-    <div className="flex items-center">
+    <div className="flex items-center text-gray-900 dark:text-gray-300 ">
       <span>{ props.propertyName }</span>
     </div>
     <BooleanProvider>
