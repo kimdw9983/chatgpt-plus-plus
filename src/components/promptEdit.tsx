@@ -1,6 +1,6 @@
 import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
-import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern,  } from "../managers/prompt"
+import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern, sortBytimeCreated, readPromptSetting,  } from "../managers/prompt"
 import { svg } from "../utils/ui"
 
 interface PromptBoxProps { 
@@ -9,7 +9,6 @@ interface PromptBoxProps {
   onClick: (event: MouseEvent, id: string) => void
   onDelete: (id: string) => void 
 }
-
 function PromptBox(props: PromptBoxProps) {
   const [prompt, setPrompt] = useState<Prompt>(props.prompt)
   const isDefault = prompt.id === "default"
@@ -78,13 +77,6 @@ function PromptList(props: PromptListProps) {
   const setSelectedPrompt = props.setSelectedPrompt
   const promptList = props.promptList
   const setPromptList = props.setPromptList
-  
-  useEffect(() => {
-    readPromptList().then((list) => {
-      if (Object.keys(list).length === 0) return
-      setPromptList(list)
-    })
-  }, [])
 
   function newPrompt() {
     const template = getPromptTemplate()
@@ -102,11 +94,6 @@ function PromptList(props: PromptListProps) {
     const record = await destroyPrompt(id)
     setSelectedPrompt("default")
     setPromptList(record)
-  }
-
-  function sortBytimeCreated(a: Prompt, b: Prompt) {
-    const defaultComesFirst = -1
-    return (new Date(a.timecreated).getTime() || defaultComesFirst) - (new Date(b.timecreated).getTime() || defaultComesFirst)
   }
 
   function onClickPrompt(_: MouseEvent, id: string) {
@@ -135,17 +122,16 @@ interface PromptFormProps {
   promptList: PromptList
   setPromptList: StateUpdater<PromptList>
 }
-
 function PromptForm(props: PromptFormProps) {
-  const containerWidthInPx = 640
   const [isDialogOpen, setDialogOpen] = useState<boolean>(true)
+  const [isDefault, setIsDefault] = useState<boolean>(false)
+  const [name, setName] = useState<string>(defaultPrompt.name)
   const [body, setBody] = useState<string>(defaultPrompt.body)
   const [pattern, setPattern] = useState<string>(defaultPrompt.pattern)
   const [advanced, setAdvanced] = useState<boolean>(false)
   const [resolvedPattern, setResolvedPattern] = useState<string>("")
 
   document.querySelector<HTMLDivElement>("#cpp-dialog-root")?.style.display == "none"
-  const isDefault = props.promptList[props.selectedPrompt].id === "default"
 
   //Check if this dialog is currently shown, currently only checks whether the root's display is none. 
   //Unnecessary re-rendering would happen if multiple dialogs are being created.
@@ -174,9 +160,11 @@ function PromptForm(props: PromptFormProps) {
   useEffect(() => {
     async function updatePrompt() {
       const prompt = props.promptList[props.selectedPrompt]
-  
+      console.trace(prompt)
+      setName(prompt.name)
       setBody(prompt.body)
       setPattern(prompt.pattern)
+      setIsDefault(prompt.id === "default")
       setResolvedPattern(await resolvePattern(prompt))
     }
     updatePrompt()
@@ -239,6 +227,7 @@ function PromptForm(props: PromptFormProps) {
     setAdvanced(!advanced)
   }
 
+  const containerWidthInPx = 640
   return (
   <>
     <div className="relative h-full w-full transition-width flex flex-col items-stretch flex-1">
@@ -254,7 +243,7 @@ function PromptForm(props: PromptFormProps) {
                 style={{ height: "44px", width: `${containerWidthInPx - 220}px` }} 
                 tabIndex={ 1 }
                 disabled={ isDefault }
-                value={ props.promptList[props.selectedPrompt].name }
+                value={ name }
                 onBlur={ (event) => autoSave(event, "name") } />
             </div>
           </div>
@@ -346,10 +335,20 @@ export default function PromptEdit(props: PromptEditProps) {
   const [selectedPrompt, setSelectedPrompt] = useState<string>(defaultPromptSetting.cppSelectedPromptID)
   const [promptList, setPromptList] = useState<PromptList>({ default: defaultPrompt })
 
+  useEffect(() => {
+    readPromptList().then((list) => {
+      if (Object.keys(list).length === 0) return
+      setPromptList(list)
+    })
+    readPromptSetting().then((setting) => {
+      setSelectedPrompt(setting.cppSelectedPromptID)
+    })
+  }, [])
+
   return( 
     <div className={ ContainerClassName } style={ ContainerStyle }>
       <div className="relative flex h-full max-w-full">
-        <PromptList selectedPrompt={ selectedPrompt} setSelectedPrompt={ setSelectedPrompt } promptList={ promptList } setPromptList={ setPromptList }/>
+        <PromptList selectedPrompt={ selectedPrompt } setSelectedPrompt={ setSelectedPrompt } promptList={ promptList } setPromptList={ setPromptList }/>
         <PromptForm selectedPrompt={ selectedPrompt } promptList={ promptList } setPromptList={ setPromptList } />
       </div>
     </div>

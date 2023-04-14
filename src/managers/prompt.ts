@@ -83,3 +83,8 @@ export async function resolvePattern(prompt: Prompt): Promise<string> {
     return str.replaceAll(keyword, mapping[keyword])
   }, prompt.pattern)
 }
+
+export function sortBytimeCreated(a: Prompt, b: Prompt) {
+  const defaultComesFirst = -1
+  return (new Date(a.timecreated).getTime() || defaultComesFirst) - (new Date(b.timecreated).getTime() || defaultComesFirst)
+}

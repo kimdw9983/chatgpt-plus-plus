@@ -5,12 +5,13 @@ import { BooleanProvider, useBoolean } from "../hooks/booleanContext"
 import { svg, uiUtils } from "../utils/ui"
 import CppDialog from "./base/cppDialog"
 import Slider from "./base/slider"
-import Dropdown from "./base/dropdown"
+import Dropdown, { DropDownProps } from "./base/dropdown"
 import ToggleButton from "./base/toggleButton"
 import ConditionalPopup from "./base/contitionalPopup"
 import HoverBox from "./base/hoverBox"
 import InputBox from "./base/inputBox"
 import PromptEdit from "./promptEdit"
+import { PromptList, defaultPrompt, defaultPromptSetting, readPromptList, readPromptSetting, sortBytimeCreated } from "../managers/prompt"
 
 function HoverElement() {
   return (
@@ -59,12 +60,59 @@ function SliderSelection(props: SliderSelectionProps) {
   </div>
   )
 }
+  
+function PromptDropdown() {
+  const [options, setOptions] = useState<{ value: string | number, label: string }[]>([])
+  const [selectedPrompt, setSelectedPrompt] = useState<string>(defaultPromptSetting.cppSelectedPromptID)
+
+  function readPersistent() {
+    readPromptList().then((list) => {
+      if (Object.keys(list).length === 0) return
+      const filtered = Object.values(list).filter(prompt => prompt.showOnToolbar || prompt.id == selectedPrompt).sort(sortBytimeCreated).map(prompt => {return {value: prompt.id, label: prompt.name}})
+      setOptions(filtered)
+    })
+    readPromptSetting().then((setting) => {
+      setSelectedPrompt(setting.cppSelectedPromptID)
+    })
+  }
+
+  useEffect(() => {
+    readPersistent()
+  }, [])
+
+  function onChangePrompt(e: any) {
+    setSelectedPrompt(e.target.value)
+  }
+
+  //Check if this dialog is currently shown, currently only checks whether the root's display is none. 
+  //Unnecessary re-rendering would happen if multiple dialogs are being created.
+  useEffect(() => {
+    const dialogRoot = document.querySelector<HTMLDivElement>("#cpp-dialog-root")
+    if (!dialogRoot) return
+
+    const observer = new MutationObserver(mutationsList => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          readPersistent()
+        }
+      }
+    })
+    observer.observe(dialogRoot, { attributes: true })
+
+    return () => {
+      observer.disconnect()
+    }
+  })
+
+  return (
+    <Dropdown value={ selectedPrompt } onChange={ onChangePrompt } options={ options } className="py-1 mr-2" /> 
+  )
+}
 
 interface ToolbarProps {
   style?: JSX.CSSProperties
   className?: string
 }
-
 export default function Toolbar(props: ToolbarProps) {
   const isShow = useBoolean()
 
@@ -133,10 +181,10 @@ export default function Toolbar(props: ToolbarProps) {
           </div>
         </HoverBox>
       </BooleanProvider>
+      <PromptDropdown />
       <CppDialog buttonText={<svg.modification/>} namespace="prompt-edit" title="Edit prompts">
         <PromptEdit ContainerStyle={{ height: '30rem' }}/>
       </CppDialog>
-      {/* <Dropdown value={ numResults } desc={ "prompts:" } onChange={ onChangeTest } options={ optionTest } className="py-1 ml-2" /> */}
     </div>
   </div>
   )
