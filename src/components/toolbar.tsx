@@ -66,16 +66,16 @@ function PromptDropdown() {
   const [options, setOptions] = useState<{ value: string | number, label: string }[]>([])
   const [selectedPrompt, setSelectedPrompt] = useState<string>(defaultPromptSetting.cppSelectedPromptID)
 
-  function readPersistent() {
-    readPromptList().then((list) => {
-      if (Object.keys(list).length === 0) return
-      const filtered = Object.values(list).filter(prompt => prompt.showOnToolbar || prompt.id == selectedPrompt).sort(sortBytimeCreated).map(prompt => {return {value: prompt.id, label: prompt.name}})
-      setOptions(filtered)
-    })
-    readPromptSetting().then((setting) => {
-      console.log(setting.cppSelectedPromptID)
-      setSelectedPrompt(setting.cppSelectedPromptID)
-    })
+  async function readPersistent() {
+    let selectedPrompt: string
+    const setting =  await readPromptSetting()
+    selectedPrompt = setting.cppSelectedPromptID
+    setSelectedPrompt(selectedPrompt)
+
+    const list = await readPromptList()
+    if (Object.keys(list).length === 0) return
+    const filtered = Object.values(list).filter(prompt => prompt.showOnToolbar || prompt.id == selectedPrompt).sort(sortBytimeCreated).map(prompt => {return {value: prompt.id, label: prompt.name}})
+    setOptions(filtered)
   }
 
   useEffect(() => {
