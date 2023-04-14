@@ -220,7 +220,7 @@ function PromptForm(props: PromptFormProps) {
     setResolvedPattern(await resolvePattern(promptDirty))
   }
 
-  function resetPattern() {
+  async function resetPattern() {
     const updatedPrompt = {
       ...prompt,
       pattern: defaultPrompt.pattern
@@ -228,6 +228,7 @@ function PromptForm(props: PromptFormProps) {
 
     setPattern(defaultPrompt.pattern)
     persist(updatedPrompt)
+    setResolvedPattern(await resolvePattern(updatedPrompt))
   }
 
   function toggleAdvanced() {
