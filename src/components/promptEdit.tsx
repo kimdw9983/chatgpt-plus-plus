@@ -321,9 +321,9 @@ function PromptForm(props: PromptFormProps) {
             <svg.community />
             <div class="flex w-full items-center justify-center gap-2">Community prompts</div>
           </a>
-          <button class="btn relative btn-neutral ml-auto mr-2" style="width: 6rem">
+          {/* <button class="btn relative btn-neutral ml-auto mr-2" style="width: 6rem">
             <div class="flex w-full items-center justify-center gap-2">Close</div>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

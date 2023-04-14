@@ -2,7 +2,6 @@ import { render } from "preact"
 import { StateUpdater, useEffect, useRef, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 import { svg } from "../../utils/ui"
-import { BooleanProvider, useBoolean } from "../../hooks/booleanContext"
 
 interface DialogTitleProps {
   closeDialog: () => void
@@ -113,23 +112,19 @@ function useDialogState(namespace: string) {
 export default function CppDialog(props: PromptEditProps) {
   const cppDialogRoot = getDialogRoot()
   const { isVisible, setVisible } = useDialogState(props.namespace)
-  const isVisibleContext = useBoolean()
   const onVisibleChangeRef = useRef<(isVisible: boolean) => void>()
 
   function onVisibilityChange(isVisible: boolean) {
     if (onVisibleChangeRef.current) onVisibleChangeRef.current(isVisible)
-    isVisibleContext.setBool(Number(isVisible))
   }
 
   function openDialog() {
     setVisible(true)
-    isVisibleContext.setBool(1)
   }
 
   useEffect(() => {
     if (!cppDialogRoot || !cppDialogRoot?.childNodes || !cppDialogRoot?.childNodes?.length) {
       render((
-      <BooleanProvider>
         <Dialog 
           namespace={ props.namespace } 
           isVisible={ isVisible }
@@ -137,8 +132,7 @@ export default function CppDialog(props: PromptEditProps) {
           onVisibleChange = {(cb) => (onVisibilityChange(cb))}
           title={ props.title }
           body={ props.children }
-          closeOnClickOutside={ props.closeOnClickOutside } />
-      </BooleanProvider>), cppDialogRoot)
+          closeOnClickOutside={ props.closeOnClickOutside } />), cppDialogRoot)
     } else {
       onVisibilityChange(isVisible)
     }
