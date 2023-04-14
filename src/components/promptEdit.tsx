@@ -135,12 +135,39 @@ interface PromptFormProps {
 function PromptForm(props: PromptFormProps) {
   const containerWidthInPx = 640
   const [prompt, setPrompt] = useState<Prompt>(defaultPrompt)
+  const [isDialogOpen, setDialogOpen] = useState<boolean>(true)
 
   const [body, setBody] = useState<string>(defaultPrompt.body)
   const [pattern, setPattern] = useState<string>(defaultPrompt.pattern)
   const [advanced, setAdvanced] = useState<boolean>(false)
   const [resolvedPattern, setResolvedPattern] = useState<string>("")
+
+  document.querySelector<HTMLDivElement>("#cpp-dialog-root")?.style.display == "none"
   const isDefault = prompt.id === "default"
+
+  //Check if this dialog is currently shown, currently only checks whether the root's display is none. 
+  //Unnecessary re-rendering would happen if multiple dialogs are being created.
+  useEffect(() => {
+    const dialogRoot = document.querySelector<HTMLDivElement>("#cpp-dialog-root")
+    if (!dialogRoot) return
+
+    const updateDialogOpen = () => {
+      setDialogOpen(dialogRoot.style.display !== "none")
+    }
+
+    const observer = new MutationObserver(mutationsList => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          updateDialogOpen()
+        }
+      }
+    })
+    observer.observe(dialogRoot, { attributes: true })
+
+    return () => {
+      observer.disconnect()
+    }
+  })
 
   useEffect(() => async function() {
     const prompt = props.promptList[props.selectedPrompt]
@@ -149,7 +176,7 @@ function PromptForm(props: PromptFormProps) {
     setPattern(prompt.pattern)
     setPrompt(prompt)
     setResolvedPattern(await resolvePattern(prompt))
-  }, [props.promptList, props.selectedPrompt])
+  }, [props.promptList, props.selectedPrompt, isDialogOpen])
 
   function persist(prompt: Prompt) {
     const updatedPromptList = {
