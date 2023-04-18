@@ -1,7 +1,7 @@
 {
   "name": "chatgpt-plus-plus",
   "private": true,
-  "version": "0.0.72",
+  "version": "0.0.73",
   "scripts": {
     "build": "node build.mjs"
   },
