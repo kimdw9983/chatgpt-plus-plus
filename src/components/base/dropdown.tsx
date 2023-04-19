@@ -2,11 +2,11 @@ import { JSX } from "preact"
 
 export interface DropDownProps {
   value: string | number
-  desc?: string | HTMLElement
   onChange: (e: any) => void
   options: { value: string | number, label: string }[]
   className?: string
   style?: JSX.CSSProperties
+  disabled?: boolean
 }
 
 export default function Dropdown(props: DropDownProps) {
@@ -17,8 +17,7 @@ export default function Dropdown(props: DropDownProps) {
 
   return (
     <div className="relative block">
-      { props?.desc }
-      <select className={ className } style={ ContainerStyle } value={ props.value } onChange={ props.onChange }>
+      <select className={ className } style={ ContainerStyle } value={ props.value } onChange={ props.onChange } disabled={ props.disabled }>
         { props.options.map(({ value, label }) => (
           <option key={ value } value={ value }>{ label }</option>
         )) }

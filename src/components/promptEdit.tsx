@@ -2,7 +2,6 @@ import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern, sortBytimeCreated, readPromptSetting, persistPromptSetting, } from "../managers/prompt"
 import svg from "../assets/svg"
-import { testRemoveSyncedStorage } from "../utils/storage"
 
 interface PromptBoxProps { 
   prompt: Prompt
@@ -235,9 +234,9 @@ function PromptForm(props: PromptFormProps) {
                 <svg.instruction />
                 <span className="ml-2">Prompt</span>
               </div>
-              <textarea placeholder= { isDefault ? "" : "Enter an instruction" }
+              <textarea placeholder= { isDefault ? "Default has no instruction" : "Enter an instruction" }
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white text-sm disabled:text-gray-300 disabled:italic"
-                style="height: 96px; overflow-y: hidden;" 
+                style={{ height: "96px", overflowY: "hidden", fontStyle: isDefault ? "italic" : "normal" }}
                 tabIndex={ 2 }
                 disabled={ isDefault } 
                 value={ body }
@@ -259,7 +258,7 @@ function PromptForm(props: PromptFormProps) {
               </div>
               <textarea placeholder= { isDefault ? "(Default prompt is empty)" : "You can restore the default pattern by the button below." }
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white text-sm disabled:text-gray-300 disabled:italic"
-                style="height: 112px; overflow-y: hidden;" 
+                style={{ height: "112px", overflowY: "hidden", fontStyle: isDefault ? "italic" : "normal" }}
                 tabIndex={ 3 }
                 disabled={ isDefault } 
                 value={ pattern }
@@ -354,8 +353,6 @@ export default function PromptEdit(props: PromptEditProps) {
   useEffect(() => {
     updateSetting()
   }, [isDialogOpen])
-
-  // testRemoveSyncedStorage("cppPrompt")
 
   return( 
     <div className={ ContainerClassName } style={ ContainerStyle }>

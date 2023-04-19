@@ -80,7 +80,7 @@ function getDialogRoot(): HTMLDivElement {
   return cppDialogRoot
 }
 interface PromptEditProps {
-  namespace: string
+  namespace: string //Namespace to prevent dialog collisions
   title?: string
   children?: JSX.Element
   buttonText: string | JSX.Element
