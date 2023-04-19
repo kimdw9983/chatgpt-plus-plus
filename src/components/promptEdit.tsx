@@ -281,7 +281,7 @@ function PromptForm(props: PromptFormProps) {
                 <pre className="text-sm text-gray-300"
                   style={{ height: "136px", overflowY: "hidden", whiteSpace: "pre-wrap"}} >
                   <span style={{fontFamily: defaultFontFamily}}>{ resolvedPattern }</span>
-                  <span style={{fontStyle: "italic"}}>Your message on chat</span>
+                  <span style={{fontStyle: "italic", textDecoration: "underline"}}>Your message on chat</span>
                 </pre>
               </div>
               </>}

@@ -21,7 +21,7 @@ export const defaultPrompt = {
   id: "default",
   name: "Default",
   body: "",
-  pattern: "{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}Don't explain about parameters I set.\n{&prompt}{&language}\n{&message}",
+  pattern: "{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}{$hide_param}{&prompt}\n{&message}\n{&language}",
   showOnToolbar: true,
   timecreated: "",
 }
@@ -72,14 +72,16 @@ export async function destroyPrompt(id: string): Promise<PromptList> {
 
 export async function resolvePattern(prompt: Prompt, context?: string): Promise<string> {
   const userConfig = await readSyncedStorage(Object.keys(defaultUserConfig)) as UserConfig
+  const isParameterSetAny = userConfig.cppTemperatureEnabled || userConfig.cppMaxTokensEnabled || userConfig.cppPresencePenaltyEnabled || userConfig.cppFrequencyPenaltyEnabled
   const mapping: Record<string, string> = {
+    "{$hide_param}": isParameterSetAny ? "Don't explain about parameters I set.\n" : "",
     "{&temperature}": userConfig.cppTemperatureEnabled ? `temperature ${userConfig.cppTemperature} ` : "",
     "{&max_tokens}": userConfig.cppMaxTokensEnabled? `max_tokens ${userConfig.cppMaxTokens} ` : "",
     "{&presence_penalty}": userConfig.cppPresencePenaltyEnabled? `presence_penalty ${userConfig.cppPresencePenalty} ` : "",
     "{&frequency_penalty}": userConfig.cppFrequencyPenaltyEnabled? `frequency_penalty ${userConfig.cppFrequencyPenalty} ` : "",
     "{&language}": userConfig.cppLanguageEnabled? `in ${userConfig.cppLanguage}` : "",
     "{&prompt}": prompt.body,
-    "{&message}": context ? context : "",
+    "{&message}": context ? context : "{&message}",
   }
 
   return Object.keys(mapping).reduce((str, keyword) => {
