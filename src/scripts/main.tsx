@@ -1,7 +1,7 @@
 import { render } from 'preact'
 import { BooleanProvider } from '../hooks/booleanContext'
 import { getElement, getChatgptRoot } from '../utils/element'
-import { svg } from '../utils/ui'
+import svg from '../assets/svg'
 import ToggleButton from '../components/base/toggleButton'
 import Toolbar from '../components/toolbar'
 

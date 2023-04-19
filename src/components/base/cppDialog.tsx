@@ -1,7 +1,7 @@
 import { render } from "preact"
 import { StateUpdater, useEffect, useRef, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
-import { svg } from "../../utils/ui"
+import svg from "../../assets/svg"
 
 interface DialogTitleProps {
   closeDialog: () => void

@@ -1,7 +1,7 @@
 import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern, sortBytimeCreated, readPromptSetting, persistPromptSetting,  } from "../managers/prompt"
-import { svg } from "../utils/ui"
+import svg from "../assets/svg"
 
 interface PromptBoxProps { 
   prompt: Prompt

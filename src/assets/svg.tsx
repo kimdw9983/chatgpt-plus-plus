@@ -1,5 +1,5 @@
 //Direct svg sources for mdi icons that ChatGPT uses
-export const svg = {
+export default {
   modification() {
     return (
       <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
