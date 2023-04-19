@@ -39,7 +39,7 @@ interface SliderSelectionProps {
 }
 function SliderSelection(props: SliderSelectionProps) {
   return (
-  <div className="flex ml-2">
+  <div className="flex">
     <BooleanProvider>
       <HoverBox hoverElement={<HoverElement />}>
         <div className={ `${getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)" }}>
@@ -156,9 +156,9 @@ export default function Toolbar(props: ToolbarProps) {
     })
   }, [temperature, temperatureEnabled, maxTokens, maxTokensEnabled, presencePenalty, presencePenaltyEnabled, frequencyPenalty, frequencyPenaltyEnabled])
 
-  const defaultClass = `cpp-toolbar ${getBoxClassName()} absolute py-3 md:pl-4 flex-wrap w-full`
+  const defaultClass = `cpp-toolbar absolute ${getBoxClassName()} py-3 md:pl-4 gap-2`
   const className = `${props?.className ? props.className : ""} ${defaultClass}`
-  const defaultStyle = { display: isShow.bool ? "flex" : "none" }
+  const defaultStyle = { display: isShow.bool ? "flex" : "none", flexWrap: 'wrap' }
   const style = Object.assign({}, defaultStyle, props?.style)
 
   return (
@@ -189,6 +189,20 @@ export default function Toolbar(props: ToolbarProps) {
       tickLabels={["1", "4096"]}
     />
 
+    <div className="flex ml-2">
+      <BooleanProvider>
+        <HoverBox hoverElement={<HoverElement />}>
+          <div className={ `${getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)" }}>
+            <span className="text-sm select-none">Prompt is a piece of text or input provided to the model to guide its response or output. Well-crafted prompt can generate answer more clear, relevant, efficient. ChatGPT++ offers the access to well-known prompts repositry, Awesome ChatGPT Prompts.</span>
+          </div>
+        </HoverBox>
+      </BooleanProvider>
+      <PromptDropdown />
+      <CppDialog buttonText={<div className="text-gray-300 hover:text-white"><svg.modification/></div>} namespace="prompt-edit" title="Edit prompts">
+        <PromptEdit ContainerStyle={{ height: '30rem' }}/>
+      </CppDialog>
+    </div>
+
     <SliderSelection 
       propertyName="presence_penalty" 
       description="{{{Add description here}}}"
@@ -214,20 +228,6 @@ export default function Toolbar(props: ToolbarProps) {
       sliderStep={ 0.1 }
       tickLabels={["-2.0", "0.0", "2.0"]}
     />
-
-    <div className="flex ml-2">
-      <BooleanProvider>
-        <HoverBox hoverElement={<HoverElement />}>
-          <div className={ `${getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)" }}>
-            <span className="text-sm select-none">Prompt is a piece of text or input provided to the model to guide its response or output. Well-crafted prompt can generate answer more clear, relevant, efficient. ChatGPT++ offers the access to well-known prompts repositry, Awesome ChatGPT Prompts.</span>
-          </div>
-        </HoverBox>
-      </BooleanProvider>
-      <PromptDropdown />
-      <CppDialog buttonText={<div className="text-gray-300 hover:text-white"><svg.modification/></div>} namespace="prompt-edit" title="Edit prompts">
-        <PromptEdit ContainerStyle={{ height: '30rem' }}/>
-      </CppDialog>
-    </div>
   </div>
   )
 }
