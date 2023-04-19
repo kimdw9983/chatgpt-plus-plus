@@ -2,6 +2,7 @@ import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern, sortBytimeCreated, readPromptSetting, persistPromptSetting, } from "../managers/prompt"
 import svg from "../assets/svg"
+import { defaultFontFamily } from "../utils/ui"
 
 interface PromptBoxProps { 
   prompt: Prompt
@@ -276,11 +277,13 @@ function PromptForm(props: PromptFormProps) {
                 <svg.preview/>
                 <span className="ml-2">Preview</span>
               </div>
-              <textarea placeholder= { "Warning: there is no message to send" }
-                class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white text-sm text-gray-300"
-                style="height: 136px; overflow-y: hidden;" 
-                readOnly
-                value={ resolvedPattern } />
+              <div className="p-1 border-b border-black/10 dark:border-gray-900/50 dark:focus:ring-white rounded-md dark:bg-gray-800">
+                <pre className="text-sm text-gray-300"
+                  style={{ height: "136px", overflowY: "hidden", whiteSpace: "pre-wrap"}} >
+                  <span style={{fontFamily: defaultFontFamily}}>{ resolvedPattern }</span>
+                  <span style={{fontStyle: "italic"}}>Your message on chat</span>
+                </pre>
+              </div>
               </>}
             </div>
           </div>

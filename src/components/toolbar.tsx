@@ -306,7 +306,7 @@ export default function Toolbar(props: ToolbarProps) {
       <LanguageDropdown />
     </div>
     
-    {/* <button onClick={ () => testRemoveSyncedStorage("cppPrompt") }>REMOVE(TEST)</button> */}
+    <button onClick={ () => testRemoveSyncedStorage("cppPrompt") }>REMOVE(TEST)</button>
   </div>
   )
 }

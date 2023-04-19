@@ -21,7 +21,7 @@ export const defaultPrompt = {
   id: "default",
   name: "Default",
   body: "",
-  pattern: "{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}Don't explain about parameters I set.\n{&prompt}{&language}\n{&context}",
+  pattern: "{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}Don't explain about parameters I set.\n{&prompt}{&language}\n{&message}",
   showOnToolbar: true,
   timecreated: "",
 }
@@ -70,7 +70,7 @@ export async function destroyPrompt(id: string): Promise<PromptList> {
   return list
 }
 
-export async function resolvePattern(prompt: Prompt): Promise<string> {
+export async function resolvePattern(prompt: Prompt, context?: string): Promise<string> {
   const userConfig = await readSyncedStorage(Object.keys(defaultUserConfig)) as UserConfig
   const mapping: Record<string, string> = {
     "{&temperature}": userConfig.cppTemperatureEnabled ? `temperature ${userConfig.cppTemperature} ` : "",
@@ -79,7 +79,7 @@ export async function resolvePattern(prompt: Prompt): Promise<string> {
     "{&frequency_penalty}": userConfig.cppFrequencyPenaltyEnabled? `frequency_penalty ${userConfig.cppFrequencyPenalty} ` : "",
     "{&language}": userConfig.cppLanguageEnabled? `in ${userConfig.cppLanguage}` : "",
     "{&prompt}": prompt.body,
-    "{&context}": "'Your message on chat'",
+    "{&message}": context ? context : "",
   }
 
   return Object.keys(mapping).reduce((str, keyword) => {
