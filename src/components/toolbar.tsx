@@ -28,11 +28,11 @@ function HoverElement() {
 
 function PropertyLabel(props: { title: string }) {
   return (
-    <div className="flex items-center text-gray-900 dark:text-gray-300">
-      <span>{ props.title }</span>
-    </div>
+  <div className="flex items-center text-gray-900 dark:text-gray-300">
+    <span>{ props.title }</span>
+  </div>
   )
-  }
+}
 
 function DescriptionBox(props: { description: string }) {
   return (
@@ -48,21 +48,27 @@ function DescriptionBox(props: { description: string }) {
 
 interface SettingsBoxProps {
   propertyName: string
-  widthInEm: number
   toggleState: { value: boolean, setValue: StateUpdater<boolean> }
   bodyState: { value: any, setValue: StateUpdater<any> }
   children: JSX.Element | JSX.Element[]
 }
 function SettingBox(props: SettingsBoxProps) {
+  const innerText = () => (
+    <span className="text-ellipsis overflow-hidden" style="white-space: nowrap;">
+      { props.toggleState.value ? props.bodyState.value : "❌" }
+    </span>
+  )
+
   return (
   <BooleanProvider>
     <ConditionalPopup className={ `${getBoxClassName()} absolute flex-col` } style={{ width: '256px', transform: "translate(0, -100%)", top: "0" }} >
       { props.children }
     </ConditionalPopup>
-    <ToggleButton innerText={ <span>{ props.toggleState.value ? props.bodyState.value : "❌" }</span> } className={ `cpp-${props.propertyName}-button` } style={{ width: props.widthInEm + "em" }} />
+    <ToggleButton innerText={ innerText() } className={ `cpp-${props.propertyName}-button grow ml-1` }/>
   </BooleanProvider>
   )
 }
+
 interface SliderSelectionProps {
   propertyName: string
   description: string
@@ -77,10 +83,10 @@ interface SliderSelectionProps {
 }
 function SliderSelection(props: SliderSelectionProps) {
   return (
-  <div className="flex">
+  <div className="flex" style="flex-basis: 31%">
     <DescriptionBox description={ props.description } />
     <PropertyLabel title={ props.propertyName } />
-    <SettingBox propertyName={ props.propertyName } widthInEm={ props.widthInEm } toggleState={ props.toggleState } bodyState={ props.bodyState }>
+    <SettingBox propertyName={ props.propertyName } toggleState={ props.toggleState } bodyState={ props.bodyState }>
       <div className="flex justify-between w-full text-sm">
         <InputBox type="checkbox" context={{ value: props.toggleState.value, setValue: props.toggleState.setValue }} inputClassName="ml-2" labelText="Enabled" />
         <InputBox type="number" min={ props.min } max={ props.max } step={ props.inputStep } context={{ value: props.bodyState.value, setValue: props.bodyState.setValue }} inputStyle={{ width: (props.widthInEm + 1) + 'em'}} enabled={ props.toggleState.value } />
@@ -169,10 +175,10 @@ function LanguageDropdown() {
   }
 
   return (
-  <SettingBox propertyName='language' widthInEm={ 6 } toggleState={{ value: languageEnabled, setValue: setLanguageEnabled }} bodyState={{ value: language, setValue: setLanguage }}>
-    <div className="flex justify-between w-full text-sm">
+  <SettingBox propertyName='language' toggleState={{ value: languageEnabled, setValue: setLanguageEnabled }} bodyState={{ value: language, setValue: setLanguage }}>
+    <div className="flex w-full text-sm" style="width: 20em">
       <InputBox type="checkbox" context={{ value: languageEnabled, setValue: setLanguageEnabled }} inputClassName="ml-2" labelText="Enabled" onChange={ onChangeLanguageEnabled }/>
-      <Dropdown value={ language } onChange={ onChangeLanguage } options={ options } className="py-1 mx-2 text-ellipsis" style={{ width: "10rem" }} disabled={ languageEnabled } />
+      <Dropdown value={ language } onChange={ onChangeLanguage } options={ options } className="py-1 mx-2 text-ellipsis" style={{ width: "10rem" }} disabled={ !languageEnabled } />
     </div>
   </SettingBox>
   )
@@ -219,7 +225,7 @@ export default function Toolbar(props: ToolbarProps) {
     })
   }, [temperature, temperatureEnabled, maxTokens, maxTokensEnabled, presencePenalty, presencePenaltyEnabled, frequencyPenalty, frequencyPenaltyEnabled])
 
-  const defaultClass = `cpp-toolbar absolute ${getBoxClassName()} py-3 md:pl-4 gap-2`
+  const defaultClass = `cpp-toolbar absolute ${getBoxClassName()} py-3 pl-2`
   const className = `${props?.className ? props.className : ""} ${defaultClass}`
   const defaultStyle = { display: isShow.bool ? "flex" : "none", flexWrap: 'wrap' }
   const style = Object.assign({}, defaultStyle, props?.style)
@@ -252,7 +258,7 @@ export default function Toolbar(props: ToolbarProps) {
       tickLabels={["1", "4096"]}
     />
 
-    <div className="flex">
+    <div className="flex" style="flex-basis: 31%">
       <DescriptionBox 
         description="Prompt is a piece of text or input provided to the model to guide its response or output. Well-crafted prompt can generate answer more clear, relevant, efficient. ChatGPT++ offers the access to well-known prompts repositry, Awesome ChatGPT Prompts."
       />
@@ -292,11 +298,11 @@ export default function Toolbar(props: ToolbarProps) {
       tickLabels={["-2.0", "0.0", "2.0"]}
     />
 
-    <div className="flex">
+    <div className="flex" style="flex-basis: 31%">
       <DescriptionBox 
         description="{{{Add description here}}}"
       />
-      <PropertyLabel title="Answer language"/>
+      <PropertyLabel title="language"/>
       <LanguageDropdown />
     </div>
     
