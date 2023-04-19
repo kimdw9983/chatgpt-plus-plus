@@ -78,6 +78,8 @@ function PromptDropdown() {
     const list = await readPromptList()
     if (Object.keys(list).length === 0) return
     const filtered = Object.values(list).filter(prompt => prompt.showOnToolbar || prompt.id == selectedPrompt).sort(sortBytimeCreated).map(prompt => {return {value: prompt.id, label: prompt.name}})
+    console.log(filtered, filtered.length)
+    if (filtered.length === 0) filtered.push({value: "default", label: "Default"})
     setOptions(filtered)
   }
 

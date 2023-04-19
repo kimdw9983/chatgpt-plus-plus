@@ -9,7 +9,9 @@ export const defaultUserConfig = {
   cppPresencePenalty: 0,
   cppPresencePenaltyEnabled: false,
   cppFrequencyPenalty: 0,
-  cppFrequencyPenaltyEnabled: false
+  cppFrequencyPenaltyEnabled: false,
+  cppLanguage: "English",
+  cppLanguageEnabled: false,
   //TODO: make UI/model for logit_bias, best_of, n, logprobs(what even is this?)
 }
 

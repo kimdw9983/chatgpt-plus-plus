@@ -355,7 +355,7 @@ export default function PromptEdit(props: PromptEditProps) {
     updateSetting()
   }, [isDialogOpen])
 
-  // testRemoveSyncedStorage("cppPrompt")
+  testRemoveSyncedStorage("cppPrompt")
 
   return( 
     <div className={ ContainerClassName } style={ ContainerStyle }>
