@@ -2,7 +2,7 @@ import { JSX } from "preact"
 import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { defaultUserConfig, getUserConfig, saveUserConfig } from "../managers/userConfig"
 import { BooleanProvider, useBoolean } from "../hooks/booleanContext"
-import { svg, uiUtils } from "../utils/ui"
+import { svg } from "../utils/ui"
 import CppDialog from "./base/cppDialog"
 import Slider from "./base/slider"
 import Dropdown from "./base/dropdown"
@@ -13,9 +13,17 @@ import InputBox from "./base/inputBox"
 import PromptEdit from "./promptEdit"
 import { defaultPromptSetting, persistPromptSetting, readPromptList, readPromptSetting, sortBytimeCreated } from "../managers/prompt"
 
+function getBoxClassName() {
+  return "flex border border-black/10 dark:border-gray-900/50 dark:text-white bg-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]"
+}
+
+function getBoxBorder() {
+  return "border border-black/10 dark:border-gray-900/50 rounded-md"
+}
+
 function HoverElement() {
   return (
-  <div className={`p-1 ${uiUtils.getBoxBorder()}`}>
+  <div className={`p-1 ${getBoxBorder()}`}>
     <svg.questionMark />
   </div>
   )
@@ -27,7 +35,6 @@ interface SliderSelectionProps {
   valueState: { value: number, setValue: StateUpdater<number> }
   toggleState: { value: boolean, setValue: StateUpdater<boolean> }
   widthInEm: number
-  leftInEm: number
   min: number
   max: number
   inputStep: number
@@ -39,7 +46,7 @@ function SliderSelection(props: SliderSelectionProps) {
   <div className="flex ml-2">
     <BooleanProvider>
       <HoverBox hoverElement={<HoverElement />}>
-        <div className={ `${uiUtils.getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)", left: props.leftInEm + 'em' }}>
+        <div className={ `${getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)" }}>
           <span className="text-sm select-none">{ props.description }</span>
         </div>
       </HoverBox>
@@ -48,7 +55,7 @@ function SliderSelection(props: SliderSelectionProps) {
       <span>{ props.propertyName }</span>
     </div>
     <BooleanProvider>
-      <ConditionalPopup className={ `${uiUtils.getBoxClassName()} absolute flex-col` } style={{ width: '256px', transform: "translate(0, -100%)", top: "0", left: props.leftInEm + 'em-2px' }} >
+      <ConditionalPopup className={ `${getBoxClassName()} absolute flex-col` } style={{ width: '256px', transform: "translate(0, -100%)", top: "0" }} >
         <div className="flex justify-between w-full text-sm">
           <InputBox type="checkbox" context={{ value: props.toggleState.value, setValue: props.toggleState.setValue }} inputClassName="ml-2" labelText="Enabled" />
           <InputBox type="number" min={ props.min } max={ props.max } step={ props.inputStep } context={{ value: props.valueState.value, setValue: props.valueState.setValue }} inputStyle={{ width: (props.widthInEm + 1) + 'em'}} enabled={ props.toggleState.value } />
@@ -136,8 +143,8 @@ export default function Toolbar(props: ToolbarProps) {
       setMaxTokensEnabled(userConfig.cppMaxTokensEnabled)
       setPresencePenalty(userConfig.cppPresencePenalty)
       setPresencePenaltyEnabled(userConfig.cppPresencePenaltyEnabled)
-      setPresencePenalty(userConfig.cppFrequencyPenalty)
       setFrequencyPenalty(userConfig.cppFrequencyPenalty)
+      setFrequencyPenaltyEnabled(userConfig.cppFrequencyPenaltyEnabled)
     })
   }, [])
   useEffect(() => {
@@ -153,7 +160,7 @@ export default function Toolbar(props: ToolbarProps) {
     })
   }, [temperature, temperatureEnabled, maxTokens, maxTokensEnabled, presencePenalty, presencePenaltyEnabled, frequencyPenalty, frequencyPenaltyEnabled])
 
-  const defaultClass = ""
+  const defaultClass = `cpp-toolbar ${getBoxClassName()} absolute py-3 md:pl-4 flex-wrap w-full`
   const className = `${ props?.className } ${ defaultClass }`
   const defaultStyle = { display: isShow.bool ? "flex" : "none" }
   const style = Object.assign({}, defaultStyle, props?.style)
@@ -166,7 +173,6 @@ export default function Toolbar(props: ToolbarProps) {
       valueState={{ value: temperature, setValue: setTemperature }}
       toggleState={{ value: temperatureEnabled, setValue: setTemperatureEnabled }}
       widthInEm={ 2 }
-      leftInEm={ 0 }
       min={ 0 }
       max={ 2 }
       inputStep={ 0.01 }
@@ -180,7 +186,6 @@ export default function Toolbar(props: ToolbarProps) {
       valueState={{ value: maxTokens, setValue: setMaxTokens }}
       toggleState={{ value: maxTokensEnabled, setValue: setMaxTokensEnabled }}
       widthInEm={ 3 }
-      leftInEm={ 11 }
       min={ 1 }
       max={ 4096 }
       inputStep={ 1 }
@@ -188,19 +193,18 @@ export default function Toolbar(props: ToolbarProps) {
       tickLabels={["1", "4096"]}
     />
 
-    {/* <SliderSelection 
+    <SliderSelection 
       propertyName="presence_penalty" 
       description="{{{Add description here}}}"
       valueState={{ value: presencePenalty, setValue: setPresencePenalty }}
       toggleState={{ value: presencePenaltyEnabled, setValue: setPresencePenaltyEnabled }}
       widthInEm={ 3 }
-      leftInEm={ 20 }
       min={ -2.0 }
       max={ 2.0 }
       inputStep={ 0.01 }
       sliderStep={ 0.1 }
       tickLabels={["-2.0", "0.0", "2.0"]}
-    /> */}
+    />
 
     {/* <SliderSelection 
       propertyName="frequency_penalty" 
@@ -208,7 +212,6 @@ export default function Toolbar(props: ToolbarProps) {
       valueState={{ value: frequencyPenalty, setValue: setFrequencyPenalty }}
       toggleState={{ value: frequencyPenaltyEnabled, setValue: setFrequencyPenaltyEnabled }}
       widthInEm={ 3 }
-      leftInEm={ 30 }
       min={ -2.0 }
       max={ 2.0 }
       inputStep={ 0.01 }
@@ -219,7 +222,7 @@ export default function Toolbar(props: ToolbarProps) {
     <div className="flex ml-2">
       <BooleanProvider>
         <HoverBox hoverElement={<HoverElement />}>
-          <div className={ `${uiUtils.getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)", left: '22rem' }}>
+          <div className={ `${getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)", left: '22rem' }}>
             <span className="text-sm select-none">Prompt is a piece of text or input provided to the model to guide its response or output. Well-crafted prompt can generate answer more clear, relevant, efficient. ChatGPT++ offers the access to well-known prompts repositry, Awesome ChatGPT Prompts.</span>
           </div>
         </HoverBox>
