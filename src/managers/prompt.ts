@@ -21,7 +21,7 @@ export const defaultPrompt = {
   id: "default",
   name: "Default",
   body: "",
-  pattern: "{&temperature}{&max_tokens}Don't explain about hyperparameters I set.\n{&prompt}\n{&context}",
+  pattern: "{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}Don't explain about hyperparameters I set.\n{&prompt}\n{&context}",
   showOnToolbar: true,
   timecreated: "",
 }
@@ -75,6 +75,8 @@ export async function resolvePattern(prompt: Prompt): Promise<string> {
   const mapping: Record<string, string> = {
     "{&temperature}": userConfig.cppTemperatureEnabled ? `temperature ${userConfig.cppTemperature} ` : "",
     "{&max_tokens}": userConfig.cppMaxTokensEnabled? `max_tokens ${userConfig.cppMaxTokens} ` : "",
+    "{&presence_penalty}": userConfig.cppPresencePenaltyEnabled? `presence_penalty ${userConfig.cppPresencePenalty} ` : "",
+    "{&frequency_penalty}": userConfig.cppFrequencyPenaltyEnabled? `frequency_penalty ${userConfig.cppFrequencyPenalty} ` : "",
     "{&prompt}": prompt.body,
     "{&context}": "'Your message on chat'",
   }

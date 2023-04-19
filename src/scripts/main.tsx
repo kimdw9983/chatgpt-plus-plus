@@ -35,7 +35,7 @@ async function patch() {
   const toolbarButton = (
   <BooleanProvider>
     <Toolbar style={{ top: '-12px', width: toolbarWidth, left: toolbarLeft, transform: "translate(0, -100%)" }} />
-    <ToggleButton innerText={(<svg.settings/>)} style={{ width: toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} className={ "cpp-toolbar-button" } />
+    <ToggleButton innerText={ <svg.settings/> } style={{ width: toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} className={ "cpp-toolbar-button" } />
   </BooleanProvider>
   )
   const toolbarButtonContainer = document.createElement('div')
