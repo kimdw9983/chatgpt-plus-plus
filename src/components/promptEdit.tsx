@@ -1,7 +1,8 @@
 import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
-import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern, sortBytimeCreated, readPromptSetting, persistPromptSetting,  } from "../managers/prompt"
+import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern, sortBytimeCreated, readPromptSetting, persistPromptSetting, } from "../managers/prompt"
 import svg from "../assets/svg"
+import { testRemoveSyncedStorage } from "../utils/storage"
 
 interface PromptBoxProps { 
   prompt: Prompt
@@ -353,6 +354,8 @@ export default function PromptEdit(props: PromptEditProps) {
   useEffect(() => {
     updateSetting()
   }, [isDialogOpen])
+
+  // testRemoveSyncedStorage("cppPrompt")
 
   return( 
     <div className={ ContainerClassName } style={ ContainerStyle }>

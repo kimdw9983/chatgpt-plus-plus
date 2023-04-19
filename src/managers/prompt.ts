@@ -1,6 +1,6 @@
 import { UserConfig, defaultUserConfig } from './userConfig'
 import { uuidv4 } from "../utils/common"
-import { readSyncedStorage, persistSyncedStorage } from "../utils/storage"
+import { readSyncedStorage, persistSyncedStorage, testRemoveSyncedStorage } from "../utils/storage"
 
 export const defaultPromptSetting = {
   cppSelectedPromptID: "default",
