@@ -1,6 +1,6 @@
 import { UserConfig, defaultUserConfig } from './userConfig'
 import { uuidv4 } from "../utils/common"
-import { readSyncedStorage, persistSyncedStorage, testRemoveSyncedStorage } from "../utils/storage"
+import { readSyncedStorage, persistSyncedStorage } from "../utils/storage"
 
 export const defaultPromptSetting = {
   cppSelectedPromptID: "default",
@@ -21,7 +21,7 @@ export const defaultPrompt = {
   id: "default",
   name: "Default",
   body: "",
-  pattern: "{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}Don't explain about hyperparameters I set.\n{&prompt}\n{&context}",
+  pattern: "{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}Don't explain about parameters I set.\n{&prompt}\n{&context}",
   showOnToolbar: true,
   timecreated: "",
 }
