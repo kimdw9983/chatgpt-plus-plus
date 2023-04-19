@@ -235,4 +235,4 @@ export const languages_list = [
   "Yiddish",
   "Yoruba",
   "Zulu"
-];
+]

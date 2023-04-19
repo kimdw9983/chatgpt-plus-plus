@@ -177,7 +177,7 @@ function LanguageDropdown() {
   return (
   <SettingBox propertyName='language' toggleState={{ value: languageEnabled, setValue: setLanguageEnabled }} bodyState={{ value: language, setValue: setLanguage }}>
     <div className="flex w-full text-sm" style="width: 20em">
-      <InputBox type="checkbox" context={{ value: languageEnabled, setValue: setLanguageEnabled }} inputClassName="ml-2" labelText="Enabled" onChange={ onChangeLanguageEnabled }/>
+      <InputBox type="checkbox" context={{ value: languageEnabled, setValue: setLanguageEnabled }} inputClassName="ml-2" labelText="Enabled" onChange={ onChangeLanguageEnabled } />
       <Dropdown value={ language } onChange={ onChangeLanguage } options={ options } className="py-1 mx-2 text-ellipsis" style={{ width: "10rem" }} disabled={ !languageEnabled } />
     </div>
   </SettingBox>
