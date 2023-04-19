@@ -1,25 +1,23 @@
 import { render } from 'preact'
 import { BooleanProvider } from '../hooks/booleanContext'
-import { getElement, getChatgptRoot } from '../utils/element'
 import svg from '../assets/svg'
 import ToggleButton from '../components/base/toggleButton'
 import Toolbar from '../components/toolbar'
 
-const constants = {
-  toolbarButtonRight: 36,
-  toolbarButtonWidth: 28,
-  getToolbarWidth(inputContainer: HTMLElement): string {
-    return window.getComputedStyle(inputContainer).width
-  },
-  calculateToolbarPosition(inputContainer: HTMLElement): string {
-    return -Number(this.getToolbarWidth(inputContainer).replace("px", "")) + this.toolbarButtonRight + this.toolbarButtonWidth + "px"
-  },
+const toolbarButtonRight = 36
+const toolbarButtonWidth = 28
+function getToolbarWidth(inputContainer: HTMLElement) {
+  return window.getComputedStyle(inputContainer).width
 }
+function calculateToolbarPosition(inputContainer: HTMLElement): string {
+  return -Number(getToolbarWidth(inputContainer).replace("px", "")) + toolbarButtonRight + toolbarButtonWidth + "px"
+}
+
 async function patch() {
   const cppToolbar = document.querySelector("div.cpp-toolbar-button")
   if (cppToolbar) return
 
-  const textarea = getElement('div#__next textarea')
+  const textarea = document.querySelector('div#__next textarea')
   const submit = textarea?.parentNode?.querySelector('button')
   const inputContainer = textarea?.parentElement
   const form = textarea?.parentElement?.parentElement?.parentElement
@@ -30,14 +28,14 @@ async function patch() {
   buttonContainer.style.display = 'flex'
   buttonContainer.style.alignItems = 'center'
   buttonContainer.style.position = 'absolute'
-  buttonContainer.style.right = constants.toolbarButtonRight + 'px'
+  buttonContainer.style.right = toolbarButtonRight + 'px'
 
-  const toolbarWidth = constants.getToolbarWidth(inputContainer)
-  const toolbarLeft = constants.calculateToolbarPosition(inputContainer)
+  const toolbarWidth = getToolbarWidth(inputContainer)
+  const toolbarLeft = calculateToolbarPosition(inputContainer)
   const toolbarButton = (
   <BooleanProvider>
     <Toolbar style={{ top: '-12px', width: toolbarWidth, left: toolbarLeft, transform: "translate(0, -100%)" }} />
-    <ToggleButton innerText={(<svg.settings/>)} style={{ width: constants.toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} className={ "cpp-toolbar-button" } />
+    <ToggleButton innerText={(<svg.settings/>)} style={{ width: toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} className={ "cpp-toolbar-button" } />
   </BooleanProvider>
   )
   const toolbarButtonContainer = document.createElement('div')
@@ -47,6 +45,9 @@ async function patch() {
 
 window.onload = function() {
   //TODO: improve this to wait until chilren are loaded
+  const chatgptRoot = document.querySelector('div#__next')
+  if(!chatgptRoot) return
+
   patch()
-  new MutationObserver(() => { patch() }).observe(getChatgptRoot(), { childList: true }) 
+  new MutationObserver(() => { patch() }).observe(chatgptRoot, { childList: true }) 
 }
