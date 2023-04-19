@@ -17,13 +17,9 @@ function getBoxClassName() {
   return "flex border border-black/10 dark:border-gray-900/50 dark:text-white bg-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]"
 }
 
-function getBoxBorder() {
-  return "border border-black/10 dark:border-gray-900/50 rounded-md"
-}
-
 function HoverElement() {
   return (
-  <div className={`p-1 ${getBoxBorder()}`}>
+  <div className={`p-1 border border-black/10 dark:border-gray-900/50 rounded-md`}>
     <svg.questionMark />
   </div>
   )
@@ -112,7 +108,7 @@ function PromptDropdown() {
     return () => {
       observer.disconnect()
     }
-  })
+  }, [])
 
   return (
     <Dropdown value={ selectedPrompt } onChange={ onChangePrompt } options={ options } desc={ "prompt" } className="py-1 mx-2 text-ellipsis" style={{ width: "10rem" }} /> 
@@ -161,7 +157,7 @@ export default function Toolbar(props: ToolbarProps) {
   }, [temperature, temperatureEnabled, maxTokens, maxTokensEnabled, presencePenalty, presencePenaltyEnabled, frequencyPenalty, frequencyPenaltyEnabled])
 
   const defaultClass = `cpp-toolbar ${getBoxClassName()} absolute py-3 md:pl-4 flex-wrap w-full`
-  const className = `${ props?.className } ${ defaultClass }`
+  const className = `${props?.className ? props.className : ""} ${defaultClass}`
   const defaultStyle = { display: isShow.bool ? "flex" : "none" }
   const style = Object.assign({}, defaultStyle, props?.style)
 
@@ -206,7 +202,7 @@ export default function Toolbar(props: ToolbarProps) {
       tickLabels={["-2.0", "0.0", "2.0"]}
     />
 
-    {/* <SliderSelection 
+    <SliderSelection 
       propertyName="frequency_penalty" 
       description="{{{Add description here}}}"
       valueState={{ value: frequencyPenalty, setValue: setFrequencyPenalty }}
@@ -217,12 +213,12 @@ export default function Toolbar(props: ToolbarProps) {
       inputStep={ 0.01 }
       sliderStep={ 0.1 }
       tickLabels={["-2.0", "0.0", "2.0"]}
-    /> */}
+    />
 
     <div className="flex ml-2">
       <BooleanProvider>
         <HoverBox hoverElement={<HoverElement />}>
-          <div className={ `${getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)", left: '22rem' }}>
+          <div className={ `${getBoxClassName()} absolute p-2 z-50` } style={{ top: '8px', width: "20rem", transform: "translate(0, -100%)" }}>
             <span className="text-sm select-none">Prompt is a piece of text or input provided to the model to guide its response or output. Well-crafted prompt can generate answer more clear, relevant, efficient. ChatGPT++ offers the access to well-known prompts repositry, Awesome ChatGPT Prompts.</span>
           </div>
         </HoverBox>

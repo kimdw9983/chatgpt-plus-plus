@@ -16,7 +16,7 @@ const constants = {
   },
 }
 async function patch() {
-  const cppToolbar = document.querySelector("div.cpp-toolbarButton")
+  const cppToolbar = document.querySelector("div.cpp-toolbar-button")
   if (cppToolbar) return
 
   const textarea = getElement('div#__next textarea')
@@ -37,7 +37,7 @@ async function patch() {
   const toolbarButton = (
   <BooleanProvider>
     <Toolbar style={{ top: '-12px', width: toolbarWidth, left: toolbarLeft, transform: "translate(0, -100%)" }} />
-    <ToggleButton innerText={(<svg.settings/>)} style={{ width: constants.toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} className={ "cpp-toolbarButton" } />
+    <ToggleButton innerText={(<svg.settings/>)} style={{ width: constants.toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} className={ "cpp-toolbar-button" } />
   </BooleanProvider>
   )
   const toolbarButtonContainer = document.createElement('div')
@@ -46,6 +46,7 @@ async function patch() {
 }
 
 window.onload = function() {
+  //TODO: improve this to wait until chilren are loaded
   patch()
   new MutationObserver(() => { patch() }).observe(getChatgptRoot(), { childList: true }) 
 }
