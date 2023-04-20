@@ -18,7 +18,7 @@ function calculateToolbarPosition(inputContainer: HTMLElement): string {
 
 async function applyPrompt(textarea: HTMLTextAreaElement) {
   const message = textarea.value
-  if (!message) return
+  if (!message.trim()) return
 
   const promptSetting = await readPromptSetting()
   const selected = promptSetting.cppSelectedPromptID
@@ -30,6 +30,8 @@ async function applyPrompt(textarea: HTMLTextAreaElement) {
 }
 
 function submit(textarea: HTMLTextAreaElement) {
+  if (!textarea.value.trim()) return
+
   textarea.focus()
   const e = new KeyboardEvent('keydown', {
     key: 'Enter', 

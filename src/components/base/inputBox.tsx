@@ -29,8 +29,14 @@ export default function InputBox(props: Props) {
   const LabelClassName = `${defaultLabelClassName} ${props.labelClassName}`
   const step = props.step ? props.step : ""
 
+  function disablePropagation(e: KeyboardEvent) {
+    //just to prevent regenerating response on enter which is annoying
+    if (e.key !== 'Enter') return
+    e.preventDefault()
+  }
+
   return (<div>
-    <input type={ props.type } min={ props.min } max={ props.max } step={ step } value={ props.context.value } checked={ props.context.value } onChange={ onChange } className={ InputClassName } style={ props.inputStyle } disabled={ disabled } />
+    <input type={ props.type } min={ props.min } max={ props.max } step={ step } value={ props.context.value } checked={ props.context.value } onChange={ onChange } onKeyDownCapture={ disablePropagation } className={ InputClassName } style={ props.inputStyle } disabled={ disabled } />
     <label className={ LabelClassName } style={ props.labelStyle }>{ props.labelText }</label>
   </div>)
 }
