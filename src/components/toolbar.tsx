@@ -225,7 +225,7 @@ export default function Toolbar(props: ToolbarProps) {
     })
   }, [temperature, temperatureEnabled, maxTokens, maxTokensEnabled, presencePenalty, presencePenaltyEnabled, frequencyPenalty, frequencyPenaltyEnabled])
 
-  const defaultClass = `cpp-toolbar absolute ${getBoxClassName()} py-3 pl-2`
+  const defaultClass = `absolute ${getBoxClassName()} py-3 pl-2 cpp-toolbar`
   const className = `${props?.className ? props.className : ""} ${defaultClass}`
   const defaultStyle = { display: isShow.bool ? "flex" : "none", flexWrap: 'wrap' }
   const style = Object.assign({}, defaultStyle, props?.style)

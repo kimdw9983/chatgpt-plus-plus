@@ -52,8 +52,8 @@ async function patch() {
   const inputContainer = chatgptTextarea?.parentElement as HTMLDivElement
   if (!chatgptTextarea || !chatgptSubmit || !inputContainer || !chatgptForm ) return
 
-  chatgptTextarea.classList.add("chatgpt-chatgptTextarea")
-  chatgptSubmit.classList.add("chatgpt-chatgptSubmit")
+  chatgptTextarea.classList.add("chatgpt-textarea")
+  chatgptSubmit.classList.add("chatgpt-submit")
 
   chatgptTextarea.addEventListener("keydown", async function(e) {
     if(e.key !== 'Enter' || e.shiftKey || e.ctrlKey) return
@@ -61,12 +61,15 @@ async function patch() {
     await applyPrompt(chatgptTextarea)
     submit(chatgptTextarea)
   }, {capture: true})
+  chatgptSubmit.addEventListener("click", async function(e) {
+    e.stopImmediatePropagation()
+    await applyPrompt(chatgptTextarea)
+    submit(chatgptTextarea)
+  }, {capture: true})
 
   const buttonContainer = document.createElement('div')
   inputContainer.appendChild(buttonContainer)
-  buttonContainer.style.display = 'flex'
-  buttonContainer.style.alignItems = 'center'
-  buttonContainer.style.position = 'absolute'
+  buttonContainer.classList.value = "flex absolute text-gray-500 bottom-1.5 md:bottom-2.5 items-center"
   buttonContainer.style.right = toolbarButtonRight + 'px'
 
   const toolbarWidth = getToolbarWidth(inputContainer)
@@ -77,9 +80,7 @@ async function patch() {
     <ToggleButton innerText={ <svg.settings/> } style={{ width: toolbarButtonWidth+"px", height: "24px", fontSize: "10pt" }} className={ "cpp-toolbar-button" } />
   </BooleanProvider>
   )
-  const toolbarButtonContainer = document.createElement('div')
-  buttonContainer.appendChild(toolbarButtonContainer)
-  render(toolbarButton, toolbarButtonContainer) 
+  render(toolbarButton, buttonContainer) 
 }
 
 window.onload = function() {
