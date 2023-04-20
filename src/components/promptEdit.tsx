@@ -1,6 +1,6 @@
 import { StateUpdater, useEffect, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
-import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern, sortBytimeCreated, readPromptSetting, persistPromptSetting, } from "../managers/prompt"
+import { defaultPromptSetting, defaultPrompt, PromptList, Prompt, getPromptTemplate, persistPrompt, persistPromptList, readPromptList, destroyPrompt, resolvePattern, sortBytimeCreated, readPromptSetting, persistPromptSetting, keywords, } from "../managers/prompt"
 import svg from "../assets/svg"
 import { defaultFontFamily } from "../utils/ui"
 
@@ -72,7 +72,6 @@ interface PromptListProps {
   promptList: PromptList
   setPromptList: StateUpdater<PromptList>
 }
-
 function PromptList(props: PromptListProps) {
   const selectedPrompt = props.selectedPrompt
   const setSelectedPrompt = props.setSelectedPrompt
@@ -208,6 +207,7 @@ function PromptForm(props: PromptFormProps) {
   }
 
   const containerWidthInPx = 640
+  const splittedResolved = resolvedPattern.split(keywords.message)
   return (
   <>
     <div className="relative h-full w-full transition-width flex flex-col items-stretch flex-1">
@@ -278,10 +278,17 @@ function PromptForm(props: PromptFormProps) {
                 <span className="ml-2">Preview</span>
               </div>
               <div className="p-1 border-b border-black/10 dark:border-gray-900/50 dark:focus:ring-white rounded-md dark:bg-gray-800">
-                <pre className="text-sm text-gray-300"
-                  style={{ height: "136px", overflowY: "hidden", whiteSpace: "pre-wrap"}} >
-                  <span style={{fontFamily: defaultFontFamily}}>{ resolvedPattern }</span>
-                  <span style={{fontStyle: "italic", textDecoration: "underline"}}>Your message on chat</span>
+                <pre className="text-sm text-gray-300" style={{ height: "136px", overflowY: "hidden", whiteSpace: "pre-wrap"}} >
+                  {
+                    splittedResolved.map((str, i) => (
+                    <>
+                      <span style={{fontFamily: defaultFontFamily}}>{str}</span>
+                      {i < splittedResolved.length - 1 && (
+                        <span style={{fontStyle: "italic", textDecoration: "underline"}}>Your message on chat</span>
+                      )}
+                    </>
+                    ))
+                  }
                 </pre>
               </div>
               </>}
