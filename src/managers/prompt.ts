@@ -21,7 +21,7 @@ export const defaultPrompt = {
   id: "default",
   name: "Default",
   body: "",
-  pattern: "{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}{$hide_param}{&prompt}\n{&message}\n{&language}",
+  pattern: "{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}{$hide_param}{&prompt}{&message}{&language}",
   showOnToolbar: true,
   timecreated: "",
 }
@@ -81,18 +81,18 @@ export const keywords = {
   language: "{&language}",
 }
 
-export async function resolvePattern(prompt: Prompt, context?: string): Promise<string> {
+export async function resolvePattern(prompt: Prompt, message?: string): Promise<string> {
   const userConfig = await readSyncedStorage(Object.keys(defaultUserConfig)) as UserConfig
   const isParameterSetAny = userConfig.cppTemperatureEnabled || userConfig.cppMaxTokensEnabled || userConfig.cppPresencePenaltyEnabled || userConfig.cppFrequencyPenaltyEnabled
   const mapping: Record<string, string> = {
     [keywords.hide_param]: isParameterSetAny ? "Don't explain about parameters I set.\n" : "",
     [keywords.temperature]: userConfig.cppTemperatureEnabled ? `temperature ${userConfig.cppTemperature} ` : "",
-    [keywords.max_tokens]: userConfig.cppMaxTokensEnabled? `max_tokens ${userConfig.cppMaxTokens} ` : "",
-    [keywords.presence_penalty]: userConfig.cppPresencePenaltyEnabled? `presence_penalty ${userConfig.cppPresencePenalty} ` : "",
-    [keywords.frequency_penalty]: userConfig.cppFrequencyPenaltyEnabled? `frequency_penalty ${userConfig.cppFrequencyPenalty} ` : "",
-    [keywords.language]: userConfig.cppLanguageEnabled? `in ${userConfig.cppLanguage}` : "",
-    [keywords.prompt]: prompt.body,
-    [keywords.message]: context ? context : "{&message}",
+    [keywords.max_tokens]: userConfig.cppMaxTokensEnabled ? `max_tokens ${userConfig.cppMaxTokens} ` : "",
+    [keywords.presence_penalty]: userConfig.cppPresencePenaltyEnabled ? `presence_penalty ${userConfig.cppPresencePenalty} ` : "",
+    [keywords.frequency_penalty]: userConfig.cppFrequencyPenaltyEnabled ? `frequency_penalty ${userConfig.cppFrequencyPenalty} ` : "",
+    [keywords.language]: userConfig.cppLanguageEnabled ? `\nin ${userConfig.cppLanguage}` : "",
+    [keywords.prompt]: prompt.body ? `\n${prompt.body}` : "",
+    [keywords.message]: message ? message : keywords.message,
   }
 
   return Object.keys(mapping).reduce((str, keyword) => {
