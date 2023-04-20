@@ -43,9 +43,6 @@ function submit(textarea: HTMLTextAreaElement) {
 }
 
 async function patch() {
-  const cppToolbar = document.querySelector("div.cpp-toolbar-button")
-  if (cppToolbar) return
-
   const chatgptTextarea = document.querySelector('div#__next textarea') as HTMLTextAreaElement
   const chatgptSubmit = chatgptTextarea?.parentNode?.querySelector('button') as HTMLButtonElement
   const chatgptForm = chatgptTextarea?.parentElement?.parentElement?.parentElement as HTMLFormElement
@@ -65,6 +62,19 @@ async function patch() {
     e.stopImmediatePropagation()
     await applyPrompt(chatgptTextarea)
     submit(chatgptTextarea)
+  }, {capture: true})
+
+  chatgptForm.addEventListener('click', (event: MouseEvent) => {
+    console.log(event)
+    const target = event.target as HTMLElement
+
+    if (target.nodeName === 'BUTTON') { // BUTTON 근처에 것도 클릭할 수 있음.
+      event.preventDefault()
+      event.stopPropagation()
+
+      const buttonId = target.id
+      console.log(`Button with ID "${buttonId}" was clicked.`)
+    }
   }, {capture: true})
 
   const buttonContainer = document.createElement('div')
