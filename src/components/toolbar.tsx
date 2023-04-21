@@ -13,6 +13,7 @@ import InputBox from "./base/inputBox"
 import PromptEdit from "./promptEdit"
 import { defaultPromptSetting, languages_list, persistPromptSetting, readPromptList, readPromptSetting, sortBytimeCreated } from "../managers/prompt"
 import { testRemoveSyncedStorage } from "../utils/storage"
+import { isDev } from "../utils/common"
 
 function getBoxClassName() {
   return "flex border border-black/10 dark:border-gray-900/50 dark:text-white bg-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]"
@@ -306,7 +307,7 @@ export default function Toolbar(props: ToolbarProps) {
       <LanguageDropdown />
     </div>
     
-    <button onClick={ () => testRemoveSyncedStorage("cppPrompt") }>REMOVE(TEST)</button>
+    {isDev() && <button onClick={ () => testRemoveSyncedStorage("cppPrompt") }>reset cppPrompt</button>}
   </div>
   )
 }

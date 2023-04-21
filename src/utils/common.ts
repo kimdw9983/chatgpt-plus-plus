@@ -17,3 +17,7 @@ export function uuidv4(): string {
     return ((charCode ^ crypto.getRandomValues(new Uint8Array(1))[0]) & (15 >> (charCode / 4))).toString(16)
   })
 }
+
+export function isDev(): boolean {
+  return process.env.NODE_ENV === 'development'
+}
