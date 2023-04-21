@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.1.2",
   "scripts": {
-    "build": "node build.mjs",
-    "dev": "node build.mjs dev --zip"
+    "build": "node build.mjs --zip",
+    "dev": "node build.mjs dev"
   },
   "dependencies": {
     "preact": "^10.13.1"
