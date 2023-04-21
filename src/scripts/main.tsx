@@ -1,8 +1,8 @@
 import { render } from 'preact'
-import { BooleanProvider } from '../hooks/booleanContext'
 import svg from '../assets/svg'
 import ToggleButton from '../components/base/toggleButton'
 import Toolbar from '../components/toolbar'
+import { BooleanProvider } from '../hooks/booleanContext'
 import { readPromptSetting } from '../managers/prompt'
 import { readPrompt } from '../managers/prompt'
 import { resolvePattern } from '../managers/prompt'
@@ -62,7 +62,7 @@ async function patch() {
   const buttonContainer = document.createElement('div')
   function positionToolbarButton(buttonContainer: HTMLDivElement, e?:any) {
     //I had to move this button outside of the form and hack the position related to textarea's size and location. 
-    //Because the event for submitting the message is bound to all descendants of the form, not the direct child, currently.
+    //Because the event for submitting the message is bound to all descendants of the form, not to the direct child, currently.
     if (!chatgptForm) return
 
     const formRect = chatgptForm.getBoundingClientRect()
