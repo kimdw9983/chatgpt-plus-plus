@@ -94,7 +94,7 @@ function PromptList(props: PromptListProps) {
     setSelectedPrompt(id)
   }
 
-  async function onDeletPrompt(id: string) {
+  async function onDeletePrompt(id: string) {
     const record = await destroyPrompt(id)
     setSelectedPrompt("default")
     setPromptList(record)
@@ -107,8 +107,9 @@ function PromptList(props: PromptListProps) {
   return (
   <nav className="flex h-full flex-col space-y-1 p-2 bg-gray-900" style={{ width: "16rem" }}>
     <div className="flex-col flex-1 overflow-y-auto overscroll-none border-b border-white/20 h-full">
-      {Object.values(promptList).sort(sortBytimeCreated).map(prompt => 
-        <PromptBox key={ prompt.id } prompt={ prompt } selected={ prompt.id === selectedPrompt } onClick={ onClickPrompt } onDelete={ onDeletPrompt } />
+      <PromptBox key="default" prompt={ defaultPrompt } selected={ selectedPrompt === "default" } onClick={ onClickPrompt } onDelete={ onDeletePrompt }/>
+      {Object.values(promptList).sort(sortBytimeCreated).filter(prompt => prompt.id != "default").map(prompt => 
+        <PromptBox key={ prompt.id } prompt={ prompt } selected={ prompt.id === selectedPrompt } onClick={ onClickPrompt } onDelete={ onDeletePrompt } />
       )}
     </div>
     <a 
@@ -139,7 +140,7 @@ function PromptForm(props: PromptFormProps) {
 
   useEffect(() => {
     async function updatePrompt() {
-      const prompt = props.promptList[props.selectedPrompt]
+      const prompt = props.selectedPrompt != "default" ? props.promptList[props.selectedPrompt] : defaultPrompt
       setName(prompt.name)
       setBody(prompt.body)
       setPattern(prompt.pattern)

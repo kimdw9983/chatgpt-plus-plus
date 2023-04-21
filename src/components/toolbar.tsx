@@ -109,9 +109,9 @@ function PromptDropdown() {
     setSelectedPrompt(selectedPrompt)
 
     const list = await readPromptList()
-    const filtered = Object.values(list).filter(prompt => prompt.showOnToolbar || prompt.id == selectedPrompt).sort(sortBytimeCreated).map(prompt => {return {value: prompt.id, label: prompt.name}})
-    if (filtered.length === 0) filtered.push({value: "default", label: "Default"})
-    setOptions(filtered)
+    const filteredOptions = Object.values(list).filter(prompt => prompt.showOnToolbar || prompt.id == selectedPrompt).sort(sortBytimeCreated).map(prompt => {return {value: prompt.id, label: prompt.name}})
+    filteredOptions.unshift({value: "default", label: "Default"})
+    setOptions(filteredOptions)
   }
 
   useEffect(() => {
