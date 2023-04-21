@@ -1,9 +1,54 @@
 import esbuild from "esbuild"
 import copyStatic from "esbuild-copy-files-plugin"
 
-const buildDir = '../cpp-dev'
+import { argv } from 'process'
+import archiver from "archiver"
+import fs from 'fs-extra'
 
-async function runBuild() {
+const isDev = argv.includes('dev')
+const buildDir = "build"
+const releaseDir = "release"
+
+function getVersion() {
+  const manifest = fs.readJsonSync('public/manifest.json')
+  return manifest.version
+}
+
+async function createZip() {
+  async function archive() {
+    const filename = `${releaseDir}/chatgptplusplus-${getVersion()}.zip`
+    const output = fs.createWriteStream(filename)
+    const archive = archiver('zip')
+
+    const promise = new Promise((resolve, reject) => {
+      output.on('close', () => resolve())
+      output.on('end', () => resolve())
+      archive.on('warning', (err) => {
+        if (err.code === 'ENOENT') {
+          console.warn(err)
+        } else {
+          reject(err)
+        }
+      })
+      archive.on('error', (err) => reject(err))
+    })
+    
+    archive.pipe(output)
+    archive.directory(buildDir, false)
+    archive.finalize()
+
+    return promise
+  }
+
+  try {
+    await archive()
+    console.log('Zip file created successfully')
+  } catch (err) {
+    console.error('Error creating zip file:', err)
+  }
+}
+
+async function buildProd() {
   await esbuild.build({
     entryPoints: [
       "src/scripts/main.tsx",
@@ -29,7 +74,7 @@ async function runBuild() {
   })
 }
 
-async function runDevBuild() {
+async function buildDev() {
   await esbuild.build({
     entryPoints: [
       "src/scripts/main.tsx",
@@ -41,7 +86,7 @@ async function runDevBuild() {
     keepNames: true,
     treeShaking: false,
     define: {
-      "process.env.NODE_ENV": '"production"',
+      "process.env.NODE_ENV": '"development"',
     },
     jsxFactory: "h",
     jsxFragment: "Fragment",
@@ -56,9 +101,11 @@ async function runDevBuild() {
   })
 }
 
-function build() {
-  // runBuild()
-  runDevBuild()
+async function main() {
+  if (isDev) await buildDev()
+  else await buildProd()
+
+  if (argv.includes('--zip')) await createZip()
 }
 
-build()
+main()
