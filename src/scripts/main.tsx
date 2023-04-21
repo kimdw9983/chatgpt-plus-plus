@@ -55,6 +55,7 @@ async function patch() {
 
   chatgptTextarea.addEventListener("keydown", async function(e) {
     if(e.key !== 'Enter' || e.shiftKey || e.ctrlKey) return
+    e.preventDefault()
     e.stopImmediatePropagation()
     await applyPrompt(chatgptTextarea)
     submit(chatgptTextarea)
@@ -73,12 +74,10 @@ async function patch() {
     const buttonXPos = formRect.right - toolbarButtonWidth - 38
     buttonContainer.style.width = `${toolbarButtonWidth}px`
     buttonContainer.style.left = `${buttonXPos}px`
-    console.log("resize", formRect, toolbarButtonWidth, buttonXPos)
   }
   chatgptFormHolder.appendChild(buttonContainer) 
   positionToolbarButton(buttonContainer)
   window.addEventListener("resize", (e) => positionToolbarButton(buttonContainer))
-  
   buttonContainer.classList.value = "flex fixed text-gray-500 items-center"
   buttonContainer.style.right = 486 + 'px'
   buttonContainer.style.bottom = 63 + 'px'
