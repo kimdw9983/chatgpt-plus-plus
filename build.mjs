@@ -2,21 +2,18 @@ import esbuild from "esbuild"
 import copyStatic from "esbuild-copy-files-plugin"
 
 import { argv } from 'process'
+import { join } from 'path'
 import archiver from "archiver"
 import fs from 'fs-extra'
 
 const isDev = argv.includes('dev')
 const buildDir = "build"
 const releaseDir = "release"
-
-function getVersion() {
-  const manifest = fs.readJsonSync('public/manifest.json')
-  return manifest.version
-}
+const version = fs.readJsonSync('public/manifest.json').version
 
 async function createZip() {
   async function archive() {
-    const filename = `${releaseDir}/chatgptplusplus-${getVersion()}.zip`
+    const filename = `${releaseDir}/chatgptplusplus-${version}.zip`
     const output = fs.createWriteStream(filename)
     const archive = archiver('zip')
 
@@ -105,7 +102,17 @@ async function main() {
   if (isDev) await buildDev()
   else await buildProd()
 
-  if (argv.includes('--zip')) await createZip()
+  if (argv.includes('--zip')) {
+    await createZip()
+
+    const dir = await fs.readdir(releaseDir)
+    const zips = dir.filter(file => file.endsWith('.zip') && !file.includes(version))
+
+    for (const file of zips) {
+      const filePath = join(releaseDir, file)
+      await fs.unlink(filePath)
+    }
+  }
 }
 
 main()
