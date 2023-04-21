@@ -97,7 +97,7 @@ export async function resolvePattern(prompt: Prompt, message?: string): Promise<
     [keywords.presence_penalty]: userConfig.cppPresencePenaltyEnabled ? `presence_penalty ${userConfig.cppPresencePenalty} ` : "",
     [keywords.frequency_penalty]: userConfig.cppFrequencyPenaltyEnabled ? `frequency_penalty ${userConfig.cppFrequencyPenalty} ` : "",
     [keywords.language]: userConfig.cppLanguageEnabled ? `\nin ${userConfig.cppLanguage}` : "",
-    [keywords.prompt]: prompt.body ? `\n${prompt.body}` : "",
+    [keywords.prompt]: prompt.body ? `${prompt.body}\n` : "",
     [keywords.message]: message ? message : keywords.message,
   }
 
