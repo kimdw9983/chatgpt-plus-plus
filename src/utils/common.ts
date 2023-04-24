@@ -14,7 +14,7 @@ export function deepCopy(obj: Object): Object {
 export function uuidv4(): string {
   return (([1e7] as any) + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c: string) => {
     const charCode = parseInt(c)
-    return ((charCode ^ crypto.getRandomValues(new Uint8Array(1))[0]) & (15 >> (charCode / 4))).toString(16)
+    return (charCode ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> (charCode / 4)).toString(16)
   })
 }
 
