@@ -26,3 +26,7 @@
 ![image](https://user-images.githubusercontent.com/93891414/233949930-de3d9f9c-4f99-415c-ba6c-737606f5973c.png)
 - Click ![image](https://user-images.githubusercontent.com/93891414/233950956-e6006991-7563-4a58-9a77-f6bac5c3e174.png) on top-left
 - Select the folder to load
+
+# A very starting phase
+Currently this project is working in progress and have actively being developed. \
+Please give a watch and have an interest. Feel free to create issues, suggests and contributes are always welcome!
