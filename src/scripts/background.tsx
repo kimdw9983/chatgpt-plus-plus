@@ -1,9 +1,8 @@
 import Browser from "webextension-polyfill"
 
-Browser.runtime.onInstalled.addListener(() => [
-  Browser.tabs.onUpdated.addListener((id, changeInfo, tab) => {
-    if (changeInfo.url) {
-      Browser.tabs.sendMessage(id, { action: "uiPatch" })
-    }
-  })
-])
+const url = "https://chat.openai.com"
+
+Browser.tabs.onUpdated.addListener((id, changeInfo, tab) => {
+  if (!tab || !tab.url || !tab.url.startsWith(url) || changeInfo.status !== 'complete') return
+  Browser.tabs.sendMessage(id, { action: "uiPatch" })
+})

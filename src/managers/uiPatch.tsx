@@ -21,12 +21,17 @@ async function applyPrompt(textarea: HTMLTextAreaElement) {
 }
 
 export async function patch() {
+  console.log("patching")
+
   const chatgptTextarea = document.querySelector<HTMLTextAreaElement>('div#__next textarea')
   const chatgptSubmit = chatgptTextarea?.parentNode?.querySelector<HTMLButtonElement>('button')
   const chatgptForm = document.querySelector<HTMLFormElement>('form')
   const chatgptFormHolder = chatgptForm?.parentElement as HTMLDivElement
   const inputContainer = chatgptTextarea?.parentElement as HTMLDivElement
-  if (!chatgptTextarea || !chatgptSubmit || !inputContainer || !chatgptForm || !chatgptFormHolder ) return
+  if (!chatgptTextarea || !chatgptSubmit || !inputContainer || !chatgptForm || !chatgptFormHolder ) {
+    console.error("Chatgpt++ patch failed. Some of elements doesn't exist")
+    return
+  }
 
   chatgptTextarea.classList.add("chatgpt-textarea")
   chatgptSubmit.classList.add("chatgpt-submit")
