@@ -21,7 +21,7 @@ async function applyPrompt(textarea: HTMLTextAreaElement) {
 }
 
 export async function patch() {
-  console.log("patching")
+  console.debug("chatgpt++ patch")
 
   const chatgptTextarea = document.querySelector<HTMLTextAreaElement>('div#__next textarea')
   const chatgptSubmit = chatgptTextarea?.parentNode?.querySelector<HTMLButtonElement>('button')
