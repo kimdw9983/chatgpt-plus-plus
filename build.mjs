@@ -45,56 +45,44 @@ async function createZip() {
   }
 }
 
+const buildOption = {
+  entryPoints: [
+    "src/scripts/main.tsx",
+    "src/scripts/background.tsx",
+    "src/index.tsx",
+  ],
+  outdir: buildDir,
+  bundle: true,
+  minify: true,
+  treeShaking: true,
+  define: {
+    "process.env.NODE_ENV": '"production"',
+  },
+  jsxFactory: "h",
+  jsxFragment: "Fragment",
+  jsx: "automatic",
+  plugins: [
+    copyStatic({
+      source: ["public/"],
+      target: buildDir,
+      copyWithFolder: false,
+    }),
+  ],
+}
+
 async function buildProd() {
-  await esbuild.build({
-    entryPoints: [
-      "src/scripts/main.tsx",
-      "src/index.tsx",
-    ],
-    outdir: buildDir,
-    bundle: true,
-    minify: true,
-    treeShaking: true,
-    define: {
-      "process.env.NODE_ENV": '"production"',
-    },
-    jsxFactory: "h",
-    jsxFragment: "Fragment",
-    jsx: "automatic",
-    plugins: [
-      copyStatic({
-        source: ["public/"],
-        target: buildDir,
-        copyWithFolder: false,
-      }),
-    ],
-  })
+  await esbuild.build(buildOption)
 }
 
 async function buildDev() {
   await esbuild.build({
-    entryPoints: [
-      "src/scripts/main.tsx",
-      "src/index.tsx",
-    ],
-    outdir: buildDir,
-    bundle: true,
+    ...buildOption,
     minify: false,
     keepNames: true,
     treeShaking: false,
     define: {
       "process.env.NODE_ENV": '"development"',
     },
-    jsxFactory: "h",
-    jsxFragment: "Fragment",
-    jsx: "automatic",
-    plugins: [
-      copyStatic({
-        source: ["public/"],
-        target: buildDir,
-        copyWithFolder: false,
-      }),
-    ],
   })
 }
 

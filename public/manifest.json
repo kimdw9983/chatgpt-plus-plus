@@ -17,8 +17,13 @@
       ]
     }
   ],
+  "background": {
+    "service_worker": "./scripts/background.js",
+    "type": "module"
+  },
   "permissions": [
-    "storage"
+    "storage",
+    "tabs"
   ],
   "optional_permissions": [
     "cookies"
