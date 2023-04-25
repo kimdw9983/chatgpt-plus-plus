@@ -21,7 +21,7 @@ export const defaultPrompt = {
   id: "default",
   name: "Default",
   body: "",
-  pattern: "{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}{$hide_param}{&prompt}{&message}{&language}",
+  pattern: "{&param_instruction}{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}{&prompt}{&message}{&language}",
   showOnToolbar: true,
   timecreated: "",
 }
@@ -77,7 +77,8 @@ export async function destroyPrompt(id: string): Promise<PromptList> {
 }
 
 export const keywords = {
-  hide_param: "{$hide_param}",
+  param_instruction: "{&param_instruction}",
+  hide_param: "{&hide_param}",
   temperature: "{&temperature}",
   max_tokens: "{&max_tokens}",
   presence_penalty: "{&presence_penalty}",
@@ -91,6 +92,7 @@ export async function resolvePattern(prompt: Prompt, message?: string): Promise<
   const userConfig = await readSyncedStorage(Object.keys(defaultUserConfig)) as UserConfig
   const isParameterSetAny = userConfig.cppTemperatureEnabled || userConfig.cppMaxTokensEnabled || userConfig.cppPresencePenaltyEnabled || userConfig.cppFrequencyPenaltyEnabled
   const mapping: Record<string, string> = {
+    [keywords.param_instruction]: isParameterSetAny ? "Generate answer with " : "",
     [keywords.hide_param]: isParameterSetAny ? "Don't explain about parameters I set.\n" : "",
     [keywords.temperature]: userConfig.cppTemperatureEnabled ? `temperature ${userConfig.cppTemperature} ` : "",
     [keywords.max_tokens]: userConfig.cppMaxTokensEnabled ? `max_tokens ${userConfig.cppMaxTokens} ` : "",
