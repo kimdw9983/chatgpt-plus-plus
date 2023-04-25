@@ -114,7 +114,7 @@ function PromptList(props: PromptListProps) {
     </div>
     <a 
       onClick = { newPrompt }
-      className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm mb-2 flex-shrink-0 border border-white/20">
+      className="flex mt-2 py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm mb-2 flex-shrink-0 border border-white/20">
       <svg.plusMark />
       New prompt
     </a>
@@ -270,7 +270,7 @@ function PromptForm(props: PromptFormProps) {
               <button className="p-1" disabled={ isDefault } onClick={ resetPattern }>
                 <div className="flex w-full items-center justify-center text-sm">
                   <svg.restore/>
-                  <span className="pl-1">back to default</span>
+                  <span className="pl-1">set to default</span>
                 </div>
               </button>
               )}
