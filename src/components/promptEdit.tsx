@@ -260,7 +260,7 @@ function PromptForm(props: PromptFormProps) {
               </div>
               <textarea placeholder= { isDefault ? "(Default prompt is empty)" : "You can restore the default pattern by the button below." }
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white text-sm disabled:text-gray-300 disabled:italic"
-                style={{ height: "112px", overflow: "auto", fontStyle: isDefault ? "italic" : "normal" }}
+                style={{ height: "112px", overflowY: "auto", fontStyle: isDefault ? "italic" : "normal", whiteSpace: "nowrap" }}
                 tabIndex={ 3 }
                 disabled={ isDefault } 
                 value={ pattern }
