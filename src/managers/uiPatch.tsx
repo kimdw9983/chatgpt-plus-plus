@@ -35,11 +35,10 @@ export async function patch() {
 
   chatgptTextarea.classList.add("chatgpt-textarea")
   chatgptSubmit.classList.add("chatgpt-submit")
-  const toolbarButtonWidth = 28
-
+  
   function submit() {
     if (!chatgptTextarea || !chatgptTextarea.value.trim()) return
-  
+    
     chatgptTextarea.focus()
     const e = new KeyboardEvent('keydown', {
       key: 'Enter', 
@@ -49,7 +48,7 @@ export async function patch() {
     })
     chatgptTextarea.dispatchEvent(e)
   }
-
+  
   chatgptTextarea.addEventListener("keydown", async function(e) {
     if(e.key !== 'Enter' || e.shiftKey || e.ctrlKey) return
     e.preventDefault()
@@ -63,13 +62,14 @@ export async function patch() {
     await applyPrompt(chatgptTextarea)
     submit()
   }, {capture: true})
-
+  
+  const toolbarButtonWidth = 28
   const buttonContainer = document.createElement('div')
-  function positionToolbarButton(buttonContainer: HTMLDivElement, e?:any) {
+  function positionToolbarButton(buttonContainer: HTMLDivElement) {
     //I had to move this button outside of the form and hack the position related to textarea's size and location. 
     //Because the event for submitting the message is bound to all descendants of the form, not to the direct child, currently.
     if (!chatgptForm) return
-
+    
     const formRect = chatgptForm.getBoundingClientRect()
     const buttonXPos = formRect.right - toolbarButtonWidth - 38
     buttonContainer.style.width = `${toolbarButtonWidth}px`
