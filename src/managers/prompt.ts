@@ -21,7 +21,7 @@ export const defaultPrompt = {
   id: "default",
   name: "Default",
   body: "",
-  pattern: "{&param_instruction}{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}{&prompt}{&message}{&language}",
+  pattern: "{&language}\n{&param_instruction}{&temperature}{&max_tokens}{&presence_penalty}{&frequency_penalty}\n{&prompt}\n{&message}",
   showOnToolbar: true,
   timecreated: "",
 }
@@ -93,12 +93,12 @@ export async function resolvePattern(prompt: Prompt, message?: string): Promise<
   const isParameterSetAny = userConfig.cppTemperatureEnabled || userConfig.cppMaxTokensEnabled || userConfig.cppPresencePenaltyEnabled || userConfig.cppFrequencyPenaltyEnabled
   const mapping: Record<string, string> = {
     [keywords.param_instruction]: isParameterSetAny ? "Generate answer with " : "",
-    [keywords.hide_param]: isParameterSetAny ? "Don't explain about parameters I set.\n" : "",
+    [keywords.hide_param]: isParameterSetAny ? "Don't explain about parameters I set." : "", //Seems like this instruction disables all parameters
     [keywords.temperature]: userConfig.cppTemperatureEnabled ? `temperature ${userConfig.cppTemperature} ` : "",
     [keywords.max_tokens]: userConfig.cppMaxTokensEnabled ? `max_tokens ${userConfig.cppMaxTokens} ` : "",
     [keywords.presence_penalty]: userConfig.cppPresencePenaltyEnabled ? `presence_penalty ${userConfig.cppPresencePenalty} ` : "",
     [keywords.frequency_penalty]: userConfig.cppFrequencyPenaltyEnabled ? `frequency_penalty ${userConfig.cppFrequencyPenalty} ` : "",
-    [keywords.language]: userConfig.cppLanguageEnabled ? `\nin ${userConfig.cppLanguage}` : "",
+    [keywords.language]: userConfig.cppLanguageEnabled ? `answer in ${userConfig.cppLanguage}` : "",
     [keywords.prompt]: prompt.body ? `${prompt.body}\n` : "",
     [keywords.message]: message ? message : keywords.message,
   }
