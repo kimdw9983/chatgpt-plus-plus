@@ -260,7 +260,7 @@ function PromptForm(props: PromptFormProps) {
               </div>
               <textarea placeholder= { isDefault ? "(Default prompt is empty)" : "You can restore the default pattern by the button below." }
                 class="w-full rounded-md dark:bg-gray-800 dark:focus:border-white dark:focus:ring-white text-sm disabled:text-gray-300 disabled:italic"
-                style={{ height: "112px", overflowY: "hidden", fontStyle: isDefault ? "italic" : "normal" }}
+                style={{ height: "112px", overflow: "auto", fontStyle: isDefault ? "italic" : "normal" }}
                 tabIndex={ 3 }
                 disabled={ isDefault } 
                 value={ pattern }
@@ -279,7 +279,7 @@ function PromptForm(props: PromptFormProps) {
                 <span className="ml-2">Preview</span>
               </div>
               <div className="p-1 border-b border-black/10 dark:border-gray-900/50 dark:focus:ring-white rounded-md dark:bg-gray-800">
-                <pre className="text-sm text-gray-300" style={{ height: "136px", overflowY: "hidden", whiteSpace: "pre-wrap"}} >
+                <pre className="text-sm text-gray-300" style={{ height: "136px", overflow: "auto", whiteSpace: "pre-wrap", resize: "vertical"}} >
                   {
                     splittedResolved.map((str, i) => (
                     <>

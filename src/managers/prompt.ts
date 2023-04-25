@@ -105,7 +105,7 @@ export async function resolvePattern(prompt: Prompt, message?: string): Promise<
 
   return Object.keys(mapping).reduce((str, keyword) => {
     return str.replaceAll(keyword, mapping[keyword])
-  }, prompt.pattern)
+  }, prompt.pattern).trim()
 }
 
 export function sortBytimeCreated(a: Prompt, b: Prompt) {
