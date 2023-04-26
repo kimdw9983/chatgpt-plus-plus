@@ -25,9 +25,6 @@
     "storage",
     "tabs"
   ],
-  "optional_permissions": [
-    "cookies"
-  ],
   "icons": {
     "16": "logo192.png",
     "48": "logo192.png",
