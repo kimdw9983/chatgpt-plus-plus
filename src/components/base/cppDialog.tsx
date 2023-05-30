@@ -13,7 +13,7 @@ function DialogTitle(props: DialogTitleProps) {
     <div className="flex w-full flex-row items-center justify-between border-b py-3 px-4 dark:border-gray-700">
       { props?.title && (<span class="text-base font-semibold sm:text-base">{ props.title }</span>) }
       <button className="text-gray-700 opacity-50 transition hover:opacity-75 dark:text-white" onClick={ props.closeDialog }>
-        <svg.crossMark />  
+        <svg.crossMark />
       </button>
     </div>
   )
@@ -30,6 +30,7 @@ interface DialogProps {
   setVisible: StateUpdater<boolean>
   onVisibleChange: (isVisible: boolean) => void
   closeOnClickOutside?: boolean | Function
+  width?: string
 }
 
 function Dialog(props: DialogProps): JSX.Element {
@@ -48,19 +49,11 @@ function Dialog(props: DialogProps): JSX.Element {
 
   return (<>{ props.isVisible && (
   <div className="relative" style={{ zIndex: 500 }}>
-    <div className="fixed w-full h-full inset-0 bg-gray-500/90 transition-opacity dark:bg-gray-800/90 opacity-100" style={{ zIndex: 510 }}/>
-    <div className="fixed inset-0 overflow-y-auto" style={{ zIndex: 520 }} onClick={ clickOutside }>
-      <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 !p-0">
-        <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all dark:bg-gray-900 sm:my-8 sm:w-full !my-0 flex min-h-screen w-full flex-col items-center justify-center !rounded-none !py-0 px-4 pt-5 pb-4 sm:p-6 bg-transparent dark:bg-transparent opacity-100 translate-y-0 sm:scale-100" 
-          style={{ zIndex: 530 }}>
-          <div className="flex h-full flex-col items-center justify-start">
-            <div className="relative">
-              <div className="grow justify-center bg-white dark:bg-gray-900 rounded-md flex flex-col items-start overflow-hidden border shadow-md dark:border-gray-700">
-                <DialogTitle closeDialog={ closeDialog } title={ props.title } />
-                { props.body }
-              </div>
-            </div>
-          </div>
+    <div className="fixed inset-0 bg-gray-500/90 dark:bg-gray-800/90" style={{ zIndex: 510 }} onClick={ clickOutside }>
+      <div className="grid-cols-[10px_minmax(300px,_100%)_10px] md:grid-cols-[60px_minmax(300px,_100%)_60px] grid h-full w-full grid-rows-[minmax(10px,_1fr)_auto_minmax(10px,_1fr)] md:grid-rows-[minmax(20px,_1fr)_auto_minmax(20px,_1fr)] overflow-y-auto">
+        <div className="relative col-auto col-start-2 row-auto row-start-2 w-full rounded-lg text-left shadow-xl transition-all left-1/2 -translate-x-1/2 bg-white dark:bg-gray-900" style={{ width: props.width }}>
+          <DialogTitle closeDialog={ closeDialog } title={ props.title } />
+          { props.body }
         </div>
       </div>
     </div>
@@ -72,19 +65,20 @@ function getDialogRoot(): HTMLDivElement {
   if (!cppDialogRoot) {
     cppDialogRoot = document.createElement('div')
     cppDialogRoot.id = "cpp-dialog-root"
-    cppDialogRoot.className = ""
+    cppDialogRoot.className = "absolute inset-0"
     cppDialogRoot.style.zIndex = "500"
 
     document.body.appendChild(cppDialogRoot)
   }
   return cppDialogRoot
 }
-interface PromptEditProps {
+interface cppDialogProps {
   namespace: string //Namespace to prevent dialog collisions
   title?: string
   children?: JSX.Element
   buttonText: string | JSX.Element
   closeOnClickOutside?: boolean | Function
+  width?: string
 }
 
 function checkVisibility() {
@@ -109,7 +103,7 @@ function useDialogState(namespace: string) {
   return { isVisible, setVisible }
 }
 
-export default function CppDialog(props: PromptEditProps) {
+export default function CppDialog(props: cppDialogProps) {
   const cppDialogRoot = getDialogRoot()
   const { isVisible, setVisible } = useDialogState(props.namespace)
   const onVisibleChangeRef = useRef<(isVisible: boolean) => void>()
@@ -132,6 +126,7 @@ export default function CppDialog(props: PromptEditProps) {
           onVisibleChange = {(cb) => (onVisibilityChange(cb))}
           title={ props.title }
           body={ props.children }
+          width={ props.width }
           closeOnClickOutside={ props.closeOnClickOutside } />), cppDialogRoot)
     } else {
       onVisibilityChange(isVisible)

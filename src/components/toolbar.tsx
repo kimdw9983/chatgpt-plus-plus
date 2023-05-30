@@ -267,7 +267,8 @@ export default function Toolbar(props: ToolbarProps) {
       <PromptDropdown />
       <CppDialog 
         buttonText={<div className="text-gray-300 hover:text-white"><svg.modification/></div>} 
-        namespace="prompt-edit" 
+        namespace="prompt-edit"
+        width={ '56rem' }
         title="Edit prompts">
         <PromptEdit ContainerStyle={{ height: '30rem' }}/>
       </CppDialog>
