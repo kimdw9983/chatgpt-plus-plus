@@ -233,8 +233,11 @@ export default function Toolbar(props: ToolbarProps) {
   useEffect(() => {
     const textarea = document.querySelector<HTMLTextAreaElement>(".chatgpt-textarea")
     if (!textarea) return
-
-    textarea.placeholder = `(${selectedPrompt}) Send a message.`
+    
+    readPromptList().then((list) => {
+      const promptName = selectedPrompt == "default" && "" || `(${list[selectedPrompt].name}) `
+      textarea.placeholder = `${promptName}Send a message.`
+    })
   }, [selectedPrompt])
 
   const defaultClass = `absolute ${getBoxClassName()} py-3 pl-2 cpp-toolbar`
