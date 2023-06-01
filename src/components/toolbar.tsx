@@ -97,17 +97,20 @@ function SliderSelection(props: SliderSelectionProps) {
   </div>
   )
 }
-  
-function PromptDropdown() {
+
+interface DropdownSelectionProps {
+  selectedPrompt: string
+  setSelectedPrompt: StateUpdater<string>
+}
+function PromptDropdown(props: DropdownSelectionProps) {
   const [isDialogOpen, setDialogOpen] = useState<boolean>(false)
   const [options, setOptions] = useState<{ value: string | number, label: string }[]>([])
-  const [selectedPrompt, setSelectedPrompt] = useState<string>(defaultPromptSetting.cppSelectedPromptID)
 
   async function readPersistent() {
     let selectedPrompt: string
     const setting =  await readPromptSetting()
     selectedPrompt = setting.cppSelectedPromptID
-    setSelectedPrompt(selectedPrompt)
+    props.setSelectedPrompt(selectedPrompt)
 
     const list = await readPromptList()
     const filteredOptions = Object.values(list).filter(prompt => prompt.showOnToolbar || prompt.id == selectedPrompt).sort(sortBytimeCreated).map(prompt => {return {value: prompt.id, label: prompt.name}})
@@ -120,7 +123,7 @@ function PromptDropdown() {
   }, [isDialogOpen])
 
   function onChangePrompt(e: any) {
-    setSelectedPrompt(e.target.value)
+    props.setSelectedPrompt(e.target.value)
     persistPromptSetting({cppSelectedPromptID: e.target.value})
   }
 
@@ -145,7 +148,7 @@ function PromptDropdown() {
   }, [])
 
   return (
-    <Dropdown value={ selectedPrompt } onChange={ onChangePrompt } options={ options } className="py-1 mx-2 text-ellipsis" style={{ width: "10rem" }} /> 
+    <Dropdown value={ props.selectedPrompt } onChange={ onChangePrompt } options={ options } className="py-1 mx-2 text-ellipsis" style={{ width: "10rem" }} /> 
   )
 }
 
@@ -200,6 +203,7 @@ export default function Toolbar(props: ToolbarProps) {
   const [presencePenaltyEnabled, setPresencePenaltyEnabled] = useState<boolean>(defaultUserConfig.cppPresencePenaltyEnabled)
   const [frequencyPenalty, setFrequencyPenalty] = useState<number>(defaultUserConfig.cppFrequencyPenalty)
   const [frequencyPenaltyEnabled, setFrequencyPenaltyEnabled] = useState<boolean>(defaultUserConfig.cppFrequencyPenaltyEnabled)
+  const [selectedPrompt, setSelectedPrompt] = useState<string>(defaultPromptSetting.cppSelectedPromptID)
 
   useEffect(() => {
     getUserConfig().then((userConfig) => {
@@ -225,6 +229,13 @@ export default function Toolbar(props: ToolbarProps) {
       cppFrequencyPenaltyEnabled: frequencyPenaltyEnabled,
     })
   }, [temperature, temperatureEnabled, maxTokens, maxTokensEnabled, presencePenalty, presencePenaltyEnabled, frequencyPenalty, frequencyPenaltyEnabled])
+
+  useEffect(() => {
+    const textarea = document.querySelector<HTMLTextAreaElement>(".chatgpt-textarea")
+    if (!textarea) return
+
+    textarea.placeholder = `(${selectedPrompt}) Send a message.`
+  }, [selectedPrompt])
 
   const defaultClass = `absolute ${getBoxClassName()} py-3 pl-2 cpp-toolbar`
   const className = `${props?.className ? props.className : ""} ${defaultClass}`
@@ -264,7 +275,7 @@ export default function Toolbar(props: ToolbarProps) {
         description="Prompt is a piece of text or input provided to the model to guide its response or output. Well-crafted prompt can generate answer more clear, relevant, efficient. ChatGPT++ offers the access to well-known prompts repositry, Awesome ChatGPT Prompts."
       />
       <PropertyLabel title="prompt" />
-      <PromptDropdown />
+      <PromptDropdown selectedPrompt={selectedPrompt} setSelectedPrompt={setSelectedPrompt}/>
       <CppDialog 
         buttonText={<div className="text-gray-300 hover:text-white"><svg.modification/></div>} 
         namespace="prompt-edit"
