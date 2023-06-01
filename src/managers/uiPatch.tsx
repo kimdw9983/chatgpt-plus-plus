@@ -34,6 +34,7 @@ export async function patch() {
   }
 
   chatgptTextarea.classList.add("chatgpt-textarea")
+  chatgptTextarea.style.paddingRight = "4.5rem"
   chatgptSubmit.classList.add("chatgpt-submit")
   
   function submit() {
@@ -80,11 +81,11 @@ export async function patch() {
   positionToolbarButton(buttonContainer)
   window.addEventListener("resize", (_) => positionToolbarButton(buttonContainer))
   buttonContainer.classList.value = "flex fixed text-gray-500 items-center"
-  buttonContainer.style.right = 486 + 'px'
-  buttonContainer.style.bottom = 63 + 'px'
+  buttonContainer.style.left = 1400 + 'px'
+  buttonContainer.style.bottom = 68 + 'px'
 
   const toolbarWidth = window.getComputedStyle(inputContainer).width
-  const toolbarLeft = -Number(toolbarWidth.replace("px", "")) + toolbarButtonWidth + 38 + "px"
+  const toolbarLeft = -Number(toolbarWidth.replace("px", "")) + toolbarButtonWidth + 46 + "px"
   const toolbarButton = (
   <BooleanProvider>
     <Toolbar style={{ top: '-14px', width: toolbarWidth, left: toolbarLeft, transform: "translate(0, -100%)" }} />
