@@ -65,6 +65,7 @@ export async function patch() {
   }, {capture: true})
   
   const toolbarButtonWidth = 28
+  const toolbarROffset = 46
   const buttonContainer = document.createElement('div')
   function positionToolbarButton(buttonContainer: HTMLDivElement) {
     //I had to move this button outside of the form and hack the position related to textarea's size and location. 
@@ -72,7 +73,7 @@ export async function patch() {
     if (!chatgptForm) return
     
     const formRect = chatgptForm.getBoundingClientRect()
-    const buttonXPos = formRect.right - toolbarButtonWidth - 38
+    const buttonXPos = formRect.right - toolbarButtonWidth - toolbarROffset
     buttonContainer.style.width = `${toolbarButtonWidth}px`
     buttonContainer.style.left = `${buttonXPos}px`
   }
@@ -81,11 +82,10 @@ export async function patch() {
   positionToolbarButton(buttonContainer)
   window.addEventListener("resize", (_) => positionToolbarButton(buttonContainer))
   buttonContainer.classList.value = "flex fixed text-gray-500 items-center"
-  buttonContainer.style.left = 1400 + 'px'
   buttonContainer.style.bottom = 68 + 'px'
 
   const toolbarWidth = window.getComputedStyle(inputContainer).width
-  const toolbarLeft = -Number(toolbarWidth.replace("px", "")) + toolbarButtonWidth + 46 + "px"
+  const toolbarLeft = -Number(toolbarWidth.replace("px", "")) + toolbarButtonWidth + toolbarROffset + "px"
   const toolbarButton = (
   <BooleanProvider>
     <Toolbar style={{ top: '-14px', width: toolbarWidth, left: toolbarLeft, transform: "translate(0, -100%)" }} />
