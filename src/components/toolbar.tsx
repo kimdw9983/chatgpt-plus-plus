@@ -235,7 +235,7 @@ export default function Toolbar(props: ToolbarProps) {
     if (!textarea) return
     
     readPromptList().then((list) => {
-      const promptName = selectedPrompt == "default" && "" || `(${list[selectedPrompt].name}) `
+      const promptName = selectedPrompt == "default" ? "" : `(${list[selectedPrompt].name}) `
       textarea.placeholder = `${promptName}Send a message.`
     })
   }, [selectedPrompt])
