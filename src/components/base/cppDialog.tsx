@@ -50,7 +50,7 @@ function Dialog(props: DialogProps): JSX.Element {
   return (<>{ props.isVisible && (
   <div className="relative" style={{ zIndex: 500 }}>
     <div className="fixed inset-0 bg-gray-500/90 dark:bg-gray-800/90" style={{ zIndex: 510 }} onClick={ clickOutside }>
-      <div className="grid-cols-[10px_minmax(300px,_100%)_10px] md:grid-cols-[60px_minmax(300px,_100%)_60px] grid h-full w-full grid-rows-[minmax(10px,_1fr)_auto_minmax(10px,_1fr)] md:grid-rows-[minmax(20px,_1fr)_auto_minmax(20px,_1fr)] overflow-y-auto">
+      <div className="grid-cols-[minmax(10px,30px)_1fr_minmax(10px,30px)] grid h-full w-full grid-rows-[minmax(10px,_1fr)_auto_minmax(10px,_1fr)] md:grid-rows-[minmax(20px,_1fr)_auto_minmax(20px,_1fr)] overflow-y-auto">
         <div className="relative col-auto col-start-2 row-auto row-start-2 w-full rounded-lg text-left shadow-xl transition-all left-1/2 -translate-x-1/2 bg-white dark:bg-gray-900" style={{ width: props.width }}>
           <DialogTitle closeDialog={ closeDialog } title={ props.title } />
           { props.body }
