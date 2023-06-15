@@ -88,7 +88,7 @@ function handlePromptSubmit(textarea: HTMLTextAreaElement, submit: HTMLButtonEle
   }, {capture: true})
 }
 
-export async function patch() {
+async function patch() {
   console.debug("chatgpt++ patch")
 
   const chatgptTextarea = document.querySelector<HTMLTextAreaElement>('div#__next textarea')
@@ -113,4 +113,18 @@ export async function patch() {
   </BooleanProvider>
   )
   render(toolbarButton, buttonContainer) 
+}
+
+export async function waitForPatch() {
+  //Properly waits any actual conversation text is appeared.
+  let intervalId = setInterval(function() {
+  if(document.querySelector('p')) {
+    patch()
+    clearInterval(intervalId)
+  }
+  }, 500)
+
+  window.addEventListener('beforeunload', function() {
+    clearInterval(intervalId)
+})
 }

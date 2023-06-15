@@ -1,7 +1,7 @@
 import Browser from "webextension-polyfill"
-import { patch } from "../managers/uiPatch"
+import { waitForPatch } from "../managers/uiPatch"
 
-window.onload = () => patch()
+window.onload = () => waitForPatch()
 Browser.runtime.onMessage.addListener((request) => {
-  if (request.action === "uiPatch") patch()
+  if (request.action === "uiPatch") waitForPatch()
 })
